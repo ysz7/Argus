@@ -4,33 +4,34 @@ use argus_protocol::Bounds;
 
 use crate::geometry::center;
 
-/// Sorts items top-to-bottom into lines, and each line left-to-right. An
-/// item belongs to the current line when its vertical center lies above the
-/// bottom of the line's first item.
+/// Sorts items top-to-bottom into lines, and each line left-to-right.
 pub(crate) fn reading_order<T>(items: &mut Vec<T>, bounds: impl Fn(&T) -> Bounds) {
+    *items = lines(std::mem::take(items), bounds).into_iter().flatten().collect();
+}
+
+/// Groups items into lines, top to bottom, each sorted left to right. An item
+/// belongs to the current line when its vertical center lies above the
+/// bottom of the line's first item.
+pub(crate) fn lines<T>(mut items: Vec<T>, bounds: impl Fn(&T) -> Bounds) -> Vec<Vec<T>> {
     items.sort_by(|a, b| {
         let (a, b) = (bounds(a), bounds(b));
         a.y().total_cmp(&b.y()).then(a.x().total_cmp(&b.x()))
     });
 
-    let mut ordered = Vec::with_capacity(items.len());
-    let mut line: Vec<T> = Vec::new();
+    let mut lines: Vec<Vec<T>> = Vec::new();
     let mut line_bottom = f32::NEG_INFINITY;
-    for item in items.drain(..) {
+    for item in items {
         let item_bounds = bounds(&item);
-        if center(&item_bounds).1 > line_bottom {
-            finish_line(&mut line, &mut ordered, &bounds);
+        if center(&item_bounds).1 > line_bottom || lines.is_empty() {
+            lines.push(Vec::new());
             line_bottom = item_bounds.y() + item_bounds.height();
         }
-        line.push(item);
+        lines.last_mut().expect("a line was just pushed").push(item);
     }
-    finish_line(&mut line, &mut ordered, &bounds);
-    *items = ordered;
-}
-
-fn finish_line<T>(line: &mut Vec<T>, ordered: &mut Vec<T>, bounds: &impl Fn(&T) -> Bounds) {
-    line.sort_by(|a, b| bounds(a).x().total_cmp(&bounds(b).x()));
-    ordered.append(line);
+    for line in &mut lines {
+        line.sort_by(|a, b| bounds(a).x().total_cmp(&bounds(b).x()));
+    }
+    lines
 }
 
 /// Whether all items lie on a single line of text.

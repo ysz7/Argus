@@ -15,7 +15,7 @@ use objc2_application_services::{
     AXUIElement, AXValue, AXValueType, kAXTrustedCheckOptionPrompt,
 };
 use objc2_core_foundation::{
-    CFArray, CFBoolean, CFDictionary, CFNumber, CFRetained, CFString, CFType, CGPoint, CGSize,
+    CFArray, CFBoolean, CFDictionary, CFNumber, CFRetained, CFString, CFType, CGPoint, CGSize, Type,
 };
 use objc2_core_graphics::{
     CGWindowListCopyWindowInfo, CGWindowListOption, kCGWindowLayer, kCGWindowOwnerName,
@@ -35,7 +35,7 @@ const MAX_DEPTH: usize = 64;
 const MESSAGING_TIMEOUT: f32 = 1.0;
 
 /// Attributes read for every node, in the order of [`Attr`].
-const ATTRIBUTES: [&str; 15] = [
+const ATTRIBUTES: [&str; 16] = [
     "AXRole",
     "AXSubrole",
     "AXTitle",
@@ -51,6 +51,7 @@ const ATTRIBUTES: [&str; 15] = [
     "AXSelected",
     "AXExpanded",
     "AXChildren",
+    "AXTitleUIElement",
 ];
 
 /// Indices into [`ATTRIBUTES`].
@@ -71,6 +72,7 @@ enum Attr {
     Selected,
     Expanded,
     Children,
+    TitleElement,
 }
 
 /// Accessibility backend for macOS.
@@ -113,8 +115,15 @@ impl AccessibilityBackend for MacAccessibilityBackend {
         };
         let window = window_of(&app_element)?;
 
-        let mut reader = TreeReader { attributes: &self.attributes, nodes: 0, truncated: false };
-        let window = reader.read(&window, 0).ok_or(Error::NoWindow)?;
+        let mut reader = TreeReader {
+            attributes: &self.attributes,
+            nodes: 0,
+            truncated: false,
+            elements: Vec::new(),
+            titles: Vec::new(),
+        };
+        let mut window = reader.read(&window, 0).ok_or(Error::NoWindow)?;
+        reader.resolve_labels(&mut window);
         tracing::debug!(
             nodes = reader.nodes,
             truncated = reader.truncated,
@@ -303,6 +312,10 @@ struct TreeReader<'a> {
     attributes: &'a CFArray<CFString>,
     nodes: usize,
     truncated: bool,
+    /// Every element read, in pre-order (index = node index).
+    elements: Vec<CFRetained<AXUIElement>>,
+    /// `(node index, its AXTitleUIElement)`, resolved after the traversal.
+    titles: Vec<(usize, CFRetained<AXUIElement>)>,
 }
 
 impl TreeReader<'_> {
@@ -314,7 +327,9 @@ impl TreeReader<'_> {
             return None;
         }
         let values = self.values(element)?;
+        let index = self.nodes;
         self.nodes += 1;
+        self.elements.push(element.retain());
 
         let get = |attr: Attr| {
             values.get(attr as usize).map(|value| &**value).filter(|value| present(value))
@@ -336,8 +351,14 @@ impl TreeReader<'_> {
             focused: boolean(Attr::Focused),
             selected: boolean(Attr::Selected),
             expanded: boolean(Attr::Expanded),
+            label: None,
             children: Vec::new(),
         };
+        if let Some(title) =
+            get(Attr::TitleElement).and_then(|value| value.downcast_ref::<AXUIElement>())
+        {
+            self.titles.push((index, title.retain()));
+        }
 
         if let Some(children) =
             get(Attr::Children).and_then(|value| value.downcast_ref::<CFArray>())
@@ -353,6 +374,17 @@ impl TreeReader<'_> {
             }
         }
         Some(node)
+    }
+
+    /// Points every node that has a title element at that element's node,
+    /// if the element is part of the tree.
+    fn resolve_labels(&self, root: &mut AxNode) {
+        let mut labels = vec![None; self.nodes];
+        for (index, title) in &self.titles {
+            labels[*index] = self.elements.iter().position(|element| **element == **title);
+        }
+        let mut next = 0;
+        assign_labels(root, &labels, &mut next);
     }
 
     fn values(&self, element: &AXUIElement) -> Option<Vec<CFRetained<CFType>>> {
@@ -376,6 +408,15 @@ impl TreeReader<'_> {
         // SAFETY: the result holds one CF object per requested attribute.
         let values: &CFArray<CFType> = unsafe { values.cast_unchecked() };
         Some(values.to_vec())
+    }
+}
+
+/// Sets `label` on every node in pre-order (`next` is the running index).
+fn assign_labels(node: &mut AxNode, labels: &[Option<usize>], next: &mut usize) {
+    node.label = labels.get(*next).copied().flatten();
+    *next += 1;
+    for child in &mut node.children {
+        assign_labels(child, labels, next);
     }
 }
 

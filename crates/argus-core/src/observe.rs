@@ -146,15 +146,31 @@ impl Observer {
             });
         }
 
-        if pixels {
+        let capture = if pixels {
             let capture =
                 self.capture.as_deref().ok_or(Error::Unsupported { feature: "capture" })?;
-            let captured = match (&snapshot, window.as_ref().and_then(|window| window.bounds)) {
+            match (&snapshot, window.as_ref().and_then(|window| window.bounds)) {
                 (Some(snapshot), Some(bounds)) => {
-                    window_like(capture, snapshot.application.pid, &bounds)?
+                    match window_like(capture, snapshot.application.pid, &bounds) {
+                        Ok(captured) => Some((capture, captured)),
+                        // Off screen or on another Space: the tree is still
+                        // worth reporting.
+                        Err(Error::WindowMismatch) => {
+                            tracing::warn!(
+                                "the window is not capturable; observing its accessibility tree only"
+                            );
+                            None
+                        }
+                        Err(error) => return Err(error),
+                    }
                 }
-                _ => target_window(capture, target)?,
-            };
+                _ => Some((capture, target_window(capture, target)?)),
+            }
+        } else {
+            None
+        };
+
+        if let Some((capture, captured)) = capture {
             let frame = capture.capture(CaptureTarget::Window(captured.id))?;
             timestamp = frame.timestamp();
             if wants(Source::Ocr) {
@@ -469,9 +485,10 @@ mod tests {
             .with_accessibility(Box::new(FakeAccessibility(demo_snapshot(900.0))))
             .with_capture(Box::new(FakeCapture))
             .with_ocr(Box::new(FakeOcr));
-        let error = observer
-            .observe(&AppTarget::Frontmost, &[Source::Accessibility, Source::Ocr])
-            .unwrap_err();
-        assert_eq!(error.code(), "window_mismatch");
+        // The accessibility window is elsewhere: its tree is reported alone.
+        let observation =
+            observer.observe(&AppTarget::Frontmost, &[Source::Accessibility, Source::Ocr]).unwrap();
+        assert!(observation.elements.iter().all(|e| e.sources == [Source::Accessibility]));
+        assert_eq!(observation.elements.len(), 2);
     }
 }

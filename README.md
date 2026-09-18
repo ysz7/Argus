@@ -61,7 +61,7 @@ never interpreted as instructions to Argus.
 | `argus-capture`       | Frame acquisition (screens, windows).                   |
 | `argus-accessibility` | Native accessibility adapters (macOS first).            |
 | `argus-perception`    | OCR and visual perception backends.                     |
-| `argus-fusion`        | Merging evidence from different sources.                |
+| `argus-fusion`        | Merging evidence from different sources; scene graph.   |
 | `argus-tracking`      | Element identity and changes over time.                 |
 | `argus-core`          | Orchestration pipeline; aggregated error type.          |
 | `argus-server`        | Local service / API.                                    |
@@ -71,7 +71,7 @@ never interpreted as instructions to Argus.
 
 ```text
 accessibility ─┐
-OCR           ─┼─▶ SourceCandidate ─▶ normalize ─▶ Normalized ─▶ fuse ─▶ Fused ─▶ assemble ─▶ Observation
+OCR           ─┼─▶ SourceCandidate ─▶ normalize ─▶ Normalized ─▶ fuse + scene graph ─▶ Fused ─▶ assemble ─▶ Observation
 vision        ─┘
 ```
 
@@ -84,7 +84,12 @@ consistency of roles, states and confidence. Fusion (`argus-fusion`) merges
 the evidence of all sources so that one real object becomes one element,
 listing every contributing source; it records conflicts and lowers the
 confidence of disputed properties (policy in
-[`crates/argus-fusion/src/lib.rs`](crates/argus-fusion/src/lib.rs)).
+[`crates/argus-fusion/src/lib.rs`](crates/argus-fusion/src/lib.rs)). The scene
+graph step then infers structure: `label_for` relations (reported by the
+platform, or a text next to an unlabelled checkbox, radio button or field),
+`row` elements for repeated lines of pixel-derived elements, and `contains`
+relations for elements drawn inside others outside the tree. Inferred
+structure is attributed to the `derived` source.
 Observations can only be assembled from fused, normalized evidence.
 
 Allowed internal dependencies (enforced by
@@ -173,7 +178,8 @@ applications, so for them the pixel sources supply most elements.
 When an application exposes no accessible window or does not answer
 accessibility requests (custom toolkits, games), `argus observe` warns and
 continues with the pixel sources; with `--sources accessibility` alone the
-error is reported.
+error is reported. Conversely, when the accessibility window cannot be
+captured (off screen, another Space), its tree is reported alone.
 
 macOS answers accessibility requests unreliably while the screen is locked
 (the application element instead of its window); Argus then reports that the

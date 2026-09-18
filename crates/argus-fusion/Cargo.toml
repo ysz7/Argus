@@ -1,6 +1,6 @@
 [package]
 name = "argus-fusion"
-description = "Fusion of evidence from multiple Argus sources into single elements."
+description = "Fusion of evidence from multiple Argus sources into single elements, and the UI scene graph."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true

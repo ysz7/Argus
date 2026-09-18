@@ -404,14 +404,13 @@ fn classify(map: &ComponentMap, edges: &[bool], component: &Component) -> Option
 
     if boxy && w >= 64 && h >= 48 {
         // A large outlined area: a picture if busy inside, otherwise a
-        // container, which is not reported.
+        // container (a group box or panel) whose contents are reported
+        // separately.
         let inner = content(map, edges, b.inset(0.1), component.label);
-        if inner.density() > 0.25 {
-            let mut detection = Detection::new(b, Role::Image, 0.35, 0.3);
-            detection.leaf = false;
-            return Some(detection);
-        }
-        return None;
+        let role = if inner.density() > 0.25 { Role::Image } else { Role::Group };
+        let mut detection = Detection::new(b, role, 0.35, 0.3);
+        detection.leaf = false;
+        return Some(detection);
     }
 
     // Compact pictograms. Glyph clusters of text can look alike; OCR evidence
@@ -802,6 +801,18 @@ mod tests {
         }));
         let [button] = detections.as_slice() else { panic!("{detections:#?}") };
         assert_eq!(button.role, Role::Button);
+    }
+
+    #[test]
+    fn panels_are_groups_around_their_controls() {
+        let detections = detect(&frame(320, 200, |x, y| {
+            let field = outline(x, y, 40, 60, 160, 24);
+            (outline(x, y, 10, 10, 280, 160) || field).then_some([120, 120, 120])
+        }));
+        let roles: Vec<Role> = detections.iter().map(|d| d.role).collect();
+        assert_eq!(roles, [Role::Group, Role::TextBox]);
+        let panel = &detections[0];
+        assert_eq!(panel.rect, PixelRect { x: 10.0, y: 10.0, width: 280.0, height: 160.0 });
     }
 
     #[test]

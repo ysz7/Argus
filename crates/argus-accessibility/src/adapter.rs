@@ -9,8 +9,8 @@
 //! with recorded fixtures on any OS.
 
 use argus_protocol::{
-    Bounds, CandidateId, CheckState, Confidence, ElementState, Region, Role, Score, Source,
-    SourceCandidate, SourceMeta,
+    Bounds, CandidateId, CandidateRelation, CheckState, Confidence, ElementState, Region,
+    RelationKind, Role, Score, Source, SourceCandidate, SourceMeta,
 };
 
 use crate::roles::{clips_children, is_text_input, map_role, subrole_name, text_in_value};
@@ -21,25 +21,67 @@ use crate::{AxFrame, AxNode, AxSnapshot, AxValue};
 ///
 /// Nodes without a frame cannot be grounded; they are dropped and their
 /// children are attached to the nearest grounded ancestor.
+///
+/// A node's title element (`AXTitleUIElement`) becomes a `label_for`
+/// relation from the label to the node; an otherwise unlabelled node (a text
+/// field) takes the label's text as its name, as VoiceOver does.
 pub fn candidates(snapshot: &AxSnapshot) -> Vec<SourceCandidate> {
-    let mut output = Vec::new();
+    let mut tree = Tree::default();
     let clip = snapshot.window.frame.and_then(to_bounds);
-    visit(&snapshot.window, None, clip, &mut output);
+    visit(&snapshot.window, None, clip, &mut tree);
+
+    let Tree { mut output, ids, labelled } = tree;
+    for (target, label, unnamed) in labelled {
+        let Some(&Some(label)) = ids.get(label) else { continue };
+        if label == target {
+            continue;
+        }
+        let text = output[label.0 as usize].name.clone();
+        output[label.0 as usize].relations.push(CandidateRelation {
+            kind: RelationKind::LabelFor,
+            target,
+            confidence: Some(Score::CERTAIN),
+        });
+        let labelled = &mut output[target.0 as usize];
+        if unnamed && text.is_some() {
+            // A placeholder is only the fallback name; keep it as a
+            // description.
+            if labelled.description.is_none() {
+                labelled.description = labelled.name.take();
+            }
+            labelled.name = text;
+            labelled.confidence.name = Some(Score::CERTAIN);
+        }
+    }
     output
 }
 
-fn visit(
-    node: &AxNode,
-    parent: Option<CandidateId>,
-    clip: Option<Bounds>,
-    output: &mut Vec<SourceCandidate>,
-) {
+#[derive(Default)]
+struct Tree {
+    output: Vec<SourceCandidate>,
+    /// Candidate of every node in pre-order (`None` for frameless nodes).
+    ids: Vec<Option<CandidateId>>,
+    /// `(node, pre-order index of its label, node has no label of its own)`.
+    labelled: Vec<(CandidateId, usize, bool)>,
+}
+
+fn visit(node: &AxNode, parent: Option<CandidateId>, clip: Option<Bounds>, tree: &mut Tree) {
     let bounds = node.frame.and_then(to_bounds);
     let mut child_parent = parent;
     let mut child_clip = clip;
 
+    let output = &mut tree.output;
+    let mut id = None;
     if let Some(bounds) = bounds {
-        let id = CandidateId(output.len() as u32);
+        let candidate_id = CandidateId(output.len() as u32);
+        id = Some(candidate_id);
+        if let Some(label) = node.label {
+            let own = [&node.title, &node.description]
+                .into_iter()
+                .any(|text| non_blank(text.as_ref()).is_some());
+            tree.labelled.push((candidate_id, label, !own));
+        }
+        let id = candidate_id;
         output.push(candidate(node, id, parent, bounds, clip));
         child_parent = Some(id);
         if clips_children(&node.role) {
@@ -49,8 +91,9 @@ fn visit(
         }
     }
 
+    tree.ids.push(id);
     for child in &node.children {
-        visit(child, child_parent, child_clip, output);
+        visit(child, child_parent, child_clip, tree);
     }
 }
 
@@ -377,6 +420,38 @@ mod tests {
         }]);
         assert_eq!(seven.meta.native_id.as_deref(), Some("Seven"));
         assert_eq!(seven.meta.source, Source::Accessibility);
+    }
+
+    #[test]
+    fn title_elements_label_text_fields() {
+        // Pre-order: window 0, frameless group 1, label 2, field 3, field 4.
+        let label = AxNode {
+            value: Some(AxValue::String("Width:".to_owned())),
+            ..node("AXStaticText", frame(10.0, 10.0, 50.0, 16.0))
+        };
+        let field = AxNode {
+            label: Some(2),
+            placeholder: Some("pixels".to_owned()),
+            value: Some(AxValue::String("96".to_owned())),
+            ..node("AXTextField", frame(70.0, 10.0, 60.0, 22.0))
+        };
+        let titled = AxNode {
+            label: Some(2),
+            title: Some("Height".to_owned()),
+            ..node("AXTextField", frame(140.0, 10.0, 60.0, 22.0))
+        };
+        let group = AxNode { children: vec![label, field, titled], ..node("AXGroup", None) };
+        let candidates = candidates(&snapshot(vec![group]));
+
+        let [_, label, field, titled] = candidates.as_slice() else { panic!("{candidates:#?}") };
+        assert_eq!(field.name.as_deref(), Some("Width:"));
+        assert_eq!(field.description.as_deref(), Some("pixels"), "the placeholder is kept");
+        assert_eq!(titled.name.as_deref(), Some("Height"), "an own title wins");
+        let targets: Vec<_> = label.relations.iter().map(|r| (r.kind, r.target)).collect();
+        assert_eq!(
+            targets,
+            [(RelationKind::LabelFor, field.id), (RelationKind::LabelFor, titled.id)]
+        );
     }
 
     #[test]

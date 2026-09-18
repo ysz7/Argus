@@ -54,6 +54,10 @@ pub struct AxNode {
     /// `AXExpanded`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub expanded: Option<bool>,
+    /// Pre-order index (within the snapshot, the window being 0) of the node
+    /// that labels this one (`AXTitleUIElement`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub label: Option<usize>,
     /// Child nodes in platform order.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<AxNode>,

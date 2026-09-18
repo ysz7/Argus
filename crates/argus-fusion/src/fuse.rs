@@ -13,6 +13,8 @@ use crate::order::{reading_order, single_line};
 use crate::roles::{carries_text, compatible, is_checkable, is_control, is_detail, named_by_text};
 use crate::text::similar;
 
+mod scene;
+
 /// A text line inside an element at least this much is about the element.
 const TEXT_INSIDE: f32 = 0.7;
 /// A text line overlapping an element this much is about the element.
@@ -109,6 +111,8 @@ pub fn fuse<'a>(candidates: impl IntoIterator<Item = &'a ElementCandidate>) -> F
     for candidate in visual {
         builder.add_visual(candidate);
     }
+    builder.resolve_relations();
+    builder.build_scene();
     builder.finish()
 }
 
@@ -166,8 +170,10 @@ impl Node {
         (self.state.visible != Some(false)).then_some(self.visible_bounds.unwrap_or(self.bounds))
     }
 
+    /// Created from pixels or inferred, rather than reported by a structured
+    /// source.
     fn pixel_derived(&self) -> bool {
-        matches!(self.origin, Source::Ocr | Source::Vision)
+        matches!(self.origin, Source::Ocr | Source::Vision | Source::Derived)
     }
 
     fn add(&mut self, candidate: &ElementCandidate, link: Link) {
@@ -208,9 +214,24 @@ struct Builder {
     nodes: Vec<Node>,
     /// Where each structured candidate went.
     placed: HashMap<(Source, CandidateId), usize>,
+    /// Relations between nodes: `(from, kind, to, confidence)`.
+    relations: Vec<(usize, RelationKind, usize, Option<Score>)>,
 }
 
 impl Builder {
+    /// Turns the relations structured sources reported between their
+    /// candidates into relations between nodes.
+    fn resolve_relations(&mut self) {
+        for from in 0..self.nodes.len() {
+            let origin = self.nodes[from].origin;
+            for (kind, target, confidence) in std::mem::take(&mut self.nodes[from].relations) {
+                if let Some(&to) = self.placed.get(&(origin, target)) {
+                    self.relations.push((from, kind, to, confidence));
+                }
+            }
+        }
+    }
+
     fn add_structured(&mut self, candidate: &ElementCandidate) {
         let source = candidate.meta.source;
         let parent =
@@ -542,21 +563,18 @@ impl Builder {
             position[index] = output;
         }
 
-        let mut relations = Vec::new();
-        for &index in &order {
-            let node = &self.nodes[index];
-            for &(kind, target, confidence) in &node.relations {
-                let Some(&to) = self.placed.get(&(node.origin, target)) else { continue };
-                if position[to] != usize::MAX {
-                    relations.push(FusedRelation {
-                        kind,
-                        from: position[index],
-                        to: position[to],
-                        confidence,
-                    });
-                }
-            }
-        }
+        let mut relations: Vec<FusedRelation> = self
+            .relations
+            .iter()
+            .filter(|(from, _, to, _)| position[*from] != usize::MAX && position[*to] != usize::MAX)
+            .map(|&(from, kind, to, confidence)| FusedRelation {
+                kind,
+                from: position[from],
+                to: position[to],
+                confidence,
+            })
+            .collect();
+        relations.sort_by_key(|relation| relation.from);
 
         let elements = order
             .iter()

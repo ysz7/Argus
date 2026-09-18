@@ -32,6 +32,10 @@
 //! New elements are attached to the smallest element that contains them.
 //! Pixel sources never restructure the accessibility tree.
 //!
+//! 4. **Scene graph** (labels, rows, spatial containment) is inferred last;
+//!    see the `scene` module of `fuse`. Inferred structure is attributed to
+//!    [`Source::Derived`](argus_protocol::Source::Derived).
+//!
 //! # Conflicts
 //!
 //! Disagreements are recorded as [`Conflict`]s, never dropped. The more

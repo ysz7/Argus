@@ -54,6 +54,8 @@ pub enum Link {
     Text,
     /// A detail drawn inside the element (e.g. a glyph), not a separate object.
     Part,
+    /// A text that labels the element (it names an unnamed element).
+    Label,
 }
 
 impl fmt::Display for Link {
@@ -63,6 +65,7 @@ impl fmt::Display for Link {
             Link::Same => "same",
             Link::Text => "text",
             Link::Part => "part",
+            Link::Label => "label",
         })
     }
 }

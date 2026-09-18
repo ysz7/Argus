@@ -207,6 +207,7 @@
     {
       "id": "e_10",
       "role": "radio_button",
+      "name": "H.264 8 bit 4:2:0 Half Res 1080p",
       "bounds": {
         "x": 622.0,
         "y": 363.0,
@@ -219,10 +220,12 @@
       "confidence": {
         "element": 0.6,
         "role": 0.5,
+        "name": 0.6,
         "state": 0.45
       },
       "sources": [
-        "vision"
+        "vision",
+        "derived"
       ]
     },
     {
@@ -287,6 +290,7 @@
     {
       "id": "e_14",
       "role": "radio_button",
+      "name": "H.265 10 bit 4:2:0 1080p",
       "bounds": {
         "x": 622.0,
         "y": 401.0,
@@ -299,10 +303,12 @@
       "confidence": {
         "element": 0.6,
         "role": 0.5,
+        "name": 0.6,
         "state": 0.45
       },
       "sources": [
-        "vision"
+        "vision",
+        "derived"
       ]
     },
     {
@@ -329,6 +335,7 @@
     {
       "id": "e_16",
       "role": "radio_button",
+      "name": "ProRes 422 10 bit 4:2:2 1080p",
       "bounds": {
         "x": 622.0,
         "y": 420.0,
@@ -341,10 +348,12 @@
       "confidence": {
         "element": 0.6,
         "role": 0.5,
+        "name": 0.6,
         "state": 0.45
       },
       "sources": [
-        "vision"
+        "vision",
+        "derived"
       ]
     },
     {
@@ -392,6 +401,7 @@
     {
       "id": "e_19",
       "role": "text_box",
+      "name": "Watch Folders",
       "bounds": {
         "x": 418.0,
         "y": 495.0,
@@ -400,10 +410,12 @@
       },
       "confidence": {
         "element": 0.5,
-        "role": 0.4
+        "role": 0.4,
+        "name": 0.4
       },
       "sources": [
-        "vision"
+        "vision",
+        "derived"
       ],
       "children": [
         "e_20",
@@ -593,6 +605,32 @@
         "ocr",
         "vision"
       ]
+    }
+  ],
+  "relations": [
+    {
+      "kind": "label_for",
+      "from": "e_11",
+      "to": "e_10",
+      "confidence": 0.6
+    },
+    {
+      "kind": "label_for",
+      "from": "e_15",
+      "to": "e_14",
+      "confidence": 0.6
+    },
+    {
+      "kind": "label_for",
+      "from": "e_17",
+      "to": "e_16",
+      "confidence": 0.6
+    },
+    {
+      "kind": "label_for",
+      "from": "e_18",
+      "to": "e_19",
+      "confidence": 0.4
     }
   ]
 }
