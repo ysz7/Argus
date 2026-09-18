@@ -70,3 +70,8 @@ fn observe_rejects_conflicting_targets() {
 fn observe_rejects_unknown_sources() {
     argus().args(["observe", "--source", "telepathy"]).assert().failure();
 }
+
+#[test]
+fn capture_overlay_requires_output() {
+    argus().args(["capture", "--overlay"]).assert().failure().stderr(contains("--output"));
+}

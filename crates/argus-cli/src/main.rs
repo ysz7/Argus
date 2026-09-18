@@ -5,6 +5,7 @@
 mod commands;
 mod logging;
 mod output;
+mod overlay;
 
 use clap::{Parser, Subcommand};
 

@@ -1,11 +1,16 @@
-//! Conversion of raw accessibility trees into element candidates.
+//! Conversion of raw accessibility trees into source candidates.
+//!
+//! The adapter applies platform semantics only: role mapping, which attribute
+//! holds the label, how check states are encoded, which containers clip their
+//! content. Generic cleanup (text, visibility, consistency) is done by the
+//! normalization stage in `argus-core`.
 //!
 //! Platform-independent: operates on [`AxNode`] data only, so it is tested
 //! with recorded fixtures on any OS.
 
 use argus_protocol::{
-    Bounds, CandidateId, CheckState, Confidence, ElementCandidate, ElementState, Role, Score,
-    Source,
+    Bounds, CandidateId, CheckState, Confidence, ElementState, Region, Role, Score, Source,
+    SourceCandidate, SourceMeta,
 };
 
 use crate::roles::{clips_children, is_text_input, map_role, subrole_name, text_in_value};
@@ -16,7 +21,7 @@ use crate::{AxFrame, AxNode, AxSnapshot, AxValue};
 ///
 /// Nodes without a frame cannot be grounded; they are dropped and their
 /// children are attached to the nearest grounded ancestor.
-pub fn candidates(snapshot: &AxSnapshot) -> Vec<ElementCandidate> {
+pub fn candidates(snapshot: &AxSnapshot) -> Vec<SourceCandidate> {
     let mut output = Vec::new();
     let clip = snapshot.window.frame.and_then(to_bounds);
     visit(&snapshot.window, None, clip, &mut output);
@@ -27,7 +32,7 @@ fn visit(
     node: &AxNode,
     parent: Option<CandidateId>,
     clip: Option<Bounds>,
-    output: &mut Vec<ElementCandidate>,
+    output: &mut Vec<SourceCandidate>,
 ) {
     let bounds = node.frame.and_then(to_bounds);
     let mut child_parent = parent;
@@ -55,7 +60,7 @@ fn candidate(
     parent: Option<CandidateId>,
     bounds: Bounds,
     clip: Option<Bounds>,
-) -> ElementCandidate {
+) -> SourceCandidate {
     let role = map_role(&node.role, node.subrole.as_deref());
     let (name, description) = name_and_description(node);
     let value = value(node, role);
@@ -81,57 +86,50 @@ fn candidate(
         state.editable = Some(false);
     }
 
-    let mut visible_bounds = None;
-    if let Some(clip) = clip {
-        match bounds.intersection(&clip) {
-            None => state.visible = Some(false),
-            Some(visible) if visible == bounds => state.visible = Some(true),
-            Some(visible) => {
-                state.visible = Some(true);
-                visible_bounds = Some(visible);
-            }
-        }
-    }
-
-    let known = |present: bool| present.then_some(Score::CERTAIN);
+    // The platform is authoritative for everything it reports.
+    let reported = |present: bool| present.then_some(Score::CERTAIN);
     let confidence = Confidence {
-        role: known(role != Role::Unknown),
-        name: known(name.is_some()),
-        value: known(value.is_some()),
+        role: reported(role != Role::Unknown),
+        name: reported(name.is_some()),
+        value: reported(value.is_some()),
         bounds: Some(Score::CERTAIN),
-        state: known(!state.is_unknown()),
+        state: reported(!state.is_unknown()),
         ..Confidence::new(Score::CERTAIN)
     };
 
-    ElementCandidate {
+    SourceCandidate {
         id,
         parent,
         role,
         name,
         value,
         description,
-        bounds,
-        visible_bounds,
+        region: Region::Screen(bounds),
+        clip,
         state,
         confidence,
-        source: Source::Accessibility,
-        native_role: Some(match &node.subrole {
-            Some(subrole) => format!("{}/{subrole}", node.role),
-            None => node.role.clone(),
-        }),
+        relations: Vec::new(),
+        meta: SourceMeta {
+            source: Source::Accessibility,
+            native_role: Some(match &node.subrole {
+                Some(subrole) => format!("{}/{subrole}", node.role),
+                None => node.role.clone(),
+            }),
+            native_id: node.identifier.clone().filter(|id| !id.is_empty()),
+        },
     }
 }
 
 /// Chooses the name and description following macOS labelling conventions.
 fn name_and_description(node: &AxNode) -> (Option<String>, Option<String>) {
     let text_value = match &node.value {
-        Some(AxValue::String(text)) if text_in_value(&node.role) => non_empty(text),
+        Some(AxValue::String(text)) if text_in_value(&node.role) => non_blank(Some(text)),
         _ => None,
     };
-    let title = node.title.as_deref().and_then(non_empty);
-    let description = node.description.as_deref().and_then(non_empty);
-    let help = node.help.as_deref().and_then(non_empty);
-    let placeholder = node.placeholder.as_deref().and_then(non_empty);
+    let title = non_blank(node.title.as_ref());
+    let description = non_blank(node.description.as_ref());
+    let help = non_blank(node.help.as_ref());
+    let placeholder = non_blank(node.placeholder.as_ref());
 
     // Static text carries its text in the value; unlabelled controls (icon
     // buttons) carry their label in the description; empty text fields show
@@ -181,9 +179,10 @@ fn format_number(number: f64) -> String {
     }
 }
 
-fn non_empty(text: &str) -> Option<String> {
-    let trimmed = text.trim();
-    (!trimmed.is_empty()).then(|| trimmed.to_owned())
+/// The text, unless it is missing or blank. Cleanup happens in
+/// normalization; here blankness only decides which attribute labels a node.
+fn non_blank(text: Option<&String>) -> Option<String> {
+    text.filter(|text| !text.trim().is_empty()).cloned()
 }
 
 fn to_bounds(frame: AxFrame) -> Option<Bounds> {
@@ -221,7 +220,7 @@ mod tests {
         }
     }
 
-    fn only_child(children: Vec<AxNode>) -> ElementCandidate {
+    fn only_child(children: Vec<AxNode>) -> SourceCandidate {
         let candidates = candidates(&snapshot(children));
         assert_eq!(candidates.len(), 2, "{candidates:#?}");
         candidates[1].clone()
@@ -233,7 +232,7 @@ mod tests {
         assert_eq!(candidates[0].role, Role::Window);
         assert_eq!(candidates[0].name.as_deref(), Some("Settings"));
         assert_eq!(candidates[0].parent, None);
-        assert_eq!(candidates[0].state.visible, Some(true));
+        assert_eq!(candidates[0].clip, Bounds::new(0.0, 0.0, 400.0, 300.0).ok());
     }
 
     #[test]
@@ -260,7 +259,7 @@ mod tests {
         assert_eq!(button.role, Role::Button);
         assert_eq!(button.name.as_deref(), Some("close button"));
         assert_eq!(button.description.as_deref(), Some("Close this window"));
-        assert_eq!(button.native_role.as_deref(), Some("AXButton/AXCloseButton"));
+        assert_eq!(button.meta.native_role.as_deref(), Some("AXButton/AXCloseButton"));
         assert_eq!(button.confidence.role, Some(Score::CERTAIN));
     }
 
@@ -329,7 +328,7 @@ mod tests {
         let splitter = only_child(vec![node("AXSplitter", frame(200.0, 0.0, 1.0, 300.0))]);
         assert_eq!(splitter.role, Role::Unknown);
         assert_eq!(splitter.confidence.role, None);
-        assert_eq!(splitter.native_role.as_deref(), Some("AXSplitter"));
+        assert_eq!(splitter.meta.native_role.as_deref(), Some("AXSplitter"));
     }
 
     #[test]
@@ -346,32 +345,38 @@ mod tests {
     #[test]
     fn scroll_areas_clip_their_content() {
         let candidates = candidates(&snapshot(vec![AxNode {
-            children: vec![
-                node("AXStaticText", frame(0.0, 50.0, 100.0, 20.0)), // fully visible
-                node("AXStaticText", frame(0.0, 90.0, 100.0, 20.0)), // cut at y = 100
-                node("AXStaticText", frame(0.0, 150.0, 100.0, 20.0)), // scrolled away
-            ],
-            ..node("AXScrollArea", frame(0.0, 40.0, 200.0, 60.0))
+            children: vec![node("AXStaticText", frame(0.0, 150.0, 100.0, 20.0))],
+            ..node("AXScrollArea", frame(0.0, 40.0, 500.0, 60.0))
         }]));
-        let [_, area, full, partial, hidden] = candidates.as_slice() else {
+        let [window, area, text] = candidates.as_slice() else {
             panic!("{candidates:#?}");
         };
-        assert_eq!(area.parent, Some(CandidateId(0)));
-        assert_eq!(full.parent, Some(area.id));
-        assert_eq!((full.state.visible, full.visible_bounds), (Some(true), None));
-        assert_eq!(partial.state.visible, Some(true));
-        assert_eq!(partial.visible_bounds, Bounds::new(0.0, 90.0, 100.0, 10.0).ok());
-        assert_eq!((hidden.state.visible, hidden.visible_bounds), (Some(false), None));
+        assert_eq!(area.parent, Some(window.id));
+        assert_eq!(area.clip, Bounds::new(0.0, 0.0, 400.0, 300.0).ok());
+        assert_eq!(text.parent, Some(area.id));
+        // The window and the scroll area both clip.
+        assert_eq!(text.clip, Bounds::new(0.0, 40.0, 400.0, 60.0).ok());
     }
 
     #[test]
-    fn content_of_hidden_scroll_areas_is_hidden() {
+    fn content_of_hidden_scroll_areas_gets_an_empty_clip() {
         let candidates = candidates(&snapshot(vec![AxNode {
             children: vec![node("AXStaticText", frame(0.0, 600.0, 100.0, 20.0))],
             ..node("AXScrollArea", frame(0.0, 500.0, 200.0, 200.0))
         }]));
-        assert_eq!(candidates[1].state.visible, Some(false));
-        assert_eq!(candidates[2].state.visible, Some(false));
+        let clip = candidates[2].clip.unwrap();
+        assert_eq!((clip.width(), clip.height()), (0.0, 0.0));
+    }
+
+    #[test]
+    fn keeps_native_identity() {
+        let seven = only_child(vec![AxNode {
+            identifier: Some("Seven".to_owned()),
+            description: Some("7".to_owned()),
+            ..node("AXButton", frame(10.0, 10.0, 48.0, 48.0))
+        }]);
+        assert_eq!(seven.meta.native_id.as_deref(), Some("Seven"));
+        assert_eq!(seven.meta.source, Source::Accessibility);
     }
 
     #[test]

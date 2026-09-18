@@ -9,13 +9,17 @@ use std::ptr::{self, NonNull};
 
 use argus_protocol::Application;
 use objc2::rc::Retained;
-use objc2_app_kit::{NSRunningApplication, NSWorkspace};
+use objc2_app_kit::NSRunningApplication;
 use objc2_application_services::{
     AXCopyMultipleAttributeOptions, AXError, AXIsProcessTrusted, AXIsProcessTrustedWithOptions,
     AXUIElement, AXValue, AXValueType, kAXTrustedCheckOptionPrompt,
 };
 use objc2_core_foundation::{
     CFArray, CFBoolean, CFDictionary, CFNumber, CFRetained, CFString, CFType, CGPoint, CGSize,
+};
+use objc2_core_graphics::{
+    CGWindowListCopyWindowInfo, CGWindowListOption, kCGWindowLayer, kCGWindowOwnerName,
+    kCGWindowOwnerPID,
 };
 use objc2_foundation::NSString;
 
@@ -147,30 +151,94 @@ fn ensure_permission() -> Result<()> {
     }
 }
 
+/// Finds the target application.
+///
+/// `NSWorkspace`'s `runningApplications` and `frontmostApplication` are
+/// updated through the main run loop and go stale in processes without one
+/// (CLI tools on background threads, daemons). Only lookups that query the
+/// system on every call are used here.
 fn resolve(target: &AppTarget) -> Result<Retained<NSRunningApplication>> {
-    let workspace = NSWorkspace::sharedWorkspace();
     match target {
-        AppTarget::Frontmost => workspace
-            .frontmostApplication()
+        AppTarget::Frontmost => focused_application_pid()
+            .or_else(topmost_window_pid)
+            .and_then(NSRunningApplication::runningApplicationWithProcessIdentifier)
             .ok_or_else(|| Error::ApplicationNotFound("the frontmost application".to_owned())),
         AppTarget::Pid(pid) => i32::try_from(*pid)
             .ok()
             .and_then(NSRunningApplication::runningApplicationWithProcessIdentifier)
             .ok_or_else(|| Error::ApplicationNotFound(format!("pid {pid}"))),
         AppTarget::Name(name) => {
-            let wanted = name.to_lowercase();
-            workspace
-                .runningApplications()
-                .iter()
-                .find(|app| {
-                    let matches = |text: Option<Retained<NSString>>| {
-                        text.is_some_and(|text| text.to_string().to_lowercase() == wanted)
-                    };
-                    matches(app.localizedName()) || matches(app.bundleIdentifier())
+            let by_bundle_id = NSRunningApplication::runningApplicationsWithBundleIdentifier(
+                &NSString::from_str(name),
+            );
+            by_bundle_id
+                .firstObject()
+                .or_else(|| {
+                    window_owner_pid(name)
+                        .and_then(NSRunningApplication::runningApplicationWithProcessIdentifier)
                 })
                 .ok_or_else(|| Error::ApplicationNotFound(format!("`{name}`")))
         }
     }
+}
+
+/// Process id of the application with keyboard focus, as reported by the
+/// accessibility system. Fails for some focused applications (e.g. Electron
+/// apps without accessibility enabled).
+fn focused_application_pid() -> Option<i32> {
+    // SAFETY: creating the system-wide element has no preconditions.
+    let system = unsafe { AXUIElement::new_system_wide() };
+    let app = match attribute_value(&system, "AXFocusedApplication") {
+        Ok(app) => app?.downcast::<AXUIElement>().ok()?,
+        Err(error) => {
+            tracing::debug!(%error, "focused application unavailable; using the window list");
+            return None;
+        }
+    };
+    let mut pid = 0;
+    // SAFETY: `pid` is a valid out-pointer.
+    (unsafe { app.pid(NonNull::from(&mut pid)) } == AXError::Success).then_some(pid)
+}
+
+/// Process id of the owner of the frontmost normal (layer 0) window.
+fn topmost_window_pid() -> Option<i32> {
+    window_owners().find(|owner| owner.layer == 0).map(|owner| owner.pid)
+}
+
+/// Process id of an application with an on-screen window whose owner name
+/// matches `name` (case-insensitive).
+fn window_owner_pid(name: &str) -> Option<i32> {
+    let wanted = name.to_lowercase();
+    window_owners().find(|owner| owner.name.to_lowercase() == wanted).map(|owner| owner.pid)
+}
+
+struct WindowOwner {
+    pid: i32,
+    name: String,
+    layer: i64,
+}
+
+/// Owners of on-screen windows, front to back.
+fn window_owners() -> impl Iterator<Item = WindowOwner> {
+    let options =
+        CGWindowListOption::OptionOnScreenOnly | CGWindowListOption::ExcludeDesktopElements;
+    let list = CGWindowListCopyWindowInfo(options, 0);
+    // SAFETY: CGWindowListCopyWindowInfo returns an array of dictionaries with
+    // string keys.
+    let list: Vec<_> = list
+        .map(|list| unsafe { list.cast_unchecked::<CFDictionary<CFString, CFType>>() }.to_vec())
+        .unwrap_or_default();
+    // SAFETY: the `kCGWindow*` keys are immutable constants.
+    let (owner_key, pid_key, layer_key) =
+        unsafe { (kCGWindowOwnerName, kCGWindowOwnerPID, kCGWindowLayer) };
+    list.into_iter().filter_map(move |info| {
+        let number = |key| info.get(key)?.downcast::<CFNumber>().ok()?.as_i64();
+        Some(WindowOwner {
+            pid: i32::try_from(number(pid_key)?).ok()?,
+            name: info.get(owner_key)?.downcast::<CFString>().ok()?.to_string(),
+            layer: number(layer_key)?,
+        })
+    })
 }
 
 /// The focused window, falling back to the main window and the first window.

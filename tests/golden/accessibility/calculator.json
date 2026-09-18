@@ -808,7 +808,6 @@
       "id": "e_30",
       "role": "button",
       "name": "Show Sidebar",
-      "description": "Show Sidebar",
       "bounds": {
         "x": 377.0,
         "y": 479.0,

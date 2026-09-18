@@ -3,22 +3,26 @@
 use std::collections::HashMap;
 
 use argus_protocol::{
-    Application, CandidateId, Element, ElementCandidate, ElementId, Observation, ObservationId,
-    Timestamp, Window,
+    Application, CandidateId, Element, ElementId, Observation, ObservationId, Relation, Timestamp,
+    Window,
 };
 
-/// Builds an observation from candidates of a single source.
+use crate::normalize::Normalized;
+
+/// Builds an observation from the normalized candidates of a single source.
 ///
 /// Element IDs are assigned in candidate order (`e_1`, `e_2`, ...), and the
 /// candidates' parent links become the structural hierarchy. A candidate
-/// whose parent is not among `candidates` becomes a root.
+/// whose parent is not among the candidates becomes a root. Relations become
+/// observation relations.
 pub fn assemble(
     id: ObservationId,
     timestamp: Timestamp,
     application: Option<Application>,
     window: Option<Window>,
-    candidates: &[ElementCandidate],
+    normalized: &Normalized,
 ) -> Observation {
+    let candidates = normalized.candidates();
     let ids: HashMap<CandidateId, ElementId> = candidates
         .iter()
         .enumerate()
@@ -37,7 +41,7 @@ pub fn assemble(
             visible_bounds: candidate.visible_bounds,
             state: candidate.state,
             confidence: candidate.confidence,
-            sources: vec![candidate.source],
+            sources: vec![candidate.meta.source],
             parent: candidate.parent.and_then(|parent| ids.get(&parent).cloned()),
             children: Vec::new(),
         })
@@ -52,10 +56,25 @@ pub fn assemble(
         }
     }
 
+    let relations = candidates
+        .iter()
+        .flat_map(|candidate| {
+            candidate.relations.iter().filter_map(|relation| {
+                Some(Relation {
+                    kind: relation.kind,
+                    from: ids.get(&candidate.id)?.clone(),
+                    to: ids.get(&relation.target)?.clone(),
+                    confidence: relation.confidence,
+                })
+            })
+        })
+        .collect();
+
     let mut observation = Observation::new(id, timestamp);
     observation.application = application;
     observation.window = window;
     observation.elements = elements;
+    observation.relations = relations;
     observation
 }
 
@@ -65,30 +84,34 @@ fn element_id(index: usize) -> ElementId {
 
 #[cfg(test)]
 mod tests {
-    use argus_protocol::{Bounds, Confidence, ElementState, Role, Score, Source};
+    use argus_protocol::{
+        Bounds, CandidateRelation, Confidence, ElementState, Region, RelationKind, Role, Score,
+        Source, SourceCandidate, SourceMeta,
+    };
 
     use super::*;
+    use crate::normalize::normalize;
 
-    fn candidate(id: u32, parent: Option<u32>, role: Role) -> ElementCandidate {
-        ElementCandidate {
+    fn candidate(id: u32, parent: Option<u32>, role: Role) -> SourceCandidate {
+        SourceCandidate {
             id: CandidateId(id),
             parent: parent.map(CandidateId),
             role,
             name: None,
             value: None,
             description: None,
-            bounds: Bounds::new(0.0, 0.0, 10.0, 10.0).unwrap(),
-            visible_bounds: None,
+            region: Region::Screen(Bounds::new(0.0, 0.0, 10.0, 10.0).unwrap()),
+            clip: None,
             state: ElementState::default(),
             confidence: Confidence::new(Score::CERTAIN),
-            source: Source::Accessibility,
-            native_role: Some("AXButton".to_owned()),
+            relations: Vec::new(),
+            meta: SourceMeta::new(Source::Accessibility),
         }
     }
 
-    fn observe(candidates: &[ElementCandidate]) -> Observation {
+    fn observe(candidates: &[SourceCandidate]) -> Observation {
         let id = ObservationId::new("obs_1").unwrap();
-        assemble(id, Timestamp(0), None, None, candidates)
+        assemble(id, Timestamp(0), None, None, &normalize(candidates.to_vec()))
     }
 
     #[test]
@@ -107,6 +130,21 @@ mod tests {
         assert_eq!(root.children, [ElementId::new("e_2").unwrap(), ElementId::new("e_4").unwrap()]);
         assert_eq!(observation.elements[2].parent, Some(ElementId::new("e_2").unwrap()));
         assert_eq!(observation.elements[2].sources, [Source::Accessibility]);
+    }
+
+    #[test]
+    fn relations_become_observation_relations() {
+        let mut label = candidate(2, None, Role::Text);
+        label.relations = vec![CandidateRelation {
+            kind: RelationKind::LabelFor,
+            target: CandidateId(1),
+            confidence: None,
+        }];
+        let observation = observe(&[candidate(1, None, Role::TextBox), label]);
+        observation.validate().unwrap();
+        assert_eq!(observation.relations.len(), 1);
+        assert_eq!(observation.relations[0].from.as_str(), "e_2");
+        assert_eq!(observation.relations[0].to.as_str(), "e_1");
     }
 
     #[test]

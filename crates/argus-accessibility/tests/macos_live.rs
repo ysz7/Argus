@@ -12,27 +12,42 @@
 
 use std::process::Command;
 use std::thread::sleep;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 use argus_accessibility::{
-    AccessibilityBackend, AppTarget, Error, MacAccessibilityBackend, candidates,
+    AccessibilityBackend, AppTarget, AxSnapshot, Error, MacAccessibilityBackend, candidates,
 };
 use argus_protocol::Role;
 
 const REASON: &str = "requires a macOS GUI session with Accessibility permission";
 
-fn calculator() -> AppTarget {
-    // `-g` keeps the current application in front.
+/// Launches Calculator in the background (`-g` keeps the current application
+/// in front) and waits until its window can be read.
+fn calculator_snapshot(backend: &MacAccessibilityBackend) -> AxSnapshot {
     let status = Command::new("open").args(["-g", "-a", "Calculator"]).status().unwrap();
     assert!(status.success());
-    sleep(Duration::from_secs(1));
-    AppTarget::Name("com.apple.calculator".to_owned())
+
+    let target = AppTarget::Name("com.apple.calculator".to_owned());
+    let deadline = Instant::now() + Duration::from_secs(10);
+    loop {
+        match backend.snapshot(&target) {
+            Ok(snapshot) => return snapshot,
+            // During a cold launch the app, its window and its accessibility
+            // support appear one after another.
+            Err(Error::ApplicationNotFound(_) | Error::NoWindow | Error::Platform(_))
+                if Instant::now() < deadline =>
+            {
+                sleep(Duration::from_millis(200));
+            }
+            Err(error) => panic!("{REASON}: {error}"),
+        }
+    }
 }
 
 #[test]
 #[ignore = "requires a macOS GUI session with Accessibility permission"]
 fn reads_calculator_keypad() {
-    let snapshot = MacAccessibilityBackend::new().snapshot(&calculator()).expect(REASON);
+    let snapshot = calculator_snapshot(&MacAccessibilityBackend::new());
     assert_eq!(snapshot.application.bundle_id.as_deref(), Some("com.apple.calculator"));
     assert_eq!(snapshot.window.role, "AXWindow");
     assert!(!snapshot.truncated);

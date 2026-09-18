@@ -29,8 +29,7 @@ impl fmt::Display for FrameId {
 pub struct Frame {
     id: FrameId,
     timestamp: Timestamp,
-    bounds: Bounds,
-    scale_factor: f32,
+    geometry: FrameGeometry,
     pixels: PixelBuffer,
 }
 
@@ -48,11 +47,7 @@ impl Frame {
         scale_factor: f32,
         pixels: PixelBuffer,
     ) -> crate::Result<Self> {
-        if !(scale_factor.is_finite() && scale_factor > 0.0) {
-            return Err(Error::InvalidFrame(format!(
-                "scale factor must be positive, got {scale_factor}"
-            )));
-        }
+        let geometry = FrameGeometry::new(bounds, scale_factor)?;
         let expected_width = bounds.width() * scale_factor;
         let expected_height = bounds.height() * scale_factor;
         if (pixels.width() as f32 - expected_width).abs() > Self::SIZE_TOLERANCE
@@ -66,7 +61,7 @@ impl Frame {
                 bounds.height(),
             )));
         }
-        Ok(Self { id, timestamp, bounds, scale_factor, pixels })
+        Ok(Self { id, timestamp, geometry, pixels })
     }
 
     /// Frame identifier.
@@ -79,14 +74,19 @@ impl Frame {
         self.timestamp
     }
 
+    /// Placement of the frame in the global screen space.
+    pub fn geometry(&self) -> FrameGeometry {
+        self.geometry
+    }
+
     /// Region of the global screen space covered by the frame, in points.
     pub fn bounds(&self) -> Bounds {
-        self.bounds
+        self.geometry.bounds
     }
 
     /// Pixels per point.
     pub fn scale_factor(&self) -> f32 {
-        self.scale_factor
+        self.geometry.scale_factor
     }
 
     /// Width in pixels.
@@ -102,6 +102,52 @@ impl Frame {
     /// The pixel data.
     pub fn pixels(&self) -> &PixelBuffer {
         &self.pixels
+    }
+
+    /// Converts a position in frame pixels to global screen points.
+    pub fn pixel_to_point(&self, x: f32, y: f32) -> (f32, f32) {
+        self.geometry.pixel_to_point(x, y)
+    }
+
+    /// Converts a rectangle in frame pixels to global screen [`Bounds`].
+    pub fn pixel_rect_to_bounds(
+        &self,
+        x: f32,
+        y: f32,
+        width: f32,
+        height: f32,
+    ) -> crate::Result<Bounds> {
+        self.geometry.pixel_rect_to_bounds(x, y, width, height)
+    }
+}
+
+/// Where a frame lies in the global screen space: the region it covers (in
+/// points) and its pixel density.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct FrameGeometry {
+    bounds: Bounds,
+    scale_factor: f32,
+}
+
+impl FrameGeometry {
+    /// Creates a geometry, rejecting non-positive or non-finite scale factors.
+    pub fn new(bounds: Bounds, scale_factor: f32) -> crate::Result<Self> {
+        if !(scale_factor.is_finite() && scale_factor > 0.0) {
+            return Err(Error::InvalidFrame(format!(
+                "scale factor must be positive, got {scale_factor}"
+            )));
+        }
+        Ok(Self { bounds, scale_factor })
+    }
+
+    /// Region of the global screen space covered, in points.
+    pub fn bounds(&self) -> Bounds {
+        self.bounds
+    }
+
+    /// Pixels per point.
+    pub fn scale_factor(&self) -> f32 {
+        self.scale_factor
     }
 
     /// Converts a position in frame pixels to global screen points.
@@ -129,8 +175,7 @@ impl fmt::Debug for Frame {
         f.debug_struct("Frame")
             .field("id", &self.id)
             .field("timestamp", &self.timestamp)
-            .field("bounds", &self.bounds)
-            .field("scale_factor", &self.scale_factor)
+            .field("geometry", &self.geometry)
             .field("width", &self.width())
             .field("height", &self.height())
             .finish()

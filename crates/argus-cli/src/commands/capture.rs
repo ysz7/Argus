@@ -9,11 +9,13 @@ use std::path::{Path, PathBuf};
 use std::time::Duration;
 
 use anyhow::Context;
+use argus_core::Observer;
+use argus_core::accessibility::AppTarget;
 use argus_core::capture::{self, CaptureBackend, CaptureTarget};
-use argus_protocol::Frame;
 use serde_json::json;
 
 use crate::output::print_json;
+use crate::overlay;
 
 #[derive(Debug, clap::Args)]
 pub(crate) struct CaptureArgs {
@@ -39,6 +41,11 @@ pub(crate) struct CaptureArgs {
     /// written to disk.
     #[arg(long, short, value_name = "PATH")]
     output: Option<PathBuf>,
+
+    /// Draw the window's accessibility observation on the saved PNG
+    /// (red: buttons, blue: text, green: text boxes, orange: toggles).
+    #[arg(long, requires = "output", conflicts_with = "display")]
+    overlay: bool,
 }
 
 pub(crate) fn run(args: &CaptureArgs) -> anyhow::Result<()> {
@@ -58,7 +65,10 @@ pub(crate) fn run(args: &CaptureArgs) -> anyhow::Result<()> {
     let (target, window) = match (args.display, args.window) {
         (Some(Some(id)), _) => (CaptureTarget::Display(id), None),
         (Some(None), _) => (CaptureTarget::MainDisplay, None),
-        (None, Some(id)) => (CaptureTarget::Window(id), None),
+        (None, Some(id)) => {
+            let window = backend.windows()?.into_iter().find(|window| window.id == id);
+            (CaptureTarget::Window(id), window)
+        }
         (None, None) => {
             let window = backend.frontmost_window()?;
             (CaptureTarget::Window(window.id), Some(window))
@@ -67,7 +77,17 @@ pub(crate) fn run(args: &CaptureArgs) -> anyhow::Result<()> {
 
     let frame = backend.capture(target)?;
     if let Some(path) = &args.output {
-        write_png(&frame, path)?;
+        let pixels = if args.overlay {
+            let pid = window
+                .as_ref()
+                .and_then(|window| window.application.pid)
+                .context("cannot tell which application owns the captured window")?;
+            let observation = Observer::new()?.observe_accessibility(&AppTarget::Pid(pid))?;
+            overlay::draw(&frame, &observation)
+        } else {
+            frame.pixels().as_bytes().to_vec()
+        };
+        write_png(frame.width(), frame.height(), &pixels, path)?;
         tracing::info!(path = %path.display(), "saved debug frame");
     }
 
@@ -107,15 +127,15 @@ fn describe(target: CaptureTarget) -> serde_json::Value {
     }
 }
 
-fn write_png(frame: &Frame, path: &Path) -> anyhow::Result<()> {
+fn write_png(width: u32, height: u32, rgba: &[u8], path: &Path) -> anyhow::Result<()> {
     let file = File::create(path).with_context(|| format!("cannot create {}", path.display()))?;
-    let mut encoder = png::Encoder::new(BufWriter::new(file), frame.width(), frame.height());
+    let mut encoder = png::Encoder::new(BufWriter::new(file), width, height);
     encoder.set_color(png::ColorType::Rgba);
     encoder.set_depth(png::BitDepth::Eight);
     // Pixels are premultiplied; for opaque screen content this is identical
     // to straight alpha, which is all a debug image needs.
     let mut writer = encoder.write_header()?;
-    writer.write_image_data(frame.pixels().as_bytes())?;
+    writer.write_image_data(rgba)?;
     writer.finish()?;
     Ok(())
 }

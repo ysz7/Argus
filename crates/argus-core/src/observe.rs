@@ -7,6 +7,7 @@ use argus_protocol::{Bounds, Observation, ObservationId, Timestamp, Window};
 
 use crate::Result;
 use crate::assemble::assemble;
+use crate::normalize::normalize;
 
 /// Source of process-unique observation numbers.
 static NEXT_OBSERVATION: AtomicU64 = AtomicU64::new(1);
@@ -41,7 +42,7 @@ impl Observer {
             tracing::warn!("accessibility tree was truncated; the observation is incomplete");
         }
 
-        let candidates = argus_accessibility::candidates(&snapshot);
+        let candidates = normalize(argus_accessibility::candidates(&snapshot));
         let window = Window {
             title: snapshot.window.title.clone().filter(|title| !title.is_empty()),
             bounds: snapshot.window.frame.and_then(|frame| {

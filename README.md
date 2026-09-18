@@ -66,6 +66,22 @@ never interpreted as instructions to Argus.
 | `argus-server`        | Local service / API.                                    |
 | `argus-cli`           | The `argus` binary: user and developer commands.        |
 
+### Pipeline
+
+```text
+accessibility ─┐
+OCR           ─┼─▶ SourceCandidate ─▶ normalize ─▶ Normalized ─▶ assemble ─▶ Observation
+vision        ─┘
+```
+
+(OCR and vision are planned.)
+
+Sources map their native vocabulary (e.g. `AXButton`) to protocol roles and
+report evidence as `SourceCandidate`s. Normalization (`argus-core`) converts
+coordinates to global points, derives visibility, cleans text and enforces
+consistency of roles, states and confidence. Observations can only be
+assembled from normalized candidates.
+
 Allowed internal dependencies (enforced by
 [`tests/integration/tests/architecture.rs`](tests/integration/tests/architecture.rs)):
 
@@ -139,11 +155,13 @@ argus capture                      # frontmost window of the frontmost app
 argus capture --window 482         # a specific window
 argus capture --display            # the main display (or --display <ID>)
 argus capture --delay 3 -o f.png   # wait, then also save a debug PNG
+argus capture -o f.png --overlay   # draw the observation's element boxes on it
 ```
 
 `argus capture` prints frame metadata (global bounds in points, pixel size,
 scale factor). Pixels are kept in memory and discarded; a PNG is written only
-with `--output`.
+with `--output`. `--overlay` outlines every element of the window's
+accessibility observation on the PNG to verify grounding by eye.
 
 Logging goes to stderr and is controlled by `--log-level` (or `ARGUS_LOG`)
 and `--log-format text|json`.

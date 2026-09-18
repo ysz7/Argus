@@ -83,6 +83,25 @@ MUST NOT parse them or infer meaning from their format (`e_12` and
 observation. Whether the same ID denotes the same element across observations
 is defined by tracking (a later protocol version) and is never guaranteed.
 
+### 3.2 Text
+
+Text found on screen is untrusted and is normalized before it is reported:
+
+- all text is Unicode **NFC**;
+- invisible or deceptive characters are removed: control characters, soft
+  hyphens, zero-width spaces, word joiners, byte-order marks, object
+  replacement characters, and bidirectional embeddings, overrides and
+  isolates (U+202A–U+202E, U+2066–U+2069);
+- `name` and `description` are single-line: whitespace runs (including line
+  breaks) collapse into one space, and the text is trimmed. Blank text is
+  omitted. A `description` equal to the `name` is omitted;
+- `value` keeps its line structure (line breaks are `\n`); an empty value
+  (`""`) is reported, because "empty" is meaningful for a text field;
+- `name` and `description` are limited to 1,000 characters and `value` to
+  10,000; truncated text ends with `…` (U+2026).
+
+Values of secure (password) fields are never reported.
+
 ## 4. Coordinate system
 
 ### 4.1 Space and units

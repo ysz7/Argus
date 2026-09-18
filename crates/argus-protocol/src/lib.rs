@@ -36,12 +36,15 @@ mod relation;
 mod source;
 mod validation;
 
-pub use candidate::{CandidateId, ElementCandidate};
+pub use candidate::{
+    CandidateId, CandidateRelation, ElementCandidate, PixelRect, Region, SourceCandidate,
+    SourceMeta,
+};
 pub use confidence::{Confidence, Score};
 pub use delta::{ElementChange, ObservationDelta};
 pub use element::{CheckState, Element, ElementState, Role};
 pub use error::{Error, Result};
-pub use frame::{Frame, FrameId, PixelBuffer};
+pub use frame::{Frame, FrameGeometry, FrameId, PixelBuffer};
 pub use geometry::Bounds;
 pub use ids::{ElementId, ObservationId};
 pub use observation::{Application, Observation, Timestamp, Window};
