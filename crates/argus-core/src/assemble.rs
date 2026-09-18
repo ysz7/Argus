@@ -1,72 +1,59 @@
-//! Assembly of observations from element candidates.
-
-use std::collections::HashMap;
+//! Assembly of observations from fused elements.
 
 use argus_protocol::{
-    Application, CandidateId, Element, ElementId, Observation, ObservationId, Relation, Timestamp,
-    Window,
+    Application, Element, ElementId, Observation, ObservationId, Relation, Timestamp, Window,
 };
 
-use crate::normalize::Normalized;
+use crate::fuse::Fused;
 
-/// Builds an observation from the normalized candidates of a single source.
+/// Builds an observation from fused elements.
 ///
-/// Element IDs are assigned in candidate order (`e_1`, `e_2`, ...), and the
-/// candidates' parent links become the structural hierarchy. A candidate
-/// whose parent is not among the candidates becomes a root. Relations become
-/// observation relations.
+/// Element IDs are assigned in fusion order (`e_1`, `e_2`, ...), which lists
+/// parents before children; parent links become the structural hierarchy.
 pub fn assemble(
     id: ObservationId,
     timestamp: Timestamp,
     application: Option<Application>,
     window: Option<Window>,
-    normalized: &Normalized,
+    fused: &Fused,
 ) -> Observation {
-    let candidates = normalized.candidates();
-    let ids: HashMap<CandidateId, ElementId> = candidates
+    let fused = &fused.0;
+    let ids: Vec<ElementId> = (0..fused.elements.len()).map(element_id).collect();
+
+    let mut elements: Vec<Element> = fused
+        .elements
         .iter()
         .enumerate()
-        .map(|(index, candidate)| (candidate.id, element_id(index)))
-        .collect();
-
-    let mut elements: Vec<Element> = candidates
-        .iter()
-        .map(|candidate| Element {
-            id: ids[&candidate.id].clone(),
-            role: candidate.role,
-            name: candidate.name.clone(),
-            value: candidate.value.clone(),
-            description: candidate.description.clone(),
-            bounds: candidate.bounds,
-            visible_bounds: candidate.visible_bounds,
-            state: candidate.state,
-            confidence: candidate.confidence,
-            sources: vec![candidate.meta.source],
-            parent: candidate.parent.and_then(|parent| ids.get(&parent).cloned()),
+        .map(|(index, element)| Element {
+            id: ids[index].clone(),
+            role: element.role,
+            name: element.name.clone(),
+            value: element.value.clone(),
+            description: element.description.clone(),
+            bounds: element.bounds,
+            visible_bounds: element.visible_bounds,
+            state: element.state,
+            confidence: element.confidence,
+            sources: element.sources.clone(),
+            parent: element.parent.map(|parent| ids[parent].clone()),
             children: Vec::new(),
         })
         .collect();
 
-    let index: HashMap<ElementId, usize> =
-        elements.iter().enumerate().map(|(i, element)| (element.id.clone(), i)).collect();
-    for child in 0..elements.len() {
-        if let Some(parent) = elements[child].parent.as_ref().map(|parent| index[parent]) {
-            let child_id = elements[child].id.clone();
-            elements[parent].children.push(child_id);
+    for (child, element) in fused.elements.iter().enumerate() {
+        if let Some(parent) = element.parent {
+            elements[parent].children.push(ids[child].clone());
         }
     }
 
-    let relations = candidates
+    let relations = fused
+        .relations
         .iter()
-        .flat_map(|candidate| {
-            candidate.relations.iter().filter_map(|relation| {
-                Some(Relation {
-                    kind: relation.kind,
-                    from: ids.get(&candidate.id)?.clone(),
-                    to: ids.get(&relation.target)?.clone(),
-                    confidence: relation.confidence,
-                })
-            })
+        .map(|relation| Relation {
+            kind: relation.kind,
+            from: ids[relation.from].clone(),
+            to: ids[relation.to].clone(),
+            confidence: relation.confidence,
         })
         .collect();
 
@@ -85,11 +72,12 @@ fn element_id(index: usize) -> ElementId {
 #[cfg(test)]
 mod tests {
     use argus_protocol::{
-        Bounds, CandidateRelation, Confidence, ElementState, Region, RelationKind, Role, Score,
-        Source, SourceCandidate, SourceMeta,
+        Bounds, CandidateId, CandidateRelation, Confidence, ElementState, Region, RelationKind,
+        Role, Score, Source, SourceCandidate, SourceMeta,
     };
 
     use super::*;
+    use crate::fuse::fuse;
     use crate::normalize::normalize;
 
     fn candidate(id: u32, parent: Option<u32>, role: Role) -> SourceCandidate {
@@ -111,7 +99,7 @@ mod tests {
 
     fn observe(candidates: &[SourceCandidate]) -> Observation {
         let id = ObservationId::new("obs_1").unwrap();
-        assemble(id, Timestamp(0), None, None, &normalize(candidates.to_vec()))
+        assemble(id, Timestamp(0), None, None, &fuse(&[normalize(candidates.to_vec())]))
     }
 
     #[test]

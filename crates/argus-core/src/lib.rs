@@ -4,13 +4,14 @@
 //! observation pipeline:
 //!
 //! ```text
-//! sources ─SourceCandidate→ normalize ─Normalized→ (fusion → scene graph
+//! sources ─SourceCandidate→ normalize ─Normalized→ fuse ─Fused→ (scene graph
 //!     → tracking) → assemble → Observation
 //! ```
 //!
-//! [`assemble`] accepts only [`Normalized`] candidates, which only
-//! [`normalize`] can produce: no source reaches an observation without
-//! normalization.
+//! [`assemble`] accepts only [`Fused`] elements, which only [`fuse`] can
+//! produce from [`Normalized`] candidates, which only [`normalize`] can
+//! produce: no source reaches an observation without normalization and
+//! fusion.
 //!
 //! Boundaries: Argus describes the interface. It never plans, decides what to
 //! click, drives the mouse or keyboard, or executes actions.
@@ -19,6 +20,7 @@
 
 mod assemble;
 pub mod error;
+mod fuse;
 mod normalize;
 mod observe;
 
@@ -28,5 +30,11 @@ pub use argus_accessibility as accessibility;
 pub use argus_capture as capture;
 pub use assemble::assemble;
 pub use error::{Error, Permission, Result};
+pub use fuse::{Fused, fuse};
 pub use normalize::{Normalized, normalize};
-pub use observe::Observer;
+pub use observe::{Inspection, Observer};
+
+/// Fusion evidence types (re-exported so front ends depend only on the core).
+pub mod fusion {
+    pub use argus_fusion::{Claim, Conflict, Contribution, ElementEvidence, Link, Property};
+}

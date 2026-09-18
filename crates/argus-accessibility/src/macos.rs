@@ -242,16 +242,18 @@ fn window_owners() -> impl Iterator<Item = WindowOwner> {
 }
 
 /// The focused window, falling back to the main window and the first window.
+///
+/// Only elements with the window role count: some applications that were
+/// never activated answer `AXFocusedWindow` with the application element.
 fn window_of(app: &AXUIElement) -> Result<CFRetained<AXUIElement>> {
     for attribute in ["AXFocusedWindow", "AXMainWindow"] {
-        match attribute_value(app, attribute) {
-            Ok(Some(value)) => {
-                if let Ok(window) = value.downcast::<AXUIElement>() {
+        if let Some(value) = attribute_value(app, attribute)? {
+            if let Ok(window) = value.downcast::<AXUIElement>() {
+                if is_window(&window)? {
                     return Ok(window);
                 }
+                tracing::debug!(attribute, "ignoring an element that is not a window");
             }
-            Ok(None) => {}
-            Err(error) => return Err(error),
         }
     }
     let windows = attribute_value(app, "AXWindows")?
@@ -259,7 +261,19 @@ fn window_of(app: &AXUIElement) -> Result<CFRetained<AXUIElement>> {
         .ok_or(Error::NoWindow)?;
     // SAFETY: `AXWindows` is an array of CF objects.
     let windows: &CFArray<CFType> = unsafe { windows.cast_unchecked() };
-    windows.iter().find_map(|window| window.downcast::<AXUIElement>().ok()).ok_or(Error::NoWindow)
+    for window in windows.iter() {
+        if let Ok(window) = window.downcast::<AXUIElement>() {
+            if is_window(&window)? {
+                return Ok(window);
+            }
+        }
+    }
+    Err(Error::NoWindow)
+}
+
+fn is_window(element: &AXUIElement) -> Result<bool> {
+    let role = attribute_value(element, "AXRole")?;
+    Ok(role.as_deref().and_then(cf_string).is_some_and(|role| role == "AXWindow"))
 }
 
 fn attribute_value(

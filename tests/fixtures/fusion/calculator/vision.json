@@ -1,0 +1,497 @@
+{
+  "application": {
+    "bundle_id": "com.apple.calculator",
+    "name": "Calculator",
+    "pid": 23095
+  },
+  "elements": [
+    {
+      "bounds": {
+        "height": 14.0,
+        "width": 14.0,
+        "x": 983.0,
+        "y": 139.0
+      },
+      "confidence": {
+        "element": 0.6000000238418579,
+        "role": 0.5
+      },
+      "id": "e_1",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 14.0,
+        "width": 14.0,
+        "x": 1006.0,
+        "y": 139.0
+      },
+      "confidence": {
+        "element": 0.6000000238418579,
+        "role": 0.5
+      },
+      "id": "e_2",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 14.0,
+        "width": 14.0,
+        "x": 1029.0,
+        "y": 139.0
+      },
+      "confidence": {
+        "element": 0.6000000238418579,
+        "role": 0.5
+      },
+      "id": "e_3",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 38.0,
+        "width": 38.0,
+        "x": 1059.0,
+        "y": 127.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_4",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 38.0,
+        "width": 38.0,
+        "x": 1149.0,
+        "y": 127.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_5",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 22.0,
+        "width": 16.0,
+        "x": 1130.0,
+        "y": 217.0
+      },
+      "confidence": {
+        "element": 0.30000001192092896,
+        "role": 0.30000001192092896
+      },
+      "id": "e_6",
+      "role": "icon",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 16.0,
+        "width": 16.0,
+        "x": 1148.0,
+        "y": 222.0
+      },
+      "confidence": {
+        "element": 0.30000001192092896,
+        "role": 0.30000001192092896
+      },
+      "id": "e_7",
+      "role": "icon",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 23.0,
+        "width": 16.0,
+        "x": 1167.0,
+        "y": 217.0
+      },
+      "confidence": {
+        "element": 0.30000001192092896,
+        "role": 0.30000001192092896
+      },
+      "id": "e_8",
+      "role": "icon",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 973.0,
+        "y": 252.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_9",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1027.0,
+        "y": 252.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_10",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1081.0,
+        "y": 252.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_11",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1135.0,
+        "y": 252.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_12",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 973.0,
+        "y": 306.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_13",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1027.0,
+        "y": 306.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_14",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1081.0,
+        "y": 306.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_15",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1135.0,
+        "y": 306.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_16",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 973.0,
+        "y": 360.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_17",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1027.0,
+        "y": 360.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_18",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1081.0,
+        "y": 360.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_19",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1135.0,
+        "y": 360.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_20",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 973.0,
+        "y": 414.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_21",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1027.0,
+        "y": 414.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_22",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1081.0,
+        "y": 414.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_23",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1135.0,
+        "y": 414.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_24",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 973.0,
+        "y": 468.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_25",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1027.0,
+        "y": 468.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_26",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1081.0,
+        "y": 468.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_27",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 50.0,
+        "width": 50.0,
+        "x": 1135.0,
+        "y": 468.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.44999998807907104
+      },
+      "id": "e_28",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    }
+  ],
+  "id": "obs_000001",
+  "protocol_version": "0.1",
+  "timestamp": 1789754471110,
+  "window": {
+    "bounds": {
+      "height": 408.0,
+      "width": 230.0,
+      "x": 964.0,
+      "y": 120.0
+    },
+    "title": "Calculator"
+  }
+}

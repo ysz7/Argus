@@ -1,0 +1,134 @@
+[
+  {
+    "height" : 64,
+    "name" : "Save",
+    "role" : "button",
+    "width" : 200,
+    "x" : 40,
+    "y" : 600
+  },
+  {
+    "height" : 64,
+    "name" : "Cancel",
+    "role" : "button",
+    "width" : 200,
+    "x" : 260,
+    "y" : 600
+  },
+  {
+    "height" : 64,
+    "name" : "Apply",
+    "role" : "button",
+    "width" : 200,
+    "x" : 480,
+    "y" : 600
+  },
+  {
+    "height" : 48,
+    "name" : "Search",
+    "role" : "text_box",
+    "width" : 480,
+    "x" : 40,
+    "y" : 112
+  },
+  {
+    "height" : 48,
+    "name" : "Email",
+    "role" : "text_box",
+    "width" : 480,
+    "x" : 40,
+    "y" : 192
+  },
+  {
+    "checked" : true,
+    "height" : 32,
+    "name" : "Remember me",
+    "role" : "checkbox",
+    "width" : 32,
+    "x" : 40,
+    "y" : 292
+  },
+  {
+    "checked" : false,
+    "height" : 32,
+    "name" : "Show hidden files",
+    "role" : "checkbox",
+    "width" : 32,
+    "x" : 40,
+    "y" : 348
+  },
+  {
+    "checked" : true,
+    "height" : 32,
+    "name" : "Automatic",
+    "role" : "radio_button",
+    "width" : 32,
+    "x" : 440,
+    "y" : 292
+  },
+  {
+    "checked" : false,
+    "height" : 32,
+    "name" : "Manual",
+    "role" : "radio_button",
+    "width" : 32,
+    "x" : 440,
+    "y" : 348
+  },
+  {
+    "height" : 48,
+    "name" : "General",
+    "role" : "tab",
+    "width" : 136,
+    "x" : 580,
+    "y" : 112
+  },
+  {
+    "height" : 48,
+    "name" : "Advanced",
+    "role" : "tab",
+    "width" : 136,
+    "x" : 716,
+    "y" : 112
+  },
+  {
+    "height" : 48,
+    "name" : "Privacy",
+    "role" : "tab",
+    "width" : 136,
+    "x" : 852,
+    "y" : 112
+  },
+  {
+    "height" : 52,
+    "name" : "Medium",
+    "role" : "button",
+    "width" : 300,
+    "x" : 580,
+    "y" : 192
+  },
+  {
+    "height" : 18,
+    "name" : "gearshape",
+    "role" : "icon",
+    "width" : 32,
+    "x" : 588,
+    "y" : 456
+  },
+  {
+    "height" : 18,
+    "name" : "trash",
+    "role" : "icon",
+    "width" : 29,
+    "x" : 661,
+    "y" : 457
+  },
+  {
+    "height" : 18,
+    "name" : "star",
+    "role" : "icon",
+    "width" : 33,
+    "x" : 731,
+    "y" : 456
+  }
+]

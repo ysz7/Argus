@@ -230,6 +230,9 @@ Rules:
 - An omitted property confidence means *not assessed*, not zero.
 - Producers MUST NOT inflate weak evidence: a role hypothesis of `0.48` stays
   `0.48`.
+- When sources disagree about a property, the reported value comes from the
+  more authoritative source and its confidence is lowered; agreement between
+  sources never raises confidence above the strongest single source.
 - In version 0.1 confidence values are heuristic. Calibration (making `0.9`
   mean "correct 90% of the time") is future work.
 
@@ -243,7 +246,9 @@ Rules:
 | `application_api` | Structure exported by the application itself.           |
 | `derived`         | Inference by Argus from other evidence (e.g. layout).   |
 
-An element fused from several sources lists all of them.
+An element fused from several sources lists all of them, including sources
+whose evidence was only partly used (e.g. OCR text that confirms an
+accessible name, or a glyph detected inside a control).
 
 ## 9. Hierarchy and relations
 

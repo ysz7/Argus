@@ -14,6 +14,7 @@ use argus_core::accessibility::AppTarget;
 use argus_core::capture::{self, CaptureBackend, CaptureTarget};
 use serde_json::json;
 
+use crate::commands::observe::Source;
 use crate::output::print_json;
 use crate::overlay;
 
@@ -42,10 +43,21 @@ pub(crate) struct CaptureArgs {
     #[arg(long, short, value_name = "PATH")]
     output: Option<PathBuf>,
 
-    /// Draw the window's accessibility observation on the saved PNG
-    /// (red: buttons, blue: text, green: text boxes, orange: toggles).
+    /// Draw an observation of the window on the saved PNG (red: buttons,
+    /// blue: text, green: text boxes, orange: toggles, gray: other).
     #[arg(long, requires = "output", conflicts_with = "display")]
     overlay: bool,
+
+    /// Sources of the observation drawn by `--overlay`, comma-separated.
+    #[arg(
+        long = "overlay-sources",
+        visible_alias = "overlay-source",
+        value_enum,
+        value_delimiter = ',',
+        default_values_t = [Source::Accessibility],
+        requires = "overlay"
+    )]
+    overlay_sources: Vec<Source>,
 }
 
 pub(crate) fn run(args: &CaptureArgs) -> anyhow::Result<()> {
@@ -82,7 +94,8 @@ pub(crate) fn run(args: &CaptureArgs) -> anyhow::Result<()> {
                 .as_ref()
                 .and_then(|window| window.application.pid)
                 .context("cannot tell which application owns the captured window")?;
-            let observation = Observer::new()?.observe_accessibility(&AppTarget::Pid(pid))?;
+            let sources: Vec<_> = args.overlay_sources.iter().map(|s| s.to_protocol()).collect();
+            let observation = Observer::new()?.observe(&AppTarget::Pid(pid), &sources)?;
             overlay::draw(&frame, &observation)
         } else {
             frame.pixels().as_bytes().to_vec()

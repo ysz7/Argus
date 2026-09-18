@@ -1,0 +1,501 @@
+{
+  "protocol_version": "0.1",
+  "id": "obs_golden",
+  "timestamp": 0,
+  "application": {
+    "name": "Calculator",
+    "bundle_id": "com.apple.calculator",
+    "pid": 23095
+  },
+  "window": {
+    "title": "Calculator",
+    "bounds": {
+      "x": 964.0,
+      "y": 120.0,
+      "width": 230.0,
+      "height": 408.0
+    }
+  },
+  "elements": [
+    {
+      "id": "e_1",
+      "role": "button",
+      "bounds": {
+        "x": 983.0,
+        "y": 139.0,
+        "width": 14.0,
+        "height": 14.0
+      },
+      "confidence": {
+        "element": 0.6,
+        "role": 0.5
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_2",
+      "role": "button",
+      "bounds": {
+        "x": 1006.0,
+        "y": 139.0,
+        "width": 14.0,
+        "height": 14.0
+      },
+      "confidence": {
+        "element": 0.6,
+        "role": 0.5
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_3",
+      "role": "button",
+      "bounds": {
+        "x": 1029.0,
+        "y": 139.0,
+        "width": 14.0,
+        "height": 14.0
+      },
+      "confidence": {
+        "element": 0.6,
+        "role": 0.5
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_4",
+      "role": "button",
+      "bounds": {
+        "x": 1059.0,
+        "y": 127.0,
+        "width": 38.0,
+        "height": 38.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_5",
+      "role": "button",
+      "bounds": {
+        "x": 1149.0,
+        "y": 127.0,
+        "width": 38.0,
+        "height": 38.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_6",
+      "role": "text",
+      "name": "7+5",
+      "bounds": {
+        "x": 1129.0,
+        "y": 216.0,
+        "width": 55.0,
+        "height": 24.0
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_7",
+      "role": "button",
+      "bounds": {
+        "x": 973.0,
+        "y": 252.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_8",
+      "role": "button",
+      "name": "C",
+      "bounds": {
+        "x": 1027.0,
+        "y": 252.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_9",
+      "role": "button",
+      "name": "%",
+      "bounds": {
+        "x": 1081.0,
+        "y": 252.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_10",
+      "role": "button",
+      "bounds": {
+        "x": 1135.0,
+        "y": 252.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_11",
+      "role": "button",
+      "name": "7",
+      "bounds": {
+        "x": 973.0,
+        "y": 306.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_12",
+      "role": "button",
+      "name": "8",
+      "bounds": {
+        "x": 1027.0,
+        "y": 306.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45,
+        "name": 0.5
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_13",
+      "role": "button",
+      "name": "9",
+      "bounds": {
+        "x": 1081.0,
+        "y": 306.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45,
+        "name": 0.5
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_14",
+      "role": "button",
+      "bounds": {
+        "x": 1135.0,
+        "y": 306.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_15",
+      "role": "button",
+      "name": "4",
+      "bounds": {
+        "x": 973.0,
+        "y": 360.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_16",
+      "role": "button",
+      "name": "5",
+      "bounds": {
+        "x": 1027.0,
+        "y": 360.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45,
+        "name": 0.5
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_17",
+      "role": "button",
+      "name": "6",
+      "bounds": {
+        "x": 1081.0,
+        "y": 360.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45,
+        "name": 0.5
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_18",
+      "role": "button",
+      "bounds": {
+        "x": 1135.0,
+        "y": 360.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_19",
+      "role": "button",
+      "bounds": {
+        "x": 973.0,
+        "y": 414.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_20",
+      "role": "button",
+      "name": "2",
+      "bounds": {
+        "x": 1027.0,
+        "y": 414.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_21",
+      "role": "button",
+      "bounds": {
+        "x": 1081.0,
+        "y": 414.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_22",
+      "role": "button",
+      "name": "+",
+      "bounds": {
+        "x": 1135.0,
+        "y": 414.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_23",
+      "role": "button",
+      "name": "+/_",
+      "bounds": {
+        "x": 973.0,
+        "y": 468.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_24",
+      "role": "button",
+      "bounds": {
+        "x": 1027.0,
+        "y": 468.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_25",
+      "role": "button",
+      "bounds": {
+        "x": 1081.0,
+        "y": 468.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_26",
+      "role": "button",
+      "bounds": {
+        "x": 1135.0,
+        "y": 468.0,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    }
+  ]
+}

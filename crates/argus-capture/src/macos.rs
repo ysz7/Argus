@@ -1,7 +1,7 @@
 //! macOS capture backend.
 //!
 //! - Displays and window z-order come from Core Graphics.
-//! - The frontmost application comes from AppKit.
+//! - The frontmost application is the owner of the frontmost normal window.
 //! - Pixels come from ScreenCaptureKit (`SCScreenshotManager`, macOS 14+).
 //!
 //! ScreenCaptureKit is asynchronous; its completion handlers run on an
@@ -16,7 +16,7 @@ use argus_protocol::{Application, Bounds, Frame, FrameId, PixelBuffer, Timestamp
 use block2::RcBlock;
 use objc2::AnyThread;
 use objc2::rc::Retained;
-use objc2_app_kit::{NSRunningApplication, NSWorkspace};
+use objc2_app_kit::NSRunningApplication;
 use objc2_core_foundation::{
     CFArray, CFDictionary, CFNumber, CFString, CFType, CGPoint, CGRect, CGSize,
 };
@@ -156,9 +156,14 @@ impl CaptureBackend for MacCaptureBackend {
         Ok(windows)
     }
 
+    /// The owner of the frontmost normal window.
+    ///
+    /// `NSWorkspace.frontmostApplication` is not used: without a running main
+    /// loop (a CLI, a daemon) it keeps reporting whatever was frontmost when
+    /// the process started — e.g. `loginwindow` after the screen was locked.
+    /// The window list is always current.
     fn frontmost_application(&self) -> Result<Option<Application>> {
-        let workspace = NSWorkspace::sharedWorkspace();
-        Ok(workspace.frontmostApplication().map(|app| application_from(&app)))
+        Ok(self.windows()?.into_iter().find(|window| window.layer == 0).map(|w| w.application))
     }
 
     fn capture(&self, target: CaptureTarget) -> Result<Frame> {

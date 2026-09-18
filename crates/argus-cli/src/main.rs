@@ -32,6 +32,8 @@ struct Cli {
 enum Command {
     /// Observe the focused window of an application.
     Observe(commands::observe::ObserveArgs),
+    /// Show the evidence and conflicts behind observed elements.
+    Inspect(commands::inspect::InspectArgs),
     /// Dump the raw native accessibility tree (developer tool).
     Accessibility(commands::accessibility::AccessibilityArgs),
     /// Capture a frame of a window or display (developer tool).
@@ -45,6 +47,7 @@ fn main() -> anyhow::Result<()> {
 
     match cli.command {
         Some(Command::Observe(args)) => commands::observe::run(&args),
+        Some(Command::Inspect(args)) => commands::inspect::run(&args),
         Some(Command::Accessibility(args)) => commands::accessibility::run(&args),
         Some(Command::Capture(args)) => commands::capture::run(&args),
         None => Ok(()),

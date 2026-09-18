@@ -85,25 +85,31 @@ pub trait CaptureBackend {
     fn frontmost_application(&self) -> Result<Option<Application>>;
 
     /// The frontmost normal window of the frontmost application.
-    ///
-    /// Applications often own untitled auxiliary windows (toolbars, overlays)
-    /// in front of their main window, so the first titled window is preferred.
-    /// Titles are only visible with the Screen Recording permission; without
-    /// it the first window is used.
     fn frontmost_window(&self) -> Result<WindowInfo> {
         let app_pid = self.frontmost_application()?.and_then(|app| app.pid);
-        let candidates: Vec<WindowInfo> = self
-            .windows()?
-            .into_iter()
-            .filter(|window| window.layer == 0)
-            .filter(|window| app_pid.is_none() || window.application.pid == app_pid)
-            .collect();
-        let titled = candidates.iter().position(|window| window.title.is_some());
-        candidates.into_iter().nth(titled.unwrap_or(0)).ok_or(Error::NoFrontmostWindow)
+        main_window(
+            self.windows()?
+                .into_iter()
+                .filter(|window| app_pid.is_none() || window.application.pid == app_pid),
+        )
+        .ok_or(Error::NoFrontmostWindow)
     }
 
     /// Captures one frame of `target`.
     fn capture(&self, target: CaptureTarget) -> Result<Frame>;
+}
+
+/// Picks the main window among one application's windows (front to back).
+///
+/// Only normal windows (layer 0) qualify. Applications often own untitled
+/// auxiliary windows (toolbars, overlays) in front of their main window, so
+/// the first titled window is preferred. Titles are only visible with the
+/// Screen Recording permission; without it the first window is used.
+pub fn main_window(windows: impl IntoIterator<Item = WindowInfo>) -> Option<WindowInfo> {
+    let candidates: Vec<WindowInfo> =
+        windows.into_iter().filter(|window| window.layer == 0).collect();
+    let titled = candidates.iter().position(|window| window.title.is_some());
+    candidates.into_iter().nth(titled.unwrap_or(0))
 }
 
 /// The capture backend for the current platform.

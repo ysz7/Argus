@@ -1,0 +1,598 @@
+{
+  "protocol_version": "0.1",
+  "id": "obs_golden",
+  "timestamp": 0,
+  "application": {
+    "name": "Blackmagic Proxy Generator Lite",
+    "bundle_id": "com.blackmagic-design.BlackmagicProxyGeneratorLite",
+    "pid": 24128
+  },
+  "window": {
+    "title": "Blackmagic Proxy Generator",
+    "bounds": {
+      "x": 400.0,
+      "y": 160.0,
+      "width": 650.0,
+      "height": 589.0
+    }
+  },
+  "elements": [
+    {
+      "id": "e_1",
+      "role": "button",
+      "name": "Blackmagic Proxy Generator Lite",
+      "bounds": {
+        "x": 401.0,
+        "y": 161.0,
+        "width": 648.0,
+        "height": 28.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.5,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_2",
+      "role": "text",
+      "name": "Processing",
+      "bounds": {
+        "x": 426.89816,
+        "y": 211.95825,
+        "width": 62.391033,
+        "height": 12.773365
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ]
+    },
+    {
+      "id": "e_3",
+      "role": "text",
+      "name": "Idle",
+      "bounds": {
+        "x": 432.0,
+        "y": 250.0,
+        "width": 20.0,
+        "height": 10.0
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ]
+    },
+    {
+      "id": "e_4",
+      "role": "button",
+      "name": "Start",
+      "bounds": {
+        "x": 901.0,
+        "y": 256.0,
+        "width": 110.0,
+        "height": 24.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.5,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_5",
+      "role": "text",
+      "name": "0%",
+      "bounds": {
+        "x": 432.0,
+        "y": 279.0,
+        "width": 18.0,
+        "height": 11.0
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ]
+    },
+    {
+      "id": "e_6",
+      "role": "text",
+      "name": "O fps",
+      "bounds": {
+        "x": 640.0,
+        "y": 278.0,
+        "width": 29.0,
+        "height": 14.0
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ]
+    },
+    {
+      "id": "e_7",
+      "role": "text",
+      "name": "0:00",
+      "bounds": {
+        "x": 853.0,
+        "y": 277.0,
+        "width": 24.0,
+        "height": 14.0
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ]
+    },
+    {
+      "id": "e_8",
+      "role": "text",
+      "name": "Proxy Format",
+      "bounds": {
+        "x": 426.978,
+        "y": 329.86835,
+        "width": 77.044014,
+        "height": 13.263309
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ]
+    },
+    {
+      "id": "e_9",
+      "role": "text",
+      "name": "Create proxies in",
+      "bounds": {
+        "x": 526.8667,
+        "y": 366.92422,
+        "width": 87.23421,
+        "height": 12.708105
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ]
+    },
+    {
+      "id": "e_10",
+      "role": "radio_button",
+      "bounds": {
+        "x": 622.0,
+        "y": 363.0,
+        "width": 15.0,
+        "height": 15.0
+      },
+      "state": {
+        "checked": "unchecked"
+      },
+      "confidence": {
+        "element": 0.6,
+        "role": 0.5,
+        "state": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_11",
+      "role": "text",
+      "name": "H.264 8 bit 4:2:0 Half Res 1080p",
+      "bounds": {
+        "x": 647.0,
+        "y": 364.0,
+        "width": 164.0,
+        "height": 14.0
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ]
+    },
+    {
+      "id": "e_12",
+      "role": "icon",
+      "bounds": {
+        "x": 622.0,
+        "y": 382.0,
+        "width": 15.0,
+        "height": 15.0
+      },
+      "confidence": {
+        "element": 0.3,
+        "role": 0.3
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_13",
+      "role": "text",
+      "name": "H.264 8 bit 4:2:0 1080p",
+      "bounds": {
+        "x": 644.0,
+        "y": 384.0,
+        "width": 122.0,
+        "height": 14.0
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ]
+    },
+    {
+      "id": "e_14",
+      "role": "radio_button",
+      "bounds": {
+        "x": 622.0,
+        "y": 401.0,
+        "width": 15.0,
+        "height": 15.0
+      },
+      "state": {
+        "checked": "unchecked"
+      },
+      "confidence": {
+        "element": 0.6,
+        "role": 0.5,
+        "state": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_15",
+      "role": "text",
+      "name": "H.265 10 bit 4:2:0 1080p",
+      "bounds": {
+        "x": 646.84515,
+        "y": 403.0006,
+        "width": 124.324814,
+        "height": 13.119762
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ]
+    },
+    {
+      "id": "e_16",
+      "role": "radio_button",
+      "bounds": {
+        "x": 622.0,
+        "y": 420.0,
+        "width": 15.0,
+        "height": 15.0
+      },
+      "state": {
+        "checked": "unchecked"
+      },
+      "confidence": {
+        "element": 0.6,
+        "role": 0.5,
+        "state": 0.45
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_17",
+      "role": "text",
+      "name": "ProRes 422 10 bit 4:2:2 1080p",
+      "bounds": {
+        "x": 645.9025,
+        "y": 421.0709,
+        "width": 153.24837,
+        "height": 14.040774
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ]
+    },
+    {
+      "id": "e_18",
+      "role": "text",
+      "name": "Watch Folders",
+      "bounds": {
+        "x": 428.0,
+        "y": 475.0,
+        "width": 80.0,
+        "height": 11.0
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ]
+    },
+    {
+      "id": "e_19",
+      "role": "text_box",
+      "bounds": {
+        "x": 418.0,
+        "y": 495.0,
+        "width": 614.0,
+        "height": 20.0
+      },
+      "confidence": {
+        "element": 0.5,
+        "role": 0.4
+      },
+      "sources": [
+        "vision"
+      ],
+      "children": [
+        "e_20",
+        "e_21",
+        "e_22"
+      ]
+    },
+    {
+      "id": "e_20",
+      "role": "text",
+      "name": "Volume",
+      "bounds": {
+        "x": 427.96942,
+        "y": 501.87317,
+        "width": 41.061134,
+        "height": 10.253679
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ],
+      "parent": "e_19"
+    },
+    {
+      "id": "e_21",
+      "role": "text",
+      "name": "Folder",
+      "bounds": {
+        "x": 582.0,
+        "y": 502.0,
+        "width": 34.0,
+        "height": 10.0
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ],
+      "parent": "e_19"
+    },
+    {
+      "id": "e_22",
+      "role": "text",
+      "name": "Status",
+      "bounds": {
+        "x": 938.99097,
+        "y": 501.9701,
+        "width": 33.018074,
+        "height": 10.059812
+      },
+      "state": {
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr"
+      ],
+      "parent": "e_19"
+    },
+    {
+      "id": "e_23",
+      "role": "text_box",
+      "bounds": {
+        "x": 418.0,
+        "y": 677.0,
+        "width": 614.0,
+        "height": 20.0
+      },
+      "confidence": {
+        "element": 0.5,
+        "role": 0.4
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_24",
+      "role": "button",
+      "name": "Add",
+      "bounds": {
+        "x": 418.0,
+        "y": 708.0,
+        "width": 100.0,
+        "height": 24.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.5,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_25",
+      "role": "button",
+      "name": "Remove",
+      "bounds": {
+        "x": 528.0,
+        "y": 708.0,
+        "width": 100.0,
+        "height": 24.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.5,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_26",
+      "role": "button",
+      "name": "Show",
+      "bounds": {
+        "x": 638.0,
+        "y": 708.0,
+        "width": 100.0,
+        "height": 24.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.5,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_27",
+      "role": "button",
+      "name": "Delete Proxies",
+      "bounds": {
+        "x": 801.0,
+        "y": 708.0,
+        "width": 110.0,
+        "height": 24.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.5,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    },
+    {
+      "id": "e_28",
+      "role": "button",
+      "name": "Extract Proxies",
+      "bounds": {
+        "x": 921.0,
+        "y": 708.0,
+        "width": 111.0,
+        "height": 24.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.5,
+        "name": 1.0
+      },
+      "sources": [
+        "ocr",
+        "vision"
+      ]
+    }
+  ]
+}

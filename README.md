@@ -20,8 +20,9 @@ Argus answers one question:
 > how confident is Argus about each claim?
 
 > **Status:** early development. The [Observation Protocol v0.1](spec/ARGUS_PROTOCOL.md)
-> is defined; macOS screen capture and Accessibility-based observations work.
-> Pixel-based perception (OCR, vision) is not implemented yet.
+> is defined; macOS screen capture, Accessibility, OCR and visual UI
+> detection work and are fused into one observation. Stable IDs and deltas
+> are not implemented yet.
 
 ## Architectural boundaries
 
@@ -70,17 +71,21 @@ never interpreted as instructions to Argus.
 
 ```text
 accessibility ─┐
-OCR           ─┼─▶ SourceCandidate ─▶ normalize ─▶ Normalized ─▶ assemble ─▶ Observation
+OCR           ─┼─▶ SourceCandidate ─▶ normalize ─▶ Normalized ─▶ fuse ─▶ Fused ─▶ assemble ─▶ Observation
 vision        ─┘
 ```
 
-(OCR and vision are planned.)
+(`vision` is a model-free heuristic detector.)
 
 Sources map their native vocabulary (e.g. `AXButton`) to protocol roles and
 report evidence as `SourceCandidate`s. Normalization (`argus-core`) converts
 coordinates to global points, derives visibility, cleans text and enforces
-consistency of roles, states and confidence. Observations can only be
-assembled from normalized candidates.
+consistency of roles, states and confidence. Fusion (`argus-fusion`) merges
+the evidence of all sources so that one real object becomes one element,
+listing every contributing source; it records conflicts and lowers the
+confidence of disputed properties (policy in
+[`crates/argus-fusion/src/lib.rs`](crates/argus-fusion/src/lib.rs)).
+Observations can only be assembled from fused, normalized evidence.
 
 Allowed internal dependencies (enforced by
 [`tests/integration/tests/architecture.rs`](tests/integration/tests/architecture.rs)):
@@ -126,7 +131,8 @@ iTerm, VS Code, ...). Allow that application in System Settings → Privacy &
 Security, then restart it:
 
 - **Accessibility** — needed by `argus observe` and `argus accessibility`;
-- **Screen & System Audio Recording** — needed by `argus capture`.
+- **Screen & System Audio Recording** — needed by `argus capture` and by the
+  `ocr` and `vision` sources of `argus observe` (on by default).
 
 The first attempt triggers the system prompt.
 
@@ -136,16 +142,42 @@ The first attempt triggers the system prompt.
 argus observe                          # focused window of the frontmost app
 argus observe --app Calculator         # by name or bundle id, works in background
 argus observe --pid 4321
-argus observe --source accessibility   # the only source so far (default)
+argus observe --sources accessibility  # only the native accessibility tree
+argus observe --sources ocr,vision     # only the window's pixels
+argus inspect                          # evidence and conflicts of every element
+argus inspect e_42 --json              # ... of one element, as JSON
 ```
 
-Prints an [Argus Observation](spec/ARGUS_PROTOCOL.md) as JSON.
+Prints an [Argus Observation](spec/ARGUS_PROTOCOL.md) as JSON. By default the
+accessibility tree, OCR and visual detection of the same window are fused.
+`argus inspect` shows, for each element, which source said what and which
+conflicts were resolved how. It observes anew, so element IDs from an earlier
+run match only while the interface is unchanged.
 `argus accessibility` prints the raw native tree (`AXButton`, ...) for
 debugging the platform adapter.
 
+OCR uses Apple Vision on-device. It reports text and its position only —
+recognized text never implies a control role. The very first recognition
+after a new `argus` binary is built can take ~20–30 s while macOS prepares
+its models; later runs take a few hundred milliseconds per window.
+
+Visual detection is a deterministic, model-free detector (outlines, shapes
+and content of controls). It proposes buttons, text boxes, checkboxes, radio
+buttons, tabs and icons with deliberately modest confidence; other sources
+confirm or reject these hypotheses.
+
 Electron/Chromium applications (VS Code, Slack, ...) expose only a skeleton
 tree unless asked to enable accessibility; Argus never writes to other
-applications, so such apps await pixel-based perception.
+applications, so for them the pixel sources supply most elements.
+
+When an application exposes no accessible window or does not answer
+accessibility requests (custom toolkits, games), `argus observe` warns and
+continues with the pixel sources; with `--sources accessibility` alone the
+error is reported.
+
+macOS answers accessibility requests unreliably while the screen is locked
+(the application element instead of its window); Argus then reports that the
+application has no accessible window.
 
 ### Capture (developer tool)
 
@@ -156,12 +188,13 @@ argus capture --window 482         # a specific window
 argus capture --display            # the main display (or --display <ID>)
 argus capture --delay 3 -o f.png   # wait, then also save a debug PNG
 argus capture -o f.png --overlay   # draw the observation's element boxes on it
+argus capture -o f.png --overlay --overlay-sources ocr,vision   # ... of other sources
 ```
 
 `argus capture` prints frame metadata (global bounds in points, pixel size,
 scale factor). Pixels are kept in memory and discarded; a PNG is written only
-with `--output`. `--overlay` outlines every element of the window's
-accessibility observation on the PNG to verify grounding by eye.
+with `--output`. `--overlay` outlines every element of an observation of the
+window on the PNG to verify grounding by eye.
 
 Logging goes to stderr and is controlled by `--log-level` (or `ARGUS_LOG`)
 and `--log-format text|json`.

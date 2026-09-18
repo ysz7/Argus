@@ -7,7 +7,7 @@
 use std::path::PathBuf;
 
 use argus_core::accessibility::{AxSnapshot, candidates};
-use argus_core::{assemble, normalize};
+use argus_core::{assemble, fuse, normalize};
 use argus_protocol::{Observation, ObservationId, Role, Timestamp, Window};
 
 fn repo() -> PathBuf {
@@ -24,7 +24,7 @@ fn observe_fixture(name: &str) -> Observation {
         Timestamp(0),
         Some(snapshot.application.clone()),
         Some(window),
-        &normalize(candidates(&snapshot)),
+        &fuse(&[normalize(candidates(&snapshot))]),
     )
 }
 

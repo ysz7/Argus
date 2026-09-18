@@ -75,3 +75,23 @@ fn observe_rejects_unknown_sources() {
 fn capture_overlay_requires_output() {
     argus().args(["capture", "--overlay"]).assert().failure().stderr(contains("--output"));
 }
+
+#[test]
+fn observe_accepts_source_lists() {
+    // Parsing only: an unknown member of the list is rejected before observing.
+    argus()
+        .args(["observe", "--sources", "accessibility,telepathy"])
+        .assert()
+        .failure()
+        .stderr(contains("telepathy"));
+}
+
+#[test]
+fn inspect_is_documented() {
+    argus()
+        .args(["inspect", "--help"])
+        .assert()
+        .success()
+        .stdout(contains("ELEMENT"))
+        .stdout(contains("--sources"));
+}

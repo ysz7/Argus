@@ -40,6 +40,19 @@ pub enum Error {
     /// Reading the accessibility tree failed.
     #[error(transparent)]
     Accessibility(#[from] argus_accessibility::Error),
+
+    /// A pixel-based perception backend failed.
+    #[error(transparent)]
+    Perception(#[from] argus_perception::Error),
+
+    /// An observation was requested without any evidence source.
+    #[error("no evidence source was selected")]
+    NoSources,
+
+    /// No capturable window corresponds to the window whose accessibility
+    /// tree was read, so pixel evidence cannot be combined with it.
+    #[error("no capturable window matches the accessibility window")]
+    WindowMismatch,
 }
 
 impl Error {
@@ -52,6 +65,9 @@ impl Error {
             Error::PermissionDenied(_) => "permission_denied",
             Error::Capture(error) => error.code(),
             Error::Accessibility(error) => error.code(),
+            Error::Perception(error) => error.code(),
+            Error::NoSources => "no_sources",
+            Error::WindowMismatch => "window_mismatch",
         }
     }
 }
