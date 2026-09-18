@@ -1,0 +1,29 @@
+[package]
+name = "argus-cli"
+description = "Command-line interface for Argus."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "argus"
+path = "src/main.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+argus-core.workspace = true
+argus-server.workspace = true
+anyhow.workspace = true
+clap.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+[dev-dependencies]
+assert_cmd.workspace = true
+predicates.workspace = true

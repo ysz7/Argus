@@ -1,0 +1,16 @@
+[package]
+name = "argus-tracking"
+description = "Element identity and change tracking across Argus observations."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+argus-protocol.workspace = true

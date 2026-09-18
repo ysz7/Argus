@@ -1,0 +1,17 @@
+[package]
+name = "argus-server"
+description = "Local Argus service exposing observations over a localhost API."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+argus-protocol.workspace = true
+argus-core.workspace = true

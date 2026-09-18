@@ -1,1 +1,9 @@
 /development
+/target
+**/*.rs.bk
+.DS_Store
+
+# Debug captures must never be committed (privacy: screenshots may contain secrets).
+*.png
+!tests/fixtures/**/*.png
+!benchmarks/**/*.png
