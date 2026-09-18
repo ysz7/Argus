@@ -16,6 +16,10 @@
 //! invalid value cannot exist. Referential invariants of a whole observation
 //! (unique IDs, consistent hierarchy) are checked by
 //! [`Observation::validate`].
+//!
+//! [`Frame`] is the in-memory input of pixel-based perception. It is shared by
+//! capture and perception crates but is not serialized as part of the JSON
+//! protocol.
 
 #![forbid(unsafe_code)]
 
@@ -23,6 +27,7 @@ mod confidence;
 mod delta;
 mod element;
 mod error;
+mod frame;
 mod geometry;
 mod ids;
 mod observation;
@@ -34,6 +39,7 @@ pub use confidence::{Confidence, Score};
 pub use delta::{ElementChange, ObservationDelta};
 pub use element::{CheckState, Element, ElementState, Role};
 pub use error::{Error, Result};
+pub use frame::{Frame, FrameId, PixelBuffer};
 pub use geometry::Bounds;
 pub use ids::{ElementId, ObservationId};
 pub use observation::{Application, Observation, Timestamp, Window};

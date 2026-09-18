@@ -102,8 +102,18 @@ what the Accessibility API reports.
 
 Logical points are independent of display density. On a display with scale
 factor `s` (e.g. `2.0` on Retina), a point-space rectangle covers `s × width`
-by `s × height` physical pixels. Argus reports **only points**; converting to
-pixels of a captured frame is done with that frame's scale factor and origin.
+by `s × height` physical pixels. Argus reports **only points**.
+
+Pixel-based sources work on captured *frames*. A frame records the global
+rectangle it covers (in points) and its scale factor; pixel `(px, py)` of a
+frame maps to the global point
+
+```text
+(frame.x + px / s, frame.y + py / s)
+```
+
+Every pixel-derived element is converted this way before it enters an
+observation. Frames themselves are internal and not part of this protocol.
 
 ### 4.3 Multiple displays
 

@@ -19,7 +19,8 @@ Argus answers one question:
 > What is in the interface right now, where is it, what state is it in, and
 > how confident is Argus about each claim?
 
-> **Status:** early development. The [Observation Protocol v0.1](spec/ARGUS_PROTOCOL.md) is defined; perception is not implemented yet.
+> **Status:** early development. The [Observation Protocol v0.1](spec/ARGUS_PROTOCOL.md)
+> is defined and macOS screen capture works; perception is not implemented yet.
 
 ## Architectural boundaries
 
@@ -86,7 +87,7 @@ golden files, integration tests), `benchmarks/`, `examples/`, `models/`,
 
 ## Building
 
-Requirements: macOS, stable Rust (see `rust-toolchain.toml`).
+Requirements: macOS 14 or later, stable Rust (see `rust-toolchain.toml`).
 
 ```bash
 cargo build
@@ -100,6 +101,28 @@ Run the CLI:
 ```bash
 cargo run -p argus-cli -- --help
 ```
+
+### Permissions
+
+Screen capture needs the **Screen Recording** permission. macOS grants it to
+the application that launches `argus` (Terminal, iTerm, VS Code, ...): allow
+that application in System Settings → Privacy & Security → Screen & System
+Audio Recording, then restart it. The first capture attempt triggers the
+system prompt.
+
+### Capture (developer tool)
+
+```bash
+argus capture --list               # displays, frontmost app, windows (JSON)
+argus capture                      # frontmost window of the frontmost app
+argus capture --window 482         # a specific window
+argus capture --display            # the main display (or --display <ID>)
+argus capture --delay 3 -o f.png   # wait, then also save a debug PNG
+```
+
+`argus capture` prints frame metadata (global bounds in points, pixel size,
+scale factor). Pixels are kept in memory and discarded; a PNG is written only
+with `--output`.
 
 Logging goes to stderr and is controlled by `--log-level` (or `ARGUS_LOG`)
 and `--log-format text|json`.

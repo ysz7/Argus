@@ -2,9 +2,11 @@
 
 #![forbid(unsafe_code)]
 
+mod commands;
 mod logging;
+mod output;
 
-use clap::Parser;
+use clap::{Parser, Subcommand};
 
 use crate::logging::LogFormat;
 
@@ -20,13 +22,26 @@ struct Cli {
     /// Log output format. Logs are always written to stderr.
     #[arg(long, global = true, value_enum, default_value_t = LogFormat::Text)]
     log_format: LogFormat,
+
+    #[command(subcommand)]
+    command: Option<Command>,
+}
+
+#[derive(Debug, Subcommand)]
+enum Command {
+    /// Capture a frame of a window or display (developer tool).
+    Capture(commands::capture::CaptureArgs),
 }
 
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
     logging::init(&cli.log_level, cli.log_format)?;
     tracing::debug!(version = env!("CARGO_PKG_VERSION"), "argus started");
-    Ok(())
+
+    match cli.command {
+        Some(Command::Capture(args)) => commands::capture::run(&args),
+        None => Ok(()),
+    }
 }
 
 #[cfg(test)]

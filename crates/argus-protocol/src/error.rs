@@ -26,6 +26,10 @@ pub enum Error {
         height: f32,
     },
 
+    /// A frame or pixel buffer is internally inconsistent.
+    #[error("invalid frame: {0}")]
+    InvalidFrame(String),
+
     /// An identifier is empty.
     #[error("{kind} must not be empty")]
     EmptyId {

@@ -38,3 +38,21 @@ fn json_logs_go_to_stderr_only() {
     let line = stderr.lines().next().expect("expected a log line");
     assert!(line.starts_with('{') && line.contains("\"argus started\""), "{line}");
 }
+
+#[test]
+fn capture_rejects_conflicting_targets() {
+    argus()
+        .args(["capture", "--display", "1", "--window", "2"])
+        .assert()
+        .failure()
+        .stderr(contains("cannot be used with"));
+}
+
+#[test]
+fn capture_list_cannot_write_output() {
+    argus()
+        .args(["capture", "--list", "--output", "frame.png"])
+        .assert()
+        .failure()
+        .stderr(contains("cannot be used with"));
+}

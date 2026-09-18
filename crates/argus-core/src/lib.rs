@@ -15,4 +15,6 @@
 
 pub mod error;
 
+/// Frame acquisition (re-exported so front ends depend only on the core).
+pub use argus_capture as capture;
 pub use error::{Error, Permission, Result};

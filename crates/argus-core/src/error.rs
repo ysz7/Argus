@@ -32,6 +32,10 @@ pub enum Error {
     /// The operating system denied a permission Argus needs.
     #[error("{0} permission is not granted")]
     PermissionDenied(Permission),
+
+    /// Frame acquisition failed.
+    #[error(transparent)]
+    Capture(#[from] argus_capture::Error),
 }
 
 impl Error {
@@ -42,6 +46,7 @@ impl Error {
         match self {
             Error::Unsupported { .. } => "unsupported",
             Error::PermissionDenied(_) => "permission_denied",
+            Error::Capture(error) => error.code(),
         }
     }
 }

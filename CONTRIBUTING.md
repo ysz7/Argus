@@ -17,6 +17,13 @@ cargo build --workspace
 cargo test --workspace
 ```
 
+Live tests that need a macOS GUI session and the Screen Recording permission
+are `#[ignore]`d in CI. Run them locally when touching platform code:
+
+```bash
+cargo test --workspace -- --ignored
+```
+
 ## Conventions
 
 - **Boundaries.** Respect the crate dependency graph described in the README.
