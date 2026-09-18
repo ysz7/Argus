@@ -265,29 +265,39 @@ impl Builder {
     /// matches it.
     fn text_target(&self, line: &ElementCandidate) -> Option<usize> {
         let text = line.name.as_deref()?;
-        self.nodes
-            .iter()
-            .enumerate()
-            .filter(|(_, node)| !node.pixel_derived() && carries_text(node.role))
+        let matches = |node: &Node| {
+            [&node.name, &node.value].into_iter().flatten().any(|known| similar(text, known))
+        };
+        let structured = || self.nodes.iter().enumerate().filter(|(_, node)| !node.pixel_derived());
+
+        let inside = structured()
             .filter_map(|(index, node)| {
                 let area = node.visible_area()?;
                 let overlap = iou(&line.bounds, &area);
                 let inside = cover(&line.bounds, &area) >= TEXT_INSIDE || overlap >= TEXT_OVERLAP;
-                if !inside {
-                    return None;
-                }
-                let matches = [&node.name, &node.value]
-                    .into_iter()
-                    .flatten()
-                    .any(|known| similar(text, known));
-                // A text box shows its value or its placeholder; anything
-                // else inside it is not about the box.
-                if node.role == Role::TextBox && !matches {
-                    return None;
-                }
-                Some((index, (matches, overlap)))
+                let matches = matches(node);
+                // Any element showing its own text; otherwise only elements
+                // whose text is their label. A text box shows its value or
+                // its placeholder; anything else inside it is not about it.
+                let about = matches || (carries_text(node.role) && node.role != Role::TextBox);
+                (inside && about).then_some((index, (matches, overlap)))
             })
             .max_by(|(_, a), (_, b)| a.0.cmp(&b.0).then(a.1.total_cmp(&b.1)))
+            .map(|(index, _)| index);
+        if inside.is_some() {
+            return inside;
+        }
+
+        // The visible label of a control whose frame does not include it
+        // (a radio button reported as just its circle).
+        structured()
+            .filter(|(_, node)| matches(node))
+            .filter_map(|(index, node)| {
+                let (distance, _) =
+                    scene::placement(node.role, &node.visible_area()?, &line.bounds)?;
+                Some((index, distance))
+            })
+            .min_by(|a, b| a.1.total_cmp(&b.1))
             .map(|(index, _)| index)
     }
 
@@ -872,6 +882,26 @@ mod tests {
         assert_eq!(point.confidence.name, Some(Score::CERTAIN));
         assert_eq!(point.evidence.conflicts[0].property, Property::VisibleText);
         assert!(!point.evidence.conflicts[0].lowers_confidence);
+    }
+
+    #[test]
+    fn text_confirms_labels_drawn_outside_the_frame() {
+        let candidates = [
+            window(),
+            // A column header with an unmapped role, and a radio button whose
+            // frame is just its circle.
+            ax(1, Some(0), Role::Unknown, Some("Volume"), b(10.0, 10.0, 150.0, 20.0)),
+            ax(2, Some(0), Role::RadioButton, Some("H.264 1080p"), b(10.0, 50.0, 16.0, 16.0)),
+            ocr(0, "Volume", b(14.0, 14.0, 40.0, 12.0)),
+            ocr(1, "H.264 1080p", b(32.0, 51.0, 90.0, 14.0)),
+            // Nearby text that says something else stays separate.
+            ocr(2, "Other", b(60.0, 14.0, 40.0, 12.0)),
+        ];
+        let fusion = fuse(&candidates);
+        assert_eq!(fusion.elements.len(), 4, "{fusion:#?}");
+        assert_eq!(fusion.elements[1].sources, [Source::Accessibility, Source::Ocr]);
+        assert_eq!(fusion.elements[3].sources, [Source::Accessibility, Source::Ocr]);
+        assert_eq!(fusion.elements[2].name.as_deref(), Some("Other"));
     }
 
     #[test]

@@ -1,0 +1,950 @@
+{
+  "protocol_version": "0.1",
+  "id": "obs_golden",
+  "timestamp": 0,
+  "application": {
+    "name": "Blackmagic Proxy Generator Lite",
+    "bundle_id": "com.blackmagic-design.BlackmagicProxyGeneratorLite",
+    "pid": 27648
+  },
+  "window": {
+    "title": "Blackmagic Proxy Generator",
+    "bounds": {
+      "x": 400.0,
+      "y": 160.0,
+      "width": 650.0,
+      "height": 589.0
+    }
+  },
+  "elements": [
+    {
+      "id": "e_1",
+      "role": "window",
+      "name": "Blackmagic Proxy Generator",
+      "bounds": {
+        "x": 400.0,
+        "y": 160.0,
+        "width": 650.0,
+        "height": 589.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "children": [
+        "e_2",
+        "e_3",
+        "e_4",
+        "e_5",
+        "e_6",
+        "e_7",
+        "e_8",
+        "e_9",
+        "e_10",
+        "e_11",
+        "e_12",
+        "e_13",
+        "e_14",
+        "e_15",
+        "e_16",
+        "e_17",
+        "e_18",
+        "e_23",
+        "e_24",
+        "e_25",
+        "e_26",
+        "e_27",
+        "e_28",
+        "e_29",
+        "e_30",
+        "e_31"
+      ]
+    },
+    {
+      "id": "e_2",
+      "role": "button",
+      "bounds": {
+        "x": 411.0,
+        "y": 165.0,
+        "width": 20.0,
+        "height": 20.0
+      },
+      "state": {
+        "visible": true,
+        "focused": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_3",
+      "role": "text",
+      "name": "Blackmagic Proxy Generator Lite",
+      "bounds": {
+        "x": 624.0,
+        "y": 161.0,
+        "width": 205.0,
+        "height": 28.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_4",
+      "role": "text",
+      "name": "Processing",
+      "bounds": {
+        "x": 418.0,
+        "y": 202.0,
+        "width": 614.0,
+        "height": 30.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_5",
+      "role": "text",
+      "name": "Idle",
+      "bounds": {
+        "x": 433.0,
+        "y": 247.0,
+        "width": 443.0,
+        "height": 14.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_6",
+      "role": "progress_bar",
+      "value": "0",
+      "bounds": {
+        "x": 433.0,
+        "y": 268.0,
+        "width": 443.0,
+        "height": 5.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "value": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_7",
+      "role": "text",
+      "name": "0%",
+      "bounds": {
+        "x": 433.0,
+        "y": 277.0,
+        "width": 209.0,
+        "height": 13.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_8",
+      "role": "text",
+      "name": "0 fps",
+      "bounds": {
+        "x": 642.0,
+        "y": 277.0,
+        "width": 25.0,
+        "height": 13.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 0.5,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_9",
+      "role": "text",
+      "name": "0:00",
+      "bounds": {
+        "x": 667.0,
+        "y": 277.0,
+        "width": 209.0,
+        "height": 13.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_10",
+      "role": "checkbox",
+      "name": "Start",
+      "bounds": {
+        "x": 901.0,
+        "y": 256.0,
+        "width": 110.0,
+        "height": 24.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "checked": "checked"
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 0.75,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr",
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_11",
+      "role": "text",
+      "name": "Proxy Format",
+      "bounds": {
+        "x": 418.0,
+        "y": 319.0,
+        "width": 614.0,
+        "height": 30.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_12",
+      "role": "text",
+      "name": "Create proxies in",
+      "bounds": {
+        "x": 419.0,
+        "y": 363.0,
+        "width": 195.0,
+        "height": 16.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_13",
+      "role": "radio_button",
+      "name": "ProRes 422 10 bit 4:2:2 1080p",
+      "bounds": {
+        "x": 622.0,
+        "y": 421.0,
+        "width": 15.0,
+        "height": 15.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr",
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_14",
+      "role": "radio_button",
+      "name": "H.265 10 bit 4:2:0 1080p",
+      "bounds": {
+        "x": 622.0,
+        "y": 402.0,
+        "width": 15.0,
+        "height": 15.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr",
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_15",
+      "role": "radio_button",
+      "name": "H.264 8 bit 4:2:0 1080p",
+      "bounds": {
+        "x": 622.0,
+        "y": 383.0,
+        "width": 15.0,
+        "height": 15.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "checked": "checked"
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 0.85,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr",
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_16",
+      "role": "radio_button",
+      "name": "H.264 8 bit 4:2:0 Half Res 1080p",
+      "bounds": {
+        "x": 622.0,
+        "y": 364.0,
+        "width": 15.0,
+        "height": 15.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr",
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_17",
+      "role": "text",
+      "name": "Watch Folders",
+      "bounds": {
+        "x": 418.0,
+        "y": 465.0,
+        "width": 614.0,
+        "height": 30.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_18",
+      "role": "group",
+      "bounds": {
+        "x": 419.0,
+        "y": 496.0,
+        "width": 612.0,
+        "height": 181.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "vision"
+      ],
+      "parent": "e_1",
+      "children": [
+        "e_19",
+        "e_20",
+        "e_21",
+        "e_22"
+      ]
+    },
+    {
+      "id": "e_19",
+      "role": "unknown",
+      "name": "Volume",
+      "bounds": {
+        "x": 419.0,
+        "y": 496.0,
+        "width": 157.0,
+        "height": 20.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_18"
+    },
+    {
+      "id": "e_20",
+      "role": "unknown",
+      "name": "Folder",
+      "bounds": {
+        "x": 576.0,
+        "y": 496.0,
+        "width": 304.0,
+        "height": 20.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_18"
+    },
+    {
+      "id": "e_21",
+      "role": "unknown",
+      "name": "Status",
+      "bounds": {
+        "x": 880.0,
+        "y": 496.0,
+        "width": 151.0,
+        "height": 20.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_18"
+    },
+    {
+      "id": "e_22",
+      "role": "text_box",
+      "bounds": {
+        "x": 418.0,
+        "y": 495.0,
+        "width": 614.0,
+        "height": 20.0
+      },
+      "confidence": {
+        "element": 0.5,
+        "role": 0.4
+      },
+      "sources": [
+        "vision"
+      ],
+      "parent": "e_18"
+    },
+    {
+      "id": "e_23",
+      "role": "text",
+      "bounds": {
+        "x": 419.0,
+        "y": 678.0,
+        "width": 592.0,
+        "height": 19.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 0.8,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_24",
+      "role": "button",
+      "name": "Add",
+      "bounds": {
+        "x": 418.0,
+        "y": 708.0,
+        "width": 100.0,
+        "height": 24.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr",
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_25",
+      "role": "button",
+      "name": "Remove",
+      "bounds": {
+        "x": 528.0,
+        "y": 708.0,
+        "width": 100.0,
+        "height": 24.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr",
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_26",
+      "role": "button",
+      "name": "Show",
+      "bounds": {
+        "x": 638.0,
+        "y": 708.0,
+        "width": 100.0,
+        "height": 24.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr",
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_27",
+      "role": "button",
+      "name": "Delete Proxies",
+      "bounds": {
+        "x": 801.0,
+        "y": 708.0,
+        "width": 110.0,
+        "height": 24.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr",
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_28",
+      "role": "button",
+      "name": "Extract Proxies",
+      "bounds": {
+        "x": 921.0,
+        "y": 708.0,
+        "width": 111.0,
+        "height": 24.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr",
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_29",
+      "role": "button",
+      "bounds": {
+        "x": 401.0,
+        "y": 161.0,
+        "width": 648.0,
+        "height": 28.0
+      },
+      "confidence": {
+        "element": 0.55,
+        "role": 0.5
+      },
+      "sources": [
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_30",
+      "role": "group",
+      "bounds": {
+        "x": 418.0,
+        "y": 232.0,
+        "width": 614.0,
+        "height": 75.0
+      },
+      "confidence": {
+        "element": 0.35,
+        "role": 0.3
+      },
+      "sources": [
+        "vision"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_31",
+      "role": "group",
+      "bounds": {
+        "x": 418.0,
+        "y": 349.0,
+        "width": 614.0,
+        "height": 104.0
+      },
+      "confidence": {
+        "element": 0.35,
+        "role": 0.3
+      },
+      "sources": [
+        "vision"
+      ],
+      "parent": "e_1"
+    }
+  ],
+  "relations": [
+    {
+      "kind": "contains",
+      "from": "e_22",
+      "to": "e_19"
+    },
+    {
+      "kind": "contains",
+      "from": "e_22",
+      "to": "e_20"
+    },
+    {
+      "kind": "contains",
+      "from": "e_22",
+      "to": "e_21"
+    },
+    {
+      "kind": "contains",
+      "from": "e_29",
+      "to": "e_2"
+    },
+    {
+      "kind": "contains",
+      "from": "e_29",
+      "to": "e_3"
+    },
+    {
+      "kind": "contains",
+      "from": "e_30",
+      "to": "e_5"
+    },
+    {
+      "kind": "contains",
+      "from": "e_30",
+      "to": "e_6"
+    },
+    {
+      "kind": "contains",
+      "from": "e_30",
+      "to": "e_7"
+    },
+    {
+      "kind": "contains",
+      "from": "e_30",
+      "to": "e_8"
+    },
+    {
+      "kind": "contains",
+      "from": "e_30",
+      "to": "e_9"
+    },
+    {
+      "kind": "contains",
+      "from": "e_30",
+      "to": "e_10"
+    },
+    {
+      "kind": "contains",
+      "from": "e_31",
+      "to": "e_12"
+    },
+    {
+      "kind": "contains",
+      "from": "e_31",
+      "to": "e_13"
+    },
+    {
+      "kind": "contains",
+      "from": "e_31",
+      "to": "e_14"
+    },
+    {
+      "kind": "contains",
+      "from": "e_31",
+      "to": "e_15"
+    },
+    {
+      "kind": "contains",
+      "from": "e_31",
+      "to": "e_16"
+    }
+  ]
+}

@@ -11,7 +11,9 @@
 //!   elements with the same shape (e.g. text, text, button) become `row`
 //!   elements, so that identical buttons are told apart by their row;
 //! - **spatial containment** — an element drawn inside another one that is not
-//!   its ancestor gets a `contains` relation.
+//!   its ancestor gets a `contains` relation, when the two come from different
+//!   kinds of sources (pixels vs. a structured tree) or the outer one is a
+//!   control; overlapping layout frames within one tree are not reported.
 
 use std::collections::{HashMap, HashSet};
 
@@ -268,12 +270,22 @@ impl Builder {
                 })
                 .min_by(|a, b| area(&a.1).total_cmp(&area(&b.1)).then(b.0.cmp(&a.0)));
             if let Some((outer, _)) = outer
+                && self.meaningful_containment(outer, leaf)
                 && !self.is_ancestor(outer, leaf)
             {
                 found.push((outer, RelationKind::Contains, leaf, None));
             }
         }
         self.relations.extend(found);
+    }
+
+    /// Overlapping frames within one structured tree are mostly layout
+    /// (text runs of a web view overlap each other); containment is
+    /// reported when it relates evidence across sources, or when something
+    /// is drawn inside a control.
+    fn meaningful_containment(&self, outer: usize, leaf: usize) -> bool {
+        let (outer, leaf) = (&self.nodes[outer], &self.nodes[leaf]);
+        outer.pixel_derived() != leaf.pixel_derived() || crate::roles::is_control(outer.role)
     }
 
     fn is_ancestor(&self, ancestor: usize, mut node: usize) -> bool {
@@ -294,7 +306,7 @@ impl Builder {
 
 /// Where a text sits relative to a control, if it can be the control's
 /// label: `(distance, confidence)`.
-fn placement(role: Role, control: &Bounds, text: &Bounds) -> Option<(f32, f32)> {
+pub(super) fn placement(role: Role, control: &Bounds, text: &Bounds) -> Option<(f32, f32)> {
     let same_line =
         (center(control).1 - center(text).1).abs() <= control.height().max(text.height()) / 2.0;
     let right_of_control = text.x() - (control.x() + control.width());
@@ -304,7 +316,7 @@ fn placement(role: Role, control: &Bounds, text: &Bounds) -> Option<(f32, f32)> 
         Role::Checkbox | Role::RadioButton => (same_line
             && (-2.0..=TOGGLE_GAP).contains(&right_of_control))
         .then_some((right_of_control, LABEL_BESIDE_TOGGLE)),
-        _ => {
+        Role::TextBox | Role::Slider => {
             if same_line && (-2.0..=FIELD_GAP).contains(&left_of_control) {
                 Some((left_of_control, LABEL_LEFT_OF_FIELD))
             } else if (-2.0..=ABOVE_GAP).contains(&above_control)
@@ -315,6 +327,7 @@ fn placement(role: Role, control: &Bounds, text: &Bounds) -> Option<(f32, f32)> 
                 None
             }
         }
+        _ => None,
     }
 }
 
@@ -549,10 +562,18 @@ mod tests {
             b(10.0, 10.0, 16.0, 16.0),
         );
         close.parent = None;
-        let fusion = fuse(&[bar, close]);
+        let mut glyph =
+            candidate(Source::Accessibility, 2, Role::Image, None, b(12.0, 12.0, 12.0, 12.0));
+        glyph.parent = None;
+        let mut overlapping_text =
+            candidate(Source::Accessibility, 3, Role::Text, Some("a"), b(100.0, 10.0, 20.0, 16.0));
+        overlapping_text.parent = None;
+        let fusion = fuse(&[bar, close, glyph, overlapping_text]);
+        // An image drawn inside a button is reported; the group's layout
+        // overlap with its neighbours is not.
         assert_eq!(
             fusion.relations,
-            [FusedRelation { kind: RelationKind::Contains, from: 0, to: 1, confidence: None }]
+            [FusedRelation { kind: RelationKind::Contains, from: 1, to: 2, confidence: None }]
         );
     }
 }

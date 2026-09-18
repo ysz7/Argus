@@ -1,0 +1,325 @@
+{
+  "application": {
+    "bundle_id": "com.blackmagic-design.BlackmagicProxyGeneratorLite",
+    "name": "Blackmagic Proxy Generator Lite",
+    "pid": 27648
+  },
+  "elements": [
+    {
+      "bounds": {
+        "height": 28.0,
+        "width": 648.0,
+        "x": 401.0,
+        "y": 161.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.5
+      },
+      "id": "e_1",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 75.0,
+        "width": 614.0,
+        "x": 418.0,
+        "y": 232.0
+      },
+      "children": [
+        "e_3"
+      ],
+      "confidence": {
+        "element": 0.3499999940395355,
+        "role": 0.30000001192092896
+      },
+      "id": "e_2",
+      "role": "group",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 24.0,
+        "width": 110.0,
+        "x": 901.0,
+        "y": 256.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.5
+      },
+      "id": "e_3",
+      "parent": "e_2",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 104.0,
+        "width": 614.0,
+        "x": 418.0,
+        "y": 349.0
+      },
+      "children": [
+        "e_5",
+        "e_6",
+        "e_7",
+        "e_8"
+      ],
+      "confidence": {
+        "element": 0.3499999940395355,
+        "role": 0.30000001192092896
+      },
+      "id": "e_4",
+      "role": "group",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 15.0,
+        "width": 15.0,
+        "x": 622.0,
+        "y": 363.0
+      },
+      "confidence": {
+        "element": 0.6000000238418579,
+        "role": 0.5,
+        "state": 0.44999998807907104
+      },
+      "id": "e_5",
+      "parent": "e_4",
+      "role": "radio_button",
+      "sources": [
+        "vision"
+      ],
+      "state": {
+        "checked": "unchecked"
+      }
+    },
+    {
+      "bounds": {
+        "height": 15.0,
+        "width": 15.0,
+        "x": 622.0,
+        "y": 382.0
+      },
+      "confidence": {
+        "element": 0.30000001192092896,
+        "role": 0.30000001192092896
+      },
+      "id": "e_6",
+      "parent": "e_4",
+      "role": "icon",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 15.0,
+        "width": 15.0,
+        "x": 622.0,
+        "y": 401.0
+      },
+      "confidence": {
+        "element": 0.6000000238418579,
+        "role": 0.5,
+        "state": 0.44999998807907104
+      },
+      "id": "e_7",
+      "parent": "e_4",
+      "role": "radio_button",
+      "sources": [
+        "vision"
+      ],
+      "state": {
+        "checked": "unchecked"
+      }
+    },
+    {
+      "bounds": {
+        "height": 15.0,
+        "width": 15.0,
+        "x": 622.0,
+        "y": 420.0
+      },
+      "confidence": {
+        "element": 0.6000000238418579,
+        "role": 0.5,
+        "state": 0.44999998807907104
+      },
+      "id": "e_8",
+      "parent": "e_4",
+      "role": "radio_button",
+      "sources": [
+        "vision"
+      ],
+      "state": {
+        "checked": "unchecked"
+      }
+    },
+    {
+      "bounds": {
+        "height": 203.0,
+        "width": 614.0,
+        "x": 418.0,
+        "y": 495.0
+      },
+      "children": [
+        "e_10",
+        "e_11"
+      ],
+      "confidence": {
+        "element": 0.3499999940395355,
+        "role": 0.30000001192092896
+      },
+      "id": "e_9",
+      "role": "group",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 20.0,
+        "width": 614.0,
+        "x": 418.0,
+        "y": 495.0
+      },
+      "confidence": {
+        "element": 0.5,
+        "role": 0.4000000059604645
+      },
+      "id": "e_10",
+      "parent": "e_9",
+      "role": "text_box",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 20.0,
+        "width": 614.0,
+        "x": 418.0,
+        "y": 677.0
+      },
+      "confidence": {
+        "element": 0.5,
+        "role": 0.4000000059604645
+      },
+      "id": "e_11",
+      "parent": "e_9",
+      "role": "text_box",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 24.0,
+        "width": 100.0,
+        "x": 418.0,
+        "y": 708.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.5
+      },
+      "id": "e_12",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 24.0,
+        "width": 100.0,
+        "x": 528.0,
+        "y": 708.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.5
+      },
+      "id": "e_13",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 24.0,
+        "width": 100.0,
+        "x": 638.0,
+        "y": 708.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.5
+      },
+      "id": "e_14",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 24.0,
+        "width": 110.0,
+        "x": 801.0,
+        "y": 708.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.5
+      },
+      "id": "e_15",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 24.0,
+        "width": 111.0,
+        "x": 921.0,
+        "y": 708.0
+      },
+      "confidence": {
+        "element": 0.550000011920929,
+        "role": 0.5
+      },
+      "id": "e_16",
+      "role": "button",
+      "sources": [
+        "vision"
+      ]
+    }
+  ],
+  "id": "obs_000001",
+  "protocol_version": "0.1",
+  "timestamp": 1789769888437,
+  "window": {
+    "bounds": {
+      "height": 589.0,
+      "width": 650.0,
+      "x": 400.0,
+      "y": 160.0
+    },
+    "title": "Blackmagic Proxy Generator"
+  }
+}

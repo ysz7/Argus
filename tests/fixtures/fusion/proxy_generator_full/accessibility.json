@@ -1,0 +1,342 @@
+{
+  "application": {
+    "bundle_id": "com.blackmagic-design.BlackmagicProxyGeneratorLite",
+    "name": "Blackmagic Proxy Generator Lite",
+    "pid": 27648
+  },
+  "truncated": false,
+  "window": {
+    "children": [
+      {
+        "description": "",
+        "focused": true,
+        "frame": {
+          "height": 20.0,
+          "width": 20.0,
+          "x": 411.0,
+          "y": 165.0
+        },
+        "role": "AXButton",
+        "title": ""
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 28.0,
+          "width": 205.0,
+          "x": 624.0,
+          "y": 161.0
+        },
+        "role": "AXStaticText",
+        "value": "Blackmagic Proxy Generator Lite"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 30.0,
+          "width": 614.0,
+          "x": 418.0,
+          "y": 202.0
+        },
+        "role": "AXStaticText",
+        "value": "Processing"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 14.0,
+          "width": 443.0,
+          "x": 433.0,
+          "y": 247.0
+        },
+        "role": "AXStaticText",
+        "value": "Idle"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 5.0,
+          "width": 443.0,
+          "x": 433.0,
+          "y": 268.0
+        },
+        "role": "AXProgressIndicator",
+        "title": "",
+        "value": "0"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 13.0,
+          "width": 209.0,
+          "x": 433.0,
+          "y": 277.0
+        },
+        "role": "AXStaticText",
+        "value": "0%"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 13.0,
+          "width": 25.0,
+          "x": 642.0,
+          "y": 277.0
+        },
+        "role": "AXStaticText",
+        "value": "0 fps"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 13.0,
+          "width": 209.0,
+          "x": 667.0,
+          "y": 277.0
+        },
+        "role": "AXStaticText",
+        "value": "0:00"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 24.0,
+          "width": 110.0,
+          "x": 901.0,
+          "y": 256.0
+        },
+        "role": "AXCheckBox",
+        "title": "Start",
+        "value": 1.0
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 30.0,
+          "width": 614.0,
+          "x": 418.0,
+          "y": 319.0
+        },
+        "role": "AXStaticText",
+        "value": "Proxy Format"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 16.0,
+          "width": 195.0,
+          "x": 419.0,
+          "y": 363.0
+        },
+        "role": "AXStaticText",
+        "value": "Create proxies in"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 15.0,
+          "width": 15.0,
+          "x": 622.0,
+          "y": 421.0
+        },
+        "role": "AXRadioButton",
+        "title": "ProRes 422 10 bit 4:2:2 1080p",
+        "value": 0.0
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 15.0,
+          "width": 15.0,
+          "x": 622.0,
+          "y": 402.0
+        },
+        "role": "AXRadioButton",
+        "title": "H.265 10 bit 4:2:0 1080p",
+        "value": 0.0
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 15.0,
+          "width": 15.0,
+          "x": 622.0,
+          "y": 383.0
+        },
+        "role": "AXRadioButton",
+        "title": "H.264 8 bit 4:2:0 1080p",
+        "value": 1.0
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 15.0,
+          "width": 15.0,
+          "x": 622.0,
+          "y": 364.0
+        },
+        "role": "AXRadioButton",
+        "title": "H.264 8 bit 4:2:0 Half Res 1080p",
+        "value": 0.0
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 30.0,
+          "width": 614.0,
+          "x": 418.0,
+          "y": 465.0
+        },
+        "role": "AXStaticText",
+        "value": "Watch Folders"
+      },
+      {
+        "children": [
+          {
+            "description": "",
+            "focused": false,
+            "frame": {
+              "height": 20.0,
+              "width": 157.0,
+              "x": 419.0,
+              "y": 496.0
+            },
+            "role": "AXColumn",
+            "title": "Volume"
+          },
+          {
+            "description": "",
+            "focused": false,
+            "frame": {
+              "height": 20.0,
+              "width": 304.0,
+              "x": 576.0,
+              "y": 496.0
+            },
+            "role": "AXColumn",
+            "title": "Folder"
+          },
+          {
+            "description": "",
+            "focused": false,
+            "frame": {
+              "height": 20.0,
+              "width": 151.0,
+              "x": 880.0,
+              "y": 496.0
+            },
+            "role": "AXColumn",
+            "title": "Status"
+          }
+        ],
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 181.0,
+          "width": 612.0,
+          "x": 419.0,
+          "y": 496.0
+        },
+        "role": "AXGroup",
+        "title": ""
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 19.0,
+          "width": 592.0,
+          "x": 419.0,
+          "y": 678.0
+        },
+        "role": "AXStaticText",
+        "value": ""
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 24.0,
+          "width": 100.0,
+          "x": 418.0,
+          "y": 708.0
+        },
+        "role": "AXButton",
+        "title": "Add"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 24.0,
+          "width": 100.0,
+          "x": 528.0,
+          "y": 708.0
+        },
+        "role": "AXButton",
+        "title": "Remove"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 24.0,
+          "width": 100.0,
+          "x": 638.0,
+          "y": 708.0
+        },
+        "role": "AXButton",
+        "title": "Show"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 24.0,
+          "width": 110.0,
+          "x": 801.0,
+          "y": 708.0
+        },
+        "role": "AXButton",
+        "title": "Delete Proxies"
+      },
+      {
+        "description": "",
+        "focused": false,
+        "frame": {
+          "height": 24.0,
+          "width": 111.0,
+          "x": 921.0,
+          "y": 708.0
+        },
+        "role": "AXButton",
+        "title": "Extract Proxies"
+      }
+    ],
+    "focused": false,
+    "frame": {
+      "height": 589.0,
+      "width": 650.0,
+      "x": 400.0,
+      "y": 160.0
+    },
+    "role": "AXWindow",
+    "subrole": "AXUnknown",
+    "title": "Blackmagic Proxy Generator"
+  }
+}

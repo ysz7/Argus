@@ -186,3 +186,25 @@ fn proxy_generator_is_recovered_from_pixels() {
     let radios = observation.elements.iter().filter(|e| e.role == Role::RadioButton).count();
     assert_eq!(radios, 3, "the selected one is still seen as an icon");
 }
+
+#[test]
+fn proxy_generator_full_matches_golden() {
+    let (observation, _) = fuse_recording("proxy_generator_full");
+    observation.validate().unwrap();
+    assert_golden("proxy_generator_full", &observation);
+}
+
+/// A Qt application with a complete accessibility tree: every recognized
+/// line confirms an accessible element (column headers with an unmapped
+/// role, radio labels drawn beside their circles) instead of duplicating it.
+#[test]
+fn proxy_generator_text_is_not_duplicated() {
+    let (observation, _) = fuse_recording("proxy_generator_full");
+    let ocr_only: Vec<_> =
+        observation.elements.iter().filter(|e| e.sources == [Source::Ocr]).collect();
+    assert!(ocr_only.is_empty(), "{ocr_only:#?}");
+    let radios: Vec<_> =
+        observation.elements.iter().filter(|e| e.role == Role::RadioButton).collect();
+    assert_eq!(radios.len(), 4);
+    assert!(radios.iter().all(|r| r.sources.contains(&Source::Ocr)), "labels confirmed");
+}

@@ -1,0 +1,483 @@
+{
+  "application": {
+    "bundle_id": "com.blackmagic-design.BlackmagicProxyGeneratorLite",
+    "name": "Blackmagic Proxy Generator Lite",
+    "pid": 27648
+  },
+  "elements": [
+    {
+      "bounds": {
+        "height": 16.0,
+        "width": 208.0,
+        "x": 622.0,
+        "y": 169.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_1",
+      "name": "Blackmagic Proxy Generator Lite",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 12.773365020751953,
+        "width": 62.39103317260742,
+        "x": 426.8981628417969,
+        "y": 211.958251953125
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_2",
+      "name": "Processing",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 10.0,
+        "width": 20.0,
+        "x": 432.0,
+        "y": 250.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_3",
+      "name": "Idle",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 11.0,
+        "width": 30.0,
+        "x": 942.0,
+        "y": 263.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_4",
+      "name": "Start",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 11.0,
+        "width": 18.0,
+        "x": 432.0,
+        "y": 279.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_5",
+      "name": "0%",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 14.0,
+        "width": 29.0,
+        "x": 640.0,
+        "y": 278.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_6",
+      "name": "O fps",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 14.0,
+        "width": 24.0,
+        "x": 853.0,
+        "y": 277.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_7",
+      "name": "0:00",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 13.26330852508545,
+        "width": 77.04401397705078,
+        "x": 426.9779968261719,
+        "y": 329.86834716796875
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_8",
+      "name": "Proxy Format",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 12.708105087280273,
+        "width": 87.23420715332031,
+        "x": 526.86669921875,
+        "y": 366.9242248535156
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_9",
+      "name": "Create proxies in",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 14.0,
+        "width": 164.0,
+        "x": 647.0,
+        "y": 364.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_10",
+      "name": "H.264 8 bit 4:2:0 Half Res 1080p",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 14.0,
+        "width": 122.0,
+        "x": 644.0,
+        "y": 384.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_11",
+      "name": "H.264 8 bit 4:2:0 1080p",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 13.119762420654297,
+        "width": 124.32481384277344,
+        "x": 646.8451538085938,
+        "y": 403.0006103515625
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_12",
+      "name": "H.265 10 bit 4:2:0 1080p",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 14.04077434539795,
+        "width": 153.2483673095703,
+        "x": 645.9025268554688,
+        "y": 421.0708923339844
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_13",
+      "name": "ProRes 422 10 bit 4:2:2 1080p",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 11.0,
+        "width": 80.0,
+        "x": 428.0,
+        "y": 475.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_14",
+      "name": "Watch Folders",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 10.253679275512695,
+        "width": 41.061134338378906,
+        "x": 427.96942138671875,
+        "y": 501.8731689453125
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_15",
+      "name": "Volume",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 10.0,
+        "width": 34.0,
+        "x": 582.0,
+        "y": 502.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_16",
+      "name": "Folder",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 10.05981159210205,
+        "width": 33.01807403564453,
+        "x": 938.990966796875,
+        "y": 501.9700927734375
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_17",
+      "name": "Status",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 12.0,
+        "width": 24.0,
+        "x": 456.0,
+        "y": 714.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_18",
+      "name": "Add",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 10.222023010253906,
+        "width": 46.04775619506836,
+        "x": 554.9761352539062,
+        "y": 715.8889770507812
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_19",
+      "name": "Remove",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 10.06924819946289,
+        "width": 32.02157211303711,
+        "x": 671.9892578125,
+        "y": 715.9653930664062
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_20",
+      "name": "Show",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 10.0,
+        "width": 83.0,
+        "x": 814.0,
+        "y": 716.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_21",
+      "name": "Delete Proxies",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 10.0,
+        "width": 84.0,
+        "x": 935.0,
+        "y": 716.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_22",
+      "name": "Extract Proxies",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    }
+  ],
+  "id": "obs_000001",
+  "protocol_version": "0.1",
+  "timestamp": 1789769888108,
+  "window": {
+    "bounds": {
+      "height": 589.0,
+      "width": 650.0,
+      "x": 400.0,
+      "y": 160.0
+    },
+    "title": "Blackmagic Proxy Generator"
+  }
+}

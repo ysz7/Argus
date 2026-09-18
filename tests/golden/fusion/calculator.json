@@ -1040,17 +1040,5 @@
       ],
       "parent": "e_1"
     }
-  ],
-  "relations": [
-    {
-      "kind": "contains",
-      "from": "e_29",
-      "to": "e_32"
-    },
-    {
-      "kind": "contains",
-      "from": "e_29",
-      "to": "e_36"
-    }
   ]
 }
