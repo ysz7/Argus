@@ -19,7 +19,7 @@ Argus answers one question:
 > What is in the interface right now, where is it, what state is it in, and
 > how confident is Argus about each claim?
 
-> **Status:** early development (Phase 0 — bootstrap). Not usable yet.
+> **Status:** early development. The [Observation Protocol v0.1](spec/ARGUS_PROTOCOL.md) is defined; perception is not implemented yet.
 
 ## Architectural boundaries
 

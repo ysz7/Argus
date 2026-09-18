@@ -1,0 +1,55 @@
+{
+  "from": "obs_000001",
+  "to": "obs_000002",
+  "added": [
+    {
+      "id": "e_9",
+      "role": "dialog",
+      "name": "Saved",
+      "bounds": {
+        "x": 300.0,
+        "y": 200.0,
+        "width": 400.0,
+        "height": 120.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ]
+    }
+  ],
+  "removed": [
+    "e_2"
+  ],
+  "changed": [
+    {
+      "id": "e_5",
+      "property": "state.enabled",
+      "from": true,
+      "to": false
+    },
+    {
+      "id": "e_8",
+      "property": "value",
+      "from": "",
+      "to": "report"
+    },
+    {
+      "id": "e_7",
+      "property": "name",
+      "from": null,
+      "to": "Close"
+    }
+  ]
+}

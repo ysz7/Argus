@@ -1,0 +1,252 @@
+{
+  "protocol_version": "0.1",
+  "id": "obs_000001",
+  "timestamp": 1789000000000,
+  "application": {
+    "name": "Finder",
+    "bundle_id": "com.apple.finder",
+    "pid": 4321
+  },
+  "window": {
+    "title": "Documents",
+    "bounds": {
+      "x": 100.0,
+      "y": 80.0,
+      "width": 800.0,
+      "height": 600.0
+    }
+  },
+  "elements": [
+    {
+      "id": "e_1",
+      "role": "window",
+      "name": "Documents",
+      "bounds": {
+        "x": 100.0,
+        "y": 80.0,
+        "width": 800.0,
+        "height": 600.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "children": [
+        "e_2"
+      ]
+    },
+    {
+      "id": "e_2",
+      "role": "dialog",
+      "bounds": {
+        "x": 300.0,
+        "y": 200.0,
+        "width": 400.0,
+        "height": 180.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_1",
+      "children": [
+        "e_3",
+        "e_4",
+        "e_5",
+        "e_6"
+      ]
+    },
+    {
+      "id": "e_3",
+      "role": "text",
+      "name": "Delete file?",
+      "bounds": {
+        "x": 320.0,
+        "y": 220.0,
+        "width": 360.0,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_2"
+    },
+    {
+      "id": "e_4",
+      "role": "checkbox",
+      "name": "Don't ask again",
+      "bounds": {
+        "x": 320.0,
+        "y": 260.0,
+        "width": 160.0,
+        "height": 18.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "checked": "unchecked"
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_2"
+    },
+    {
+      "id": "e_5",
+      "role": "button",
+      "name": "Cancel",
+      "bounds": {
+        "x": 500.0,
+        "y": 330.0,
+        "width": 90.0,
+        "height": 28.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_2"
+    },
+    {
+      "id": "e_6",
+      "role": "button",
+      "name": "Delete",
+      "description": "Moves the file to the Trash",
+      "bounds": {
+        "x": 600.0,
+        "y": 330.0,
+        "width": 90.0,
+        "height": 28.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility",
+        "ocr"
+      ],
+      "parent": "e_2"
+    },
+    {
+      "id": "e_7",
+      "role": "icon",
+      "bounds": {
+        "x": 870.0,
+        "y": 90.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "confidence": {
+        "element": 0.74,
+        "role": 0.48,
+        "bounds": 0.82
+      },
+      "sources": [
+        "vision"
+      ]
+    },
+    {
+      "id": "e_8",
+      "role": "text_box",
+      "name": "Search",
+      "value": "",
+      "bounds": {
+        "x": 110.0,
+        "y": 640.0,
+        "width": 300.0,
+        "height": 60.0
+      },
+      "visible_bounds": {
+        "x": 110.0,
+        "y": 640.0,
+        "width": 300.0,
+        "height": 40.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "editable": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "kind": "label_for",
+      "from": "e_3",
+      "to": "e_2",
+      "confidence": 0.6
+    },
+    {
+      "kind": "contains",
+      "from": "e_1",
+      "to": "e_7"
+    }
+  ]
+}

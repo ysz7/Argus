@@ -1,0 +1,1 @@
+{ "protocol_version": "0.1", "id": "obs_1", "timestamp": 0, "elements": [ { "id": "e_1", "role": "button", "bounds": { "x": 0, "y": 0, "width": 10, "height": 10 }, "confidence": { "element": 1.0 }, "sources": ["accessibility"], "state": { "enabled": "yes" } } ] }
