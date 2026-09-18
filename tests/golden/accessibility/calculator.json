@@ -1,0 +1,974 @@
+{
+  "protocol_version": "0.1",
+  "id": "obs_golden",
+  "timestamp": 0,
+  "application": {
+    "name": "Calculator",
+    "bundle_id": "com.apple.calculator",
+    "pid": 1000
+  },
+  "window": {
+    "title": "Calculator"
+  },
+  "elements": [
+    {
+      "id": "e_1",
+      "role": "window",
+      "name": "Calculator",
+      "bounds": {
+        "x": 285.0,
+        "y": 479.0,
+        "width": 230.0,
+        "height": 408.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "children": [
+        "e_2",
+        "e_29",
+        "e_32",
+        "e_33",
+        "e_35"
+      ]
+    },
+    {
+      "id": "e_2",
+      "role": "group",
+      "bounds": {
+        "x": 285.0,
+        "y": 479.0,
+        "width": 230.0,
+        "height": 408.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_1",
+      "children": [
+        "e_3"
+      ]
+    },
+    {
+      "id": "e_3",
+      "role": "group",
+      "bounds": {
+        "x": 285.0,
+        "y": 479.0,
+        "width": 230.0,
+        "height": 408.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_2",
+      "children": [
+        "e_4",
+        "e_5"
+      ]
+    },
+    {
+      "id": "e_4",
+      "role": "unknown",
+      "bounds": {
+        "x": 284.0,
+        "y": 531.0,
+        "width": 0.5,
+        "height": 356.0
+      },
+      "state": {
+        "enabled": false,
+        "visible": false,
+        "focused": false,
+        "selected": false,
+        "expanded": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_3"
+    },
+    {
+      "id": "e_5",
+      "role": "group",
+      "bounds": {
+        "x": 285.0,
+        "y": 479.0,
+        "width": 230.0,
+        "height": 408.0
+      },
+      "state": {
+        "visible": true,
+        "focused": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_3",
+      "children": [
+        "e_6"
+      ]
+    },
+    {
+      "id": "e_6",
+      "role": "group",
+      "bounds": {
+        "x": 285.0,
+        "y": 532.0,
+        "width": 230.0,
+        "height": 354.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_5",
+      "children": [
+        "e_7",
+        "e_9",
+        "e_10",
+        "e_11",
+        "e_12",
+        "e_13",
+        "e_14",
+        "e_15",
+        "e_16",
+        "e_17",
+        "e_18",
+        "e_19",
+        "e_20",
+        "e_21",
+        "e_22",
+        "e_23",
+        "e_24",
+        "e_25",
+        "e_26",
+        "e_27",
+        "e_28"
+      ]
+    },
+    {
+      "id": "e_7",
+      "role": "group",
+      "bounds": {
+        "x": 295.0,
+        "y": 565.0,
+        "width": 210.0,
+        "height": 42.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6",
+      "children": [
+        "e_8"
+      ]
+    },
+    {
+      "id": "e_8",
+      "role": "text",
+      "name": "0",
+      "description": "Edit field",
+      "bounds": {
+        "x": 486.0,
+        "y": 568.0,
+        "width": 19.0,
+        "height": 36.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "editable": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_7"
+    },
+    {
+      "id": "e_9",
+      "role": "button",
+      "name": "Delete",
+      "description": "Delete the last digit or operation entered (long press to delete all)",
+      "bounds": {
+        "x": 295.0,
+        "y": 612.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_10",
+      "role": "button",
+      "name": "All Clear",
+      "bounds": {
+        "x": 349.0,
+        "y": 612.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_11",
+      "role": "button",
+      "name": "Percent",
+      "bounds": {
+        "x": 403.0,
+        "y": 612.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_12",
+      "role": "button",
+      "name": "Divide",
+      "bounds": {
+        "x": 457.0,
+        "y": 612.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_13",
+      "role": "button",
+      "name": "7",
+      "bounds": {
+        "x": 295.0,
+        "y": 666.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_14",
+      "role": "button",
+      "name": "8",
+      "bounds": {
+        "x": 349.0,
+        "y": 666.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_15",
+      "role": "button",
+      "name": "9",
+      "bounds": {
+        "x": 403.0,
+        "y": 666.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_16",
+      "role": "button",
+      "name": "Multiply",
+      "bounds": {
+        "x": 457.0,
+        "y": 666.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_17",
+      "role": "button",
+      "name": "4",
+      "bounds": {
+        "x": 295.0,
+        "y": 720.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_18",
+      "role": "button",
+      "name": "5",
+      "bounds": {
+        "x": 349.0,
+        "y": 720.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_19",
+      "role": "button",
+      "name": "6",
+      "bounds": {
+        "x": 403.0,
+        "y": 720.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_20",
+      "role": "button",
+      "name": "Subtract",
+      "bounds": {
+        "x": 457.0,
+        "y": 720.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_21",
+      "role": "button",
+      "name": "1",
+      "bounds": {
+        "x": 295.0,
+        "y": 774.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_22",
+      "role": "button",
+      "name": "2",
+      "bounds": {
+        "x": 349.0,
+        "y": 774.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_23",
+      "role": "button",
+      "name": "3",
+      "bounds": {
+        "x": 403.0,
+        "y": 774.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_24",
+      "role": "button",
+      "name": "Add",
+      "bounds": {
+        "x": 457.0,
+        "y": 774.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_25",
+      "role": "button",
+      "name": "Change Sign",
+      "description": "Change sign of a value",
+      "bounds": {
+        "x": 295.0,
+        "y": 828.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_26",
+      "role": "button",
+      "name": "0",
+      "bounds": {
+        "x": 349.0,
+        "y": 828.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_27",
+      "role": "button",
+      "name": "Point",
+      "bounds": {
+        "x": 403.0,
+        "y": 828.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_28",
+      "role": "button",
+      "name": "Equals",
+      "bounds": {
+        "x": 457.0,
+        "y": 828.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_6"
+    },
+    {
+      "id": "e_29",
+      "role": "group",
+      "bounds": {
+        "x": 285.0,
+        "y": 479.0,
+        "width": 230.0,
+        "height": 52.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_1",
+      "children": [
+        "e_30",
+        "e_31"
+      ]
+    },
+    {
+      "id": "e_30",
+      "role": "button",
+      "name": "Show Sidebar",
+      "description": "Show Sidebar",
+      "bounds": {
+        "x": 377.0,
+        "y": 479.0,
+        "width": 40.0,
+        "height": 52.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "selected": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_29"
+    },
+    {
+      "id": "e_31",
+      "role": "button",
+      "name": "Mode",
+      "description": "Change Calculator mode",
+      "bounds": {
+        "x": 471.0,
+        "y": 479.0,
+        "width": 40.0,
+        "height": 52.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "selected": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_29"
+    },
+    {
+      "id": "e_32",
+      "role": "button",
+      "name": "Close",
+      "bounds": {
+        "x": 303.0,
+        "y": 497.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_1"
+    },
+    {
+      "id": "e_33",
+      "role": "button",
+      "name": "Zoom",
+      "bounds": {
+        "x": 349.0,
+        "y": 497.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": false,
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_1",
+      "children": [
+        "e_34"
+      ]
+    },
+    {
+      "id": "e_34",
+      "role": "group",
+      "bounds": {
+        "x": 350.0,
+        "y": 498.0,
+        "width": 14.0,
+        "height": 14.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_33"
+    },
+    {
+      "id": "e_35",
+      "role": "button",
+      "name": "Minimize",
+      "bounds": {
+        "x": 326.0,
+        "y": 497.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "confidence": {
+        "element": 1.0,
+        "role": 1.0,
+        "name": 1.0,
+        "bounds": 1.0,
+        "state": 1.0
+      },
+      "sources": [
+        "accessibility"
+      ],
+      "parent": "e_1"
+    }
+  ]
+}

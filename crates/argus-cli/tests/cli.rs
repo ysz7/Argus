@@ -56,3 +56,17 @@ fn capture_list_cannot_write_output() {
         .failure()
         .stderr(contains("cannot be used with"));
 }
+
+#[test]
+fn observe_rejects_conflicting_targets() {
+    argus()
+        .args(["observe", "--app", "Calculator", "--pid", "1"])
+        .assert()
+        .failure()
+        .stderr(contains("cannot be used with"));
+}
+
+#[test]
+fn observe_rejects_unknown_sources() {
+    argus().args(["observe", "--source", "telepathy"]).assert().failure();
+}

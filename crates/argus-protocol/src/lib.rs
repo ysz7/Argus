@@ -23,6 +23,7 @@
 
 #![forbid(unsafe_code)]
 
+mod candidate;
 mod confidence;
 mod delta;
 mod element;
@@ -35,6 +36,7 @@ mod relation;
 mod source;
 mod validation;
 
+pub use candidate::{CandidateId, ElementCandidate};
 pub use confidence::{Confidence, Score};
 pub use delta::{ElementChange, ObservationDelta};
 pub use element::{CheckState, Element, ElementState, Role};

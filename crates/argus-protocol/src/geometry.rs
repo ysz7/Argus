@@ -47,6 +47,21 @@ impl Bounds {
     pub fn height(&self) -> f32 {
         self.height
     }
+
+    /// The overlapping area of two rectangles, or `None` if they do not
+    /// overlap with a positive area.
+    pub fn intersection(&self, other: &Bounds) -> Option<Bounds> {
+        let left = self.x.max(other.x);
+        let top = self.y.max(other.y);
+        let right = (self.x + self.width).min(other.x + other.width);
+        let bottom = (self.y + self.height).min(other.y + other.height);
+        (right > left && bottom > top).then_some(Bounds {
+            x: left,
+            y: top,
+            width: right - left,
+            height: bottom - top,
+        })
+    }
 }
 
 #[derive(Deserialize)]
@@ -81,6 +96,22 @@ mod tests {
         assert!(Bounds::new(0.0, 0.0, 10.0, -1.0).is_err());
         assert!(Bounds::new(f32::NAN, 0.0, 10.0, 10.0).is_err());
         assert!(Bounds::new(0.0, f32::INFINITY, 10.0, 10.0).is_err());
+    }
+
+    #[test]
+    fn intersects_overlapping_rectangles() {
+        let a = Bounds::new(0.0, 0.0, 100.0, 50.0).unwrap();
+        let b = Bounds::new(80.0, -10.0, 40.0, 30.0).unwrap();
+        assert_eq!(a.intersection(&b), Some(Bounds::new(80.0, 0.0, 20.0, 20.0).unwrap()));
+        assert_eq!(a.intersection(&a), Some(a));
+    }
+
+    #[test]
+    fn touching_or_empty_rectangles_do_not_intersect() {
+        let a = Bounds::new(0.0, 0.0, 100.0, 50.0).unwrap();
+        assert_eq!(a.intersection(&Bounds::new(100.0, 0.0, 10.0, 10.0).unwrap()), None);
+        assert_eq!(a.intersection(&Bounds::new(10.0, 10.0, 0.0, 0.0).unwrap()), None);
+        assert_eq!(a.intersection(&Bounds::new(-50.0, 60.0, 10.0, 10.0).unwrap()), None);
     }
 
     #[test]

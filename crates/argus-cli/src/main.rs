@@ -29,6 +29,10 @@ struct Cli {
 
 #[derive(Debug, Subcommand)]
 enum Command {
+    /// Observe the focused window of an application.
+    Observe(commands::observe::ObserveArgs),
+    /// Dump the raw native accessibility tree (developer tool).
+    Accessibility(commands::accessibility::AccessibilityArgs),
     /// Capture a frame of a window or display (developer tool).
     Capture(commands::capture::CaptureArgs),
 }
@@ -39,6 +43,8 @@ fn main() -> anyhow::Result<()> {
     tracing::debug!(version = env!("CARGO_PKG_VERSION"), "argus started");
 
     match cli.command {
+        Some(Command::Observe(args)) => commands::observe::run(&args),
+        Some(Command::Accessibility(args)) => commands::accessibility::run(&args),
         Some(Command::Capture(args)) => commands::capture::run(&args),
         None => Ok(()),
     }

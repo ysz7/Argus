@@ -21,3 +21,6 @@ argus-fusion.workspace = true
 argus-tracking.workspace = true
 thiserror.workspace = true
 tracing.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true

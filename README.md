@@ -20,7 +20,8 @@ Argus answers one question:
 > how confident is Argus about each claim?
 
 > **Status:** early development. The [Observation Protocol v0.1](spec/ARGUS_PROTOCOL.md)
-> is defined and macOS screen capture works; perception is not implemented yet.
+> is defined; macOS screen capture and Accessibility-based observations work.
+> Pixel-based perception (OCR, vision) is not implemented yet.
 
 ## Architectural boundaries
 
@@ -104,11 +105,31 @@ cargo run -p argus-cli -- --help
 
 ### Permissions
 
-Screen capture needs the **Screen Recording** permission. macOS grants it to
-the application that launches `argus` (Terminal, iTerm, VS Code, ...): allow
-that application in System Settings → Privacy & Security → Screen & System
-Audio Recording, then restart it. The first capture attempt triggers the
-system prompt.
+macOS grants permissions to the application that launches `argus` (Terminal,
+iTerm, VS Code, ...). Allow that application in System Settings → Privacy &
+Security, then restart it:
+
+- **Accessibility** — needed by `argus observe` and `argus accessibility`;
+- **Screen & System Audio Recording** — needed by `argus capture`.
+
+The first attempt triggers the system prompt.
+
+### Observe
+
+```bash
+argus observe                          # focused window of the frontmost app
+argus observe --app Calculator         # by name or bundle id, works in background
+argus observe --pid 4321
+argus observe --source accessibility   # the only source so far (default)
+```
+
+Prints an [Argus Observation](spec/ARGUS_PROTOCOL.md) as JSON.
+`argus accessibility` prints the raw native tree (`AXButton`, ...) for
+debugging the platform adapter.
+
+Electron/Chromium applications (VS Code, Slack, ...) expose only a skeleton
+tree unless asked to enable accessibility; Argus never writes to other
+applications, so such apps await pixel-based perception.
 
 ### Capture (developer tool)
 

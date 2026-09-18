@@ -36,6 +36,10 @@ pub enum Error {
     /// Frame acquisition failed.
     #[error(transparent)]
     Capture(#[from] argus_capture::Error),
+
+    /// Reading the accessibility tree failed.
+    #[error(transparent)]
+    Accessibility(#[from] argus_accessibility::Error),
 }
 
 impl Error {
@@ -47,6 +51,7 @@ impl Error {
             Error::Unsupported { .. } => "unsupported",
             Error::PermissionDenied(_) => "permission_denied",
             Error::Capture(error) => error.code(),
+            Error::Accessibility(error) => error.code(),
         }
     }
 }

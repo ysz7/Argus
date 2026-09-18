@@ -13,8 +13,14 @@
 
 #![forbid(unsafe_code)]
 
+mod assemble;
 pub mod error;
+mod observe;
 
+/// Native accessibility trees (re-exported so front ends depend only on the core).
+pub use argus_accessibility as accessibility;
 /// Frame acquisition (re-exported so front ends depend only on the core).
 pub use argus_capture as capture;
+pub use assemble::assemble;
 pub use error::{Error, Permission, Result};
+pub use observe::Observer;

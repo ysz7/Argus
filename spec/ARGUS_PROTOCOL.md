@@ -68,7 +68,7 @@ An observation describes the interface at one moment.
 | `value`          | string                | no       | Current value (text field contents, slider position, ...). `""` means empty.   |
 | `description`    | string                | no       | Longer description or help text.                                               |
 | `bounds`         | Bounds                | yes      | Full extent of the element, including clipped parts (§4.4).                    |
-| `visible_bounds` | Bounds                | no       | The part of `bounds` actually visible on screen (§4.4).                        |
+| `visible_bounds` | Bounds                | no       | Visible part of `bounds` when only partially visible (§4.4).                   |
 | `state`          | ElementState          | no       | Interaction state (§6). Omitted when nothing is known.                         |
 | `confidence`     | Confidence            | yes      | Property-level confidence (§7).                                                |
 | `sources`        | array of Source       | yes      | Sources that contributed evidence (§8). MUST NOT be empty.                     |
@@ -128,12 +128,17 @@ in global space.
   Window-relative coordinates are derived by subtracting `window.bounds.x/y`.
 - `bounds` is the element's **full** extent as reported or estimated, even when
   parts are clipped by a scroll view, the window, or a display edge.
-- `visible_bounds`, when present, is the intersection of `bounds` with the area
-  actually visible on screen. It SHOULD lie within `bounds`.
 - `state.visible` is `true` if any part of the element is visible and `false`
-  if the element is entirely hidden (off-screen, clipped away, or covered).
-- When `visible_bounds` is omitted, visibility of the individual parts is
-  unknown.
+  if the element is entirely hidden (off-screen or clipped away by a scroll
+  view or window).
+- `visible_bounds` is present only when the element is **partially** visible:
+  it is the intersection of `bounds` with the visible area and lies within
+  `bounds`.
+- Hence: `visible: true` without `visible_bounds` means fully visible;
+  `visible: true` with `visible_bounds` means partially visible; `visible:
+  false` means hidden; no `visible` means unknown.
+- In version 0.1 visibility accounts for clipping only. Occlusion by other
+  windows or overlays is not considered.
 
 ## 5. Role
 
