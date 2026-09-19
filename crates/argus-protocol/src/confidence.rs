@@ -68,12 +68,26 @@ pub struct Confidence {
     /// Confidence of [`Element::state`](crate::Element::state).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state: Option<Score>,
+    /// Confidence that the element is the element that had the same ID
+    /// earlier in the tracking session (see
+    /// [`Observation::previous`](crate::Observation::previous)). `None` for
+    /// elements seen for the first time.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub identity: Option<Score>,
 }
 
 impl Confidence {
     /// Confidence with only element existence assessed.
     pub fn new(element: Score) -> Self {
-        Self { element, role: None, name: None, value: None, bounds: None, state: None }
+        Self {
+            element,
+            role: None,
+            name: None,
+            value: None,
+            bounds: None,
+            state: None,
+            identity: None,
+        }
     }
 }
 

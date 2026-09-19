@@ -1,0 +1,390 @@
+{
+  "application": {
+    "bundle_id": "com.apple.calculator",
+    "name": "Calculator",
+    "pid": 4306
+  },
+  "elements": [
+    {
+      "bounds": {
+        "height": 18.0,
+        "width": 40.0,
+        "x": 985.0,
+        "y": 274.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_1",
+      "name": "7+5",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 23.0,
+        "width": 33.0,
+        "x": 991.0,
+        "y": 307.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_2",
+      "name": "12",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 34.0,
+        "width": 131.0,
+        "x": 878.0,
+        "y": 351.0
+      },
+      "children": [
+        "e_4",
+        "e_5",
+        "e_6"
+      ],
+      "confidence": {
+        "element": 0.5,
+        "role": 0.5
+      },
+      "id": "e_3",
+      "role": "row",
+      "sources": [
+        "derived"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 18.0,
+        "width": 29.0,
+        "x": 878.0,
+        "y": 359.0
+      },
+      "confidence": {
+        "element": 0.5,
+        "name": 0.5
+      },
+      "id": "e_4",
+      "name": "AC",
+      "parent": "e_3",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 34.0,
+        "width": 32.0,
+        "x": 930.0,
+        "y": 351.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_5",
+      "name": "%",
+      "parent": "e_3",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 21.0,
+        "width": 19.0,
+        "x": 990.0,
+        "y": 358.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_6",
+      "name": "÷",
+      "parent": "e_3",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 18.0,
+        "width": 121.0,
+        "x": 832.0,
+        "y": 413.0
+      },
+      "children": [
+        "e_8",
+        "e_9",
+        "e_10"
+      ],
+      "confidence": {
+        "element": 0.5,
+        "role": 0.5
+      },
+      "id": "e_7",
+      "role": "row",
+      "sources": [
+        "derived"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 17.0,
+        "width": 13.0,
+        "x": 832.0,
+        "y": 413.0
+      },
+      "confidence": {
+        "element": 0.5,
+        "name": 0.5
+      },
+      "id": "e_8",
+      "name": "7",
+      "parent": "e_7",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 18.0,
+        "width": 16.0,
+        "x": 884.0,
+        "y": 413.0
+      },
+      "confidence": {
+        "element": 0.5,
+        "name": 0.5
+      },
+      "id": "e_9",
+      "name": "8",
+      "parent": "e_7",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 18.0,
+        "width": 15.0,
+        "x": 938.0,
+        "y": 413.0
+      },
+      "confidence": {
+        "element": 0.5,
+        "name": 0.5
+      },
+      "id": "e_10",
+      "name": "9",
+      "parent": "e_7",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 18.0,
+        "width": 122.0,
+        "x": 831.0,
+        "y": 467.0
+      },
+      "children": [
+        "e_12",
+        "e_13",
+        "e_14"
+      ],
+      "confidence": {
+        "element": 0.5,
+        "role": 0.5
+      },
+      "id": "e_11",
+      "role": "row",
+      "sources": [
+        "derived"
+      ]
+    },
+    {
+      "bounds": {
+        "height": 18.0,
+        "width": 14.0,
+        "x": 831.0,
+        "y": 467.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_12",
+      "name": "4",
+      "parent": "e_11",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 18.0,
+        "width": 15.0,
+        "x": 884.0,
+        "y": 467.0
+      },
+      "confidence": {
+        "element": 0.5,
+        "name": 0.5
+      },
+      "id": "e_13",
+      "name": "5",
+      "parent": "e_11",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 18.0,
+        "width": 15.0,
+        "x": 938.0,
+        "y": 467.0
+      },
+      "confidence": {
+        "element": 0.5,
+        "name": 0.5
+      },
+      "id": "e_14",
+      "name": "6",
+      "parent": "e_11",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 19.0,
+        "width": 14.0,
+        "x": 885.0,
+        "y": 521.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_15",
+      "name": "2",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 20.0,
+        "width": 20.0,
+        "x": 990.0,
+        "y": 520.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_16",
+      "name": "+",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    },
+    {
+      "bounds": {
+        "height": 21.0,
+        "width": 24.0,
+        "x": 827.0,
+        "y": 573.0
+      },
+      "confidence": {
+        "element": 1.0,
+        "name": 1.0
+      },
+      "id": "e_17",
+      "name": "+/_",
+      "role": "text",
+      "sources": [
+        "ocr"
+      ],
+      "state": {
+        "visible": true
+      }
+    }
+  ],
+  "id": "obs_000001",
+  "protocol_version": "0.1",
+  "timestamp": 1789797401154,
+  "window": {
+    "bounds": {
+      "height": 408.0,
+      "width": 230.0,
+      "x": 804.0,
+      "y": 210.0
+    },
+    "title": "Calculator"
+  }
+}

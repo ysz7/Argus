@@ -1,0 +1,204 @@
+# 1_cleared: kept 0, restored 0, new 38, lost 0, uncertain 0
+  e_1  new window "Calculator"
+  e_2  new group
+  e_3  new group
+  e_4  new unknown
+  e_5  new group
+  e_6  new group
+  e_7  new group
+  e_8  new text "0"
+  e_9  new button "Delete"
+ e_10  new button "All Clear"
+ e_11  new button "Percent"
+ e_12  new button "Divide"
+ e_13  new button "7"
+ e_14  new button "8"
+ e_15  new button "9"
+ e_16  new button "Multiply"
+ e_17  new button "4"
+ e_18  new button "5"
+ e_19  new button "6"
+ e_20  new button "Subtract"
+ e_21  new button "1"
+ e_22  new button "2"
+ e_23  new button "3"
+ e_24  new button "Add"
+ e_25  new button "Change Sign"
+ e_26  new button "0"
+ e_27  new button "Point"
+ e_28  new button "Equals"
+ e_29  new group
+ e_30  new button "Show Sidebar"
+ e_31  new button "Mode"
+ e_32  new button "Close"
+ e_33  new button "Zoom"
+ e_34  new group
+ e_35  new button "Minimize"
+ e_36  new row
+ e_37  new row
+ e_38  new row
+# 2_typed: kept 38, restored 0, new 1, lost 0, uncertain 2
+  e_1 1.00 window "Calculator"
+  e_2 0.94 group
+  e_3 0.96 group
+  e_4 1.00 unknown
+  e_5 0.95 group
+  e_6 0.96 group
+  e_7 0.79 group
+  e_8 0.63 text "7 + 57"
+  e_9 1.00 button "Delete"
+ e_10 0.64 button "Clear"
+ e_11 1.00 button "Percent"
+ e_12 1.00 button "Divide"
+ e_13 1.00 button "7"
+ e_14 1.00 button "8"
+ e_15 1.00 button "9"
+ e_16 1.00 button "Multiply"
+ e_17 1.00 button "4"
+ e_18 1.00 button "5"
+ e_19 1.00 button "6"
+ e_20 1.00 button "Subtract"
+ e_21 1.00 button "1"
+ e_22 1.00 button "2"
+ e_23 1.00 button "3"
+ e_24 1.00 button "Add"
+ e_25 1.00 button "Change Sign"
+ e_26 1.00 button "0"
+ e_27 1.00 button "Point"
+ e_28 1.00 button "Equals"
+ e_29 1.00 group
+ e_30 1.00 button "Show Sidebar"
+ e_31 1.00 button "Mode"
+ e_32 1.00 button "Close"
+ e_33 1.00 button "Zoom"
+ e_34 1.00 group
+ e_39  new group
+ e_35 1.00 button "Minimize"
+ e_36 0.98 row
+ e_37 1.00 row
+ e_38 1.00 row
+# 3_deleted: kept 39, restored 0, new 1, lost 0, uncertain 1
+  e_1 1.00 window "Calculator"
+  e_2 0.97 group
+  e_3 0.98 group
+  e_4 1.00 unknown
+  e_5 0.98 group
+  e_6 0.98 group
+  e_7 0.79 group
+  e_8 0.73 text "7 + 5"
+  e_9 1.00 button "Delete"
+ e_10 1.00 button "Clear"
+ e_11 1.00 button "Percent"
+ e_12 1.00 button "Divide"
+ e_13 1.00 button "7"
+ e_14 1.00 button "8"
+ e_15 1.00 button "9"
+ e_16 1.00 button "Multiply"
+ e_17 1.00 button "4"
+ e_18 1.00 button "5"
+ e_19 1.00 button "6"
+ e_20 1.00 button "Subtract"
+ e_21 1.00 button "1"
+ e_22 1.00 button "2"
+ e_23 1.00 button "3"
+ e_24 1.00 button "Add"
+ e_25 1.00 button "Change Sign"
+ e_26 1.00 button "0"
+ e_27 1.00 button "Point"
+ e_28 1.00 button "Equals"
+ e_29 1.00 group
+ e_30 1.00 button "Show Sidebar"
+ e_31 1.00 button "Mode"
+ e_32 1.00 button "Close"
+ e_33 1.00 button "Zoom"
+ e_34 1.00 group
+ e_39 1.00 group
+ e_35 1.00 button "Minimize"
+ e_40  new row
+ e_36 1.00 row
+ e_37 1.00 row
+ e_38 1.00 row
+# 4_equals: kept 39, restored 0, new 2, lost 1, uncertain 3
+  e_1 1.00 window "Calculator"
+  e_2 0.94 group
+  e_3 0.96 group
+  e_4 1.00 unknown
+  e_5 0.95 group
+  e_6 0.96 group
+ e_41  new group
+ e_42  new text "7 + 5"
+  e_7 0.73 group
+  e_8 0.38 text "12"
+  e_9 1.00 button "Delete"
+ e_10 0.64 button "All Clear"
+ e_11 1.00 button "Percent"
+ e_12 1.00 button "Divide"
+ e_13 1.00 button "7"
+ e_14 1.00 button "8"
+ e_15 1.00 button "9"
+ e_16 1.00 button "Multiply"
+ e_17 1.00 button "4"
+ e_18 1.00 button "5"
+ e_19 1.00 button "6"
+ e_20 1.00 button "Subtract"
+ e_21 1.00 button "1"
+ e_22 1.00 button "2"
+ e_23 1.00 button "3"
+ e_24 1.00 button "Add"
+ e_25 1.00 button "Change Sign"
+ e_26 1.00 button "0"
+ e_27 1.00 button "Point"
+ e_28 1.00 button "Equals"
+ e_29 1.00 group
+ e_30 1.00 button "Show Sidebar"
+ e_31 1.00 button "Mode"
+ e_32 1.00 button "Close"
+ e_33 1.00 button "Zoom"
+ e_34 1.00 group
+ e_39 1.00 group
+ e_35 1.00 button "Minimize"
+ e_36 1.00 row
+ e_37 1.00 row
+ e_38 1.00 row
+# 5_moved: kept 40, restored 1, new 0, lost 1, uncertain 0
+  e_1 1.00 window "Calculator"
+  e_2 1.00 group
+  e_3 1.00 group
+  e_4 1.00 unknown
+  e_5 1.00 group
+  e_6 1.00 group
+ e_41 1.00 group
+ e_42 1.00 text "7 + 5"
+  e_7 1.00 group
+  e_8 1.00 text "12"
+  e_9 1.00 button "Delete"
+ e_10 1.00 button "All Clear"
+ e_11 1.00 button "Percent"
+ e_12 1.00 button "Divide"
+ e_13 1.00 button "7"
+ e_14 1.00 button "8"
+ e_15 1.00 button "9"
+ e_16 1.00 button "Multiply"
+ e_17 1.00 button "4"
+ e_18 1.00 button "5"
+ e_19 1.00 button "6"
+ e_20 1.00 button "Subtract"
+ e_21 1.00 button "1"
+ e_22 1.00 button "2"
+ e_23 1.00 button "3"
+ e_24 1.00 button "Add"
+ e_25 1.00 button "Change Sign"
+ e_26 1.00 button "0"
+ e_27 1.00 button "Point"
+ e_28 1.00 button "Equals"
+ e_29 1.00 group
+ e_30 1.00 button "Show Sidebar"
+ e_31 1.00 button "Mode"
+ e_32 1.00 button "Close"
+ e_33 1.00 button "Zoom"
+ e_34 1.00 group
+ e_39 1.00 group
+ e_35 1.00 button "Minimize"
+ e_40 0.84 row
+ e_36 1.00 row
+ e_37 1.00 row

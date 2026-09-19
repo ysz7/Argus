@@ -4,8 +4,8 @@
 //! observation pipeline:
 //!
 //! ```text
-//! sources ─SourceCandidate→ normalize ─Normalized→ fuse ─Fused→ (scene graph
-//!     → tracking) → assemble → Observation
+//! sources ─SourceCandidate→ normalize ─Normalized→ fuse (+ scene graph)
+//!     ─Fused→ assemble → Observation → track (stable IDs)
 //! ```
 //!
 //! [`assemble`] accepts only [`Fused`] elements, which only [`fuse`] can
@@ -33,6 +33,12 @@ pub use error::{Error, Permission, Result};
 pub use fuse::{Fused, fuse};
 pub use normalize::{Normalized, normalize};
 pub use observe::{Inspection, Observer};
+
+/// Element identity across observations (re-exported so front ends depend
+/// only on the core).
+pub mod tracking {
+    pub use argus_tracking::{MEMORY, Tracker, TrackingReport, UNCERTAIN};
+}
 
 /// Fusion evidence types (re-exported so front ends depend only on the core).
 pub mod fusion {

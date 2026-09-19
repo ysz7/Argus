@@ -13,63 +13,19 @@
 //! Run with `ARGUS_UPDATE_GOLDEN=1` to regenerate after an intentional change,
 //! then review the diff.
 
-use std::path::{Path, PathBuf};
+mod common;
 
+use std::path::Path;
+
+use argus_core::Fused;
 use argus_core::accessibility::{AxSnapshot, candidates};
-use argus_core::{Fused, assemble, fuse, normalize};
-use argus_protocol::{
-    CandidateId, Observation, ObservationId, Region, Role, Source, SourceCandidate, SourceMeta,
-    Timestamp,
-};
+use argus_core::normalize;
+use argus_protocol::{Observation, Role, Source};
 
-fn repo() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..")
-}
-
-/// Turns a single-source observation back into the candidates it came from.
-fn replay(observation: &Observation) -> Vec<SourceCandidate> {
-    observation
-        .elements
-        .iter()
-        .enumerate()
-        .map(|(index, element)| SourceCandidate {
-            id: CandidateId(index as u32),
-            parent: None,
-            role: element.role,
-            name: element.name.clone(),
-            value: element.value.clone(),
-            description: element.description.clone(),
-            region: Region::Screen(element.bounds),
-            clip: None,
-            state: element.state,
-            confidence: element.confidence,
-            relations: Vec::new(),
-            meta: SourceMeta::new(element.sources[0]),
-        })
-        .collect()
-}
+use common::repo;
 
 fn fuse_recording(name: &str) -> (Observation, Fused) {
-    let dir = repo().join("tests/fixtures/fusion").join(name);
-    let read = |file: &str| std::fs::read_to_string(dir.join(file)).ok();
-
-    let mut evidence = Vec::new();
-    let mut header = None;
-    if let Some(json) = read("accessibility.json") {
-        let snapshot: AxSnapshot = serde_json::from_str(&json).unwrap();
-        evidence.push(normalize(candidates(&snapshot)));
-    }
-    for file in ["ocr.json", "vision.json"] {
-        if let Some(json) = read(file) {
-            let observation: Observation = serde_json::from_str(&json).unwrap();
-            evidence.push(normalize(replay(&observation)));
-            header.get_or_insert((observation.application, observation.window));
-        }
-    }
-    let (application, window) = header.unwrap_or_default();
-    let fused = fuse(&evidence);
-    let id = ObservationId::new("obs_golden").unwrap();
-    (assemble(id, Timestamp(0), application, window, &fused), fused)
+    common::fuse_recording(&repo().join("tests/fixtures/fusion").join(name), "obs_golden")
 }
 
 fn assert_golden(name: &str, observation: &Observation) {

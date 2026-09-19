@@ -1,11 +1,13 @@
-//! `argus observe`: print one observation as JSON.
+//! `argus observe`: print observations as JSON.
+
+use std::time::{Duration, Instant};
 
 use anyhow::bail;
 use argus_core::Observer;
 use argus_protocol::Observation;
 
 use crate::commands::target::AppTargetArgs;
-use crate::output::print_json;
+use crate::output::{print_json, print_json_line};
 
 #[derive(Debug, clap::Args)]
 pub(crate) struct ObserveArgs {
@@ -14,6 +16,16 @@ pub(crate) struct ObserveArgs {
 
     #[command(flatten)]
     pub(crate) target: AppTargetArgs,
+
+    /// Number of observations to make. Successive observations are tracked:
+    /// elements that are still there keep their IDs. More than one
+    /// observation is printed as JSON Lines (one observation per line).
+    #[arg(long, default_value_t = 1, value_parser = clap::value_parser!(u32).range(1..))]
+    pub(crate) count: u32,
+
+    /// Time between the starts of successive observations, in milliseconds.
+    #[arg(long, value_name = "MS", default_value_t = 1000)]
+    pub(crate) interval_ms: u64,
 }
 
 /// Selection of evidence sources.
@@ -68,7 +80,21 @@ pub(crate) fn ensure_valid(observation: &Observation) -> anyhow::Result<()> {
 
 pub(crate) fn run(args: &ObserveArgs) -> anyhow::Result<()> {
     let observer = Observer::new()?;
-    let observation = observer.observe(&args.target.target(), &args.sources.sources())?;
-    ensure_valid(&observation)?;
-    print_json(&serde_json::to_value(&observation)?)
+    let (target, sources) = (args.target.target(), args.sources.sources());
+    if args.count == 1 {
+        let observation = observer.observe(&target, &sources)?;
+        ensure_valid(&observation)?;
+        return print_json(&serde_json::to_value(&observation)?);
+    }
+    let interval = Duration::from_millis(args.interval_ms);
+    for number in 0..args.count {
+        let started = Instant::now();
+        let observation = observer.observe(&target, &sources)?;
+        ensure_valid(&observation)?;
+        print_json_line(&serde_json::to_value(&observation)?)?;
+        if number + 1 < args.count {
+            std::thread::sleep(interval.saturating_sub(started.elapsed()));
+        }
+    }
+    Ok(())
 }

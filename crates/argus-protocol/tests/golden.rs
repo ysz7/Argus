@@ -73,7 +73,7 @@ fn ax_element(id_: &str, role: Role, name: Option<&str>, frame: Bounds) -> Eleme
 }
 
 /// A "Delete file?" dialog: a hierarchy with states, a pixel-only element, a
-/// partially visible element and relations.
+/// partially visible element, relations and tracked identities.
 fn dialog_observation() -> Observation {
     let mut window =
         ax_element("e_1", Role::Window, Some("Documents"), bounds(100.0, 80.0, 800.0, 600.0));
@@ -132,8 +132,18 @@ fn dialog_observation() -> Observation {
     search.visible_bounds = Some(bounds(110.0, 640.0, 300.0, 40.0));
     search.state.editable = Some(true);
 
+    // The second observation of a tracking session: everything but the
+    // search field was seen before.
+    for element in [&mut window, &mut dialog, &mut message, &mut checkbox, &mut cancel, &mut delete]
+    {
+        element.confidence.identity = Some(Score::CERTAIN);
+    }
+    let mut icon = icon;
+    icon.confidence.identity = Some(score(0.62));
+
     let mut observation =
-        Observation::new(ObservationId::new("obs_000001").unwrap(), Timestamp(1_789_000_000_000));
+        Observation::new(ObservationId::new("obs_000002").unwrap(), Timestamp(1_789_000_000_000));
+    observation.previous = Some(ObservationId::new("obs_000001").unwrap());
     observation.application = Some(Application {
         name: Some("Finder".to_owned()),
         bundle_id: Some("com.apple.finder".to_owned()),

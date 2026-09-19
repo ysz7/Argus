@@ -19,6 +19,12 @@ impl Fused {
         self.0.elements.iter().map(|element| &element.evidence)
     }
 
+    /// The platform identifier of each element's object, if any, in the
+    /// order of the assembled observation's elements (for tracking).
+    pub fn native_ids(&self) -> Vec<Option<String>> {
+        self.0.elements.iter().map(|element| element.native_id.clone()).collect()
+    }
+
     /// Takes the evidence for each element, in the order of the assembled
     /// observation's elements.
     pub fn into_evidence(self) -> Vec<ElementEvidence> {

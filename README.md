@@ -21,8 +21,8 @@ Argus answers one question:
 
 > **Status:** early development. The [Observation Protocol v0.1](spec/ARGUS_PROTOCOL.md)
 > is defined; macOS screen capture, Accessibility, OCR and visual UI
-> detection work and are fused into one observation. Stable IDs and deltas
-> are not implemented yet.
+> detection work and are fused into one observation, and elements keep stable
+> IDs across successive observations. Deltas are not implemented yet.
 
 ## Architectural boundaries
 
@@ -149,6 +149,7 @@ argus observe --app Calculator         # by name or bundle id, works in backgrou
 argus observe --pid 4321
 argus observe --sources accessibility  # only the native accessibility tree
 argus observe --sources ocr,vision     # only the window's pixels
+argus observe --count 10 --interval-ms 500   # a tracked series, as JSON Lines
 argus inspect                          # evidence and conflicts of every element
 argus inspect e_42 --json              # ... of one element, as JSON
 ```
@@ -158,6 +159,12 @@ accessibility tree, OCR and visual detection of the same window are fused.
 `argus inspect` shows, for each element, which source said what and which
 conflicts were resolved how. It observes anew, so element IDs from an earlier
 run match only while the interface is unchanged.
+
+With `--count`, successive observations form a tracking session: an element
+that is still there keeps its ID, a new one gets an ID never used before, and
+`confidence.identity` says how sure Argus is that an element is the one that
+had the ID before (see [§3.1 of the protocol](spec/ARGUS_PROTOCOL.md)). IDs
+are stable within one run only.
 `argus accessibility` prints the raw native tree (`AXButton`, ...) for
 debugging the platform adapter.
 

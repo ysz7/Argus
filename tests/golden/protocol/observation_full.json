@@ -1,7 +1,8 @@
 {
   "protocol_version": "0.1",
-  "id": "obs_000001",
+  "id": "obs_000002",
   "timestamp": 1789000000000,
+  "previous": "obs_000001",
   "application": {
     "name": "Finder",
     "bundle_id": "com.apple.finder",
@@ -37,7 +38,8 @@
         "role": 1.0,
         "name": 1.0,
         "bounds": 1.0,
-        "state": 1.0
+        "state": 1.0,
+        "identity": 1.0
       },
       "sources": [
         "accessibility"
@@ -63,7 +65,8 @@
         "element": 1.0,
         "role": 1.0,
         "bounds": 1.0,
-        "state": 1.0
+        "state": 1.0,
+        "identity": 1.0
       },
       "sources": [
         "accessibility"
@@ -95,7 +98,8 @@
         "role": 1.0,
         "name": 1.0,
         "bounds": 1.0,
-        "state": 1.0
+        "state": 1.0,
+        "identity": 1.0
       },
       "sources": [
         "accessibility"
@@ -122,7 +126,8 @@
         "role": 1.0,
         "name": 1.0,
         "bounds": 1.0,
-        "state": 1.0
+        "state": 1.0,
+        "identity": 1.0
       },
       "sources": [
         "accessibility"
@@ -148,7 +153,8 @@
         "role": 1.0,
         "name": 1.0,
         "bounds": 1.0,
-        "state": 1.0
+        "state": 1.0,
+        "identity": 1.0
       },
       "sources": [
         "accessibility"
@@ -176,7 +182,8 @@
         "role": 1.0,
         "name": 1.0,
         "bounds": 1.0,
-        "state": 1.0
+        "state": 1.0,
+        "identity": 1.0
       },
       "sources": [
         "accessibility",
@@ -196,7 +203,8 @@
       "confidence": {
         "element": 0.74,
         "role": 0.48,
-        "bounds": 0.82
+        "bounds": 0.82,
+        "identity": 0.62
       },
       "sources": [
         "vision"

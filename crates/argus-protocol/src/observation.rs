@@ -13,6 +13,11 @@ pub struct Observation {
     pub id: ObservationId,
     /// When the observed state was captured.
     pub timestamp: Timestamp,
+    /// The earlier observation of the same tracking session whose element
+    /// IDs this observation continues. `None` when tracking started with
+    /// this observation.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub previous: Option<ObservationId>,
     /// The observed application, if known.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub application: Option<Application>,
@@ -33,6 +38,7 @@ impl Observation {
             protocol_version: PROTOCOL_VERSION.to_owned(),
             id,
             timestamp,
+            previous: None,
             application: None,
             window: None,
             elements: Vec::new(),

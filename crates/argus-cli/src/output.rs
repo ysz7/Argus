@@ -10,6 +10,15 @@ pub(crate) fn print_json(value: &serde_json::Value) -> anyhow::Result<()> {
     Ok(())
 }
 
+/// Writes `value` to stdout as one line of compact JSON (JSON Lines).
+pub(crate) fn print_json_line(value: &serde_json::Value) -> anyhow::Result<()> {
+    let mut stdout = std::io::stdout().lock();
+    serde_json::to_writer(&mut stdout, value)?;
+    writeln!(stdout)?;
+    stdout.flush()?;
+    Ok(())
+}
+
 /// Writes human-readable text to stdout.
 pub(crate) fn print_text(text: &str) -> anyhow::Result<()> {
     let mut stdout = std::io::stdout().lock();

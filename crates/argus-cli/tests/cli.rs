@@ -95,3 +95,8 @@ fn inspect_is_documented() {
         .stdout(contains("ELEMENT"))
         .stdout(contains("--sources"));
 }
+
+#[test]
+fn observe_rejects_zero_observations() {
+    argus().args(["observe", "--count", "0"]).assert().failure().stderr(contains("--count"));
+}

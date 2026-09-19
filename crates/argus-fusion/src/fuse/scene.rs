@@ -210,6 +210,7 @@ impl Builder {
             sources: vec![Source::Derived],
             parent: container,
             absorbed: false,
+            native_id: None,
             evidence: ElementEvidence {
                 contributions: vec![Contribution {
                     source: Source::Derived,

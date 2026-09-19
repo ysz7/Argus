@@ -1,5 +1,6 @@
 //! The observation pipeline.
 
+use std::sync::Mutex;
 use std::sync::atomic::{AtomicU64, Ordering};
 
 use argus_accessibility::{AccessibilityBackend, AppTarget};
@@ -7,6 +8,7 @@ use argus_capture::{CaptureBackend, CaptureTarget, WindowInfo, main_window};
 use argus_fusion::ElementEvidence;
 use argus_perception::{OcrBackend, VisualPerceptionBackend};
 use argus_protocol::{Bounds, Element, Observation, ObservationId, Source, Timestamp, Window};
+use argus_tracking::Tracker;
 
 use crate::assemble::assemble;
 use crate::fuse::fuse;
@@ -20,12 +22,17 @@ static NEXT_OBSERVATION: AtomicU64 = AtomicU64::new(1);
 ///
 /// Each source needs its backend; observing through a source whose backend
 /// is missing fails with [`Error::Unsupported`].
+///
+/// An observer tracks elements across its observations: successive
+/// observations of one application form a session in which an element keeps
+/// its ID (see [`argus_tracking`]).
 #[derive(Default)]
 pub struct Observer {
     accessibility: Option<Box<dyn AccessibilityBackend>>,
     capture: Option<Box<dyn CaptureBackend>>,
     ocr: Option<Box<dyn OcrBackend>>,
     vision: Option<Box<dyn VisualPerceptionBackend>>,
+    tracker: Mutex<Tracker>,
 }
 
 impl std::fmt::Debug for Observer {
@@ -71,6 +78,12 @@ impl Observer {
     pub fn with_vision(mut self, backend: Box<dyn VisualPerceptionBackend>) -> Self {
         self.vision = Some(backend);
         self
+    }
+
+    /// Ends the tracking session: the next observation gets fresh element
+    /// IDs and no [`Observation::previous`].
+    pub fn reset_tracking(&self) {
+        self.tracker.lock().unwrap_or_else(|poisoned| poisoned.into_inner()).reset();
     }
 
     /// Observes `target` using the given evidence sources and fuses their
@@ -193,9 +206,23 @@ impl Observer {
         }
 
         let fused = fuse(&evidence);
-        let observation = assemble(next_observation_id(), timestamp, application, window, &fused);
+        let mut observation =
+            assemble(next_observation_id(), timestamp, application, window, &fused);
+        let tracking_started = std::time::Instant::now();
+        let report = self
+            .tracker
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner())
+            .track(&mut observation, &fused.native_ids());
         tracing::debug!(
             elements = observation.elements.len(),
+            continued = report.continued,
+            kept = report.kept,
+            restored = report.restored,
+            new = report.new,
+            lost = report.lost,
+            uncertain = report.uncertain,
+            tracking_ms = tracking_started.elapsed().as_millis() as u64,
             elapsed_ms = Timestamp::now().0.saturating_sub(started.0),
             "assembled observation"
         );
@@ -322,6 +349,17 @@ mod tests {
 
         let second = observer.observe(&AppTarget::Frontmost, &[Source::Accessibility]).unwrap();
         assert_ne!(first.id, second.id);
+        // The same window again: the same elements, tracked.
+        assert_eq!(second.previous.as_ref(), Some(&first.id));
+        for (a, b) in first.elements.iter().zip(&second.elements) {
+            assert_eq!(a.id, b.id);
+            assert_eq!(b.confidence.identity.map(|s| s.get()), Some(1.0));
+        }
+
+        observer.reset_tracking();
+        let third = observer.observe(&AppTarget::Frontmost, &[Source::Accessibility]).unwrap();
+        assert_eq!(third.previous, None);
+        assert_eq!(third.elements[0].id.as_str(), "e_3", "IDs are never reused");
     }
 
     struct FakeCapture;

@@ -38,6 +38,7 @@ An observation describes the interface at one moment.
 | `protocol_version` | string                | yes      | Protocol version, `"0.1"` for this document.                      |
 | `id`               | ObservationId         | yes      | Identifier of the observation.                                    |
 | `timestamp`        | integer               | yes      | Capture time, milliseconds since the Unix epoch (UTC).            |
+| `previous`         | ObservationId         | no       | Earlier observation whose element IDs this one continues (§3.1).  |
 | `application`      | Application           | no       | The observed application.                                         |
 | `window`           | Window                | no       | The observed window.                                              |
 | `elements`         | array of Element      | yes      | All observed elements. Parents SHOULD precede their children.     |
@@ -80,8 +81,30 @@ An observation describes the interface at one moment.
 `ObservationId` and `ElementId` are **opaque, non-empty strings**. Consumers
 MUST NOT parse them or infer meaning from their format (`e_12` and
 `obs_000001` are examples only). An `ElementId` is unique within one
-observation. Whether the same ID denotes the same element across observations
-is defined by tracking (a later protocol version) and is never guaranteed.
+observation.
+
+#### Tracking
+
+Successive observations of one application by one producer form a
+**tracking session**. Within a session, element IDs are stable:
+
+- an observation that continues a session names the observation it continues
+  in `previous`. Without `previous`, a session starts and no ID is claimed to
+  denote an element seen before;
+- an element that has an ID used earlier in the session is, according to
+  Argus, the same element that had it. `confidence.identity` (§7) says how
+  sure Argus is. An element seen for the first time gets an ID never used
+  before in the session and has no `confidence.identity`;
+- an ID is never reused for a different element within a session. An element
+  that disappears may reappear later with its old ID (e.g. after a source
+  missed it for a moment, or after scrolling back);
+- identity is a hypothesis. When two assignments are nearly as good (identical
+  elements that moved), `confidence.identity` is at most `0.5`: the producer
+  MUST NOT report a guess as certain. An element whose text changed in place
+  (a calculator display) keeps its ID with lowered identity confidence.
+
+Consumers MUST NOT assume that an ID from one session means anything in
+another.
 
 ### 3.2 Text
 
@@ -215,14 +238,15 @@ indeterminate (`mixed`) state.
 
 Confidence is reported **per property**, as a number in `0.0..=1.0`.
 
-| Field     | Required | Confidence that...                           |
-| --------- | -------- | -------------------------------------------- |
-| `element` | yes      | the element exists.                          |
-| `role`    | no       | `role` is correct.                           |
-| `name`    | no       | `name` is correct.                           |
-| `value`   | no       | `value` is correct.                          |
-| `bounds`  | no       | `bounds` is correct.                         |
-| `state`   | no       | the reported `state` properties are correct. |
+| Field      | Required | Confidence that...                                                    |
+| ---------- | -------- | --------------------------------------------------------------------- |
+| `element`  | yes      | the element exists.                                                   |
+| `role`     | no       | `role` is correct.                                                    |
+| `name`     | no       | `name` is correct.                                                    |
+| `value`    | no       | `value` is correct.                                                   |
+| `bounds`   | no       | `bounds` is correct.                                                  |
+| `state`    | no       | the reported `state` properties are correct.                          |
+| `identity` | no       | the element is the one that had this ID earlier in the session (§3.1). Omitted for elements seen for the first time. |
 
 Rules:
 

@@ -68,6 +68,10 @@ pub struct FusedElement {
     pub parent: Option<usize>,
     /// How the element came to be.
     pub evidence: ElementEvidence,
+    /// Identifier the application or platform gave the object the element
+    /// was created from (e.g. `AXIdentifier`), for tracking. Never exposed in
+    /// observations.
+    pub native_id: Option<String>,
 }
 
 /// A relation between two fused elements (indices into
@@ -134,6 +138,7 @@ struct Node {
     /// Absorbed into another node.
     absorbed: bool,
     evidence: ElementEvidence,
+    native_id: Option<String>,
     relations: Vec<(RelationKind, CandidateId, Option<Score>)>,
 }
 
@@ -156,6 +161,7 @@ impl Node {
                 contributions: vec![contribution(candidate, Link::Primary)],
                 conflicts: Vec::new(),
             },
+            native_id: candidate.meta.native_id.clone(),
             relations: candidate
                 .relations
                 .iter()
@@ -604,6 +610,7 @@ impl Builder {
                     sources,
                     parent: parents[index].map(|parent| position[parent]),
                     evidence: std::mem::take(&mut node.evidence),
+                    native_id: node.native_id.take(),
                 }
             })
             .collect();
