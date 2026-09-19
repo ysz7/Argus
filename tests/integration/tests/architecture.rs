@@ -26,7 +26,8 @@ const ALLOWED: &[(&str, &[&str])] = &[
         ],
     ),
     ("argus-server", &["argus-protocol", "argus-core"]),
-    ("argus-cli", &["argus-protocol", "argus-core", "argus-server"]),
+    ("argus-benchmark", &["argus-protocol", "argus-core"]),
+    ("argus-cli", &["argus-protocol", "argus-core", "argus-server", "argus-benchmark"]),
     ("argus-integration-tests", &[]),
 ];
 

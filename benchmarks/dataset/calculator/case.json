@@ -1,0 +1,3 @@
+{
+  "description": "Calculator (native SwiftUI app), recorded by hand: clear, type 12, add 3, equals. Reviewed truth: the All Clear button keeps its identity when it becomes Clear; after equals, the input line (StandardInputView) keeps its identity and shows the result, the expression line above is new \u2014 a tracker may reasonably see the expression as the moved element."
+}

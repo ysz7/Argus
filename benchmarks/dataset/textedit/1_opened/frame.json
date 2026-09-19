@@ -1,0 +1,14 @@
+{
+  "bounds": {
+    "x": 146.0,
+    "y": 71.0,
+    "width": 610.0,
+    "height": 860.0
+  },
+  "scale_factor": 2.0,
+  "application": {
+    "name": "TextEdit",
+    "bundle_id": "com.apple.TextEdit"
+  },
+  "title": "Benchmark Notes.rtf"
+}

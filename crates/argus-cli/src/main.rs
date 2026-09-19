@@ -38,6 +38,8 @@ enum Command {
     Watch(commands::watch::WatchArgs),
     /// Show the evidence and conflicts behind observed elements.
     Inspect(commands::inspect::InspectArgs),
+    /// Measure accuracy on the recorded dataset, and live latency and memory.
+    Benchmark(commands::benchmark::BenchmarkArgs),
     /// Check permissions, backends and the local service.
     Doctor(commands::doctor::DoctorArgs),
     /// Dump the raw native accessibility tree (developer tool).
@@ -56,6 +58,7 @@ fn main() -> anyhow::Result<()> {
         Some(Command::Observe(args)) => commands::observe::run(&args),
         Some(Command::Watch(args)) => commands::watch::run(&args),
         Some(Command::Inspect(args)) => commands::inspect::run(&args),
+        Some(Command::Benchmark(args)) => commands::benchmark::run_command(&args),
         Some(Command::Doctor(args)) => commands::doctor::run(&args),
         Some(Command::Accessibility(args)) => commands::accessibility::run(&args),
         Some(Command::Capture(args)) => commands::capture::run(&args),

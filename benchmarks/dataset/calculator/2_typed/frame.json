@@ -1,0 +1,14 @@
+{
+  "bounds": {
+    "x": 964.0,
+    "y": 120.0,
+    "width": 230.0,
+    "height": 408.0
+  },
+  "scale_factor": 2.0,
+  "application": {
+    "name": "Calculator",
+    "bundle_id": "com.apple.calculator"
+  },
+  "title": "Calculator"
+}

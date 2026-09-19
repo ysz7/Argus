@@ -9,7 +9,7 @@ use argus_protocol::{
 
 use crate::evidence::{Claim, Conflict, Contribution, ElementEvidence, Link, Property};
 use crate::geometry::{area, cover, iou};
-use crate::order::{reading_order, single_line};
+use crate::order::{lines, reading_order, single_line};
 use crate::roles::{carries_text, compatible, is_checkable, is_control, is_detail, named_by_text};
 use crate::text::similar;
 
@@ -31,6 +31,9 @@ const GLYPH_ON_TEXT: f32 = 0.7;
 /// A pixel-derived element belongs to a new element when this much of it is
 /// inside.
 const ADOPT: f32 = 0.8;
+/// Highest confidence of a field's value read from its pixels: the text may
+/// be a placeholder rather than the contents.
+const FIELD_TEXT: f32 = 0.7;
 
 /// The result of fusion: elements in output order (parents before children,
 /// siblings in reading order).
@@ -482,11 +485,63 @@ impl Builder {
             && single_line(&texts.iter().map(|&t| self.nodes[t].bounds).collect::<Vec<_>>());
         if label {
             self.label_with(index, texts);
+        } else if candidate.role == Role::TextBox && self.field_text(&texts) {
+            // The text in a field is its contents; its name is its label
+            // (see the scene graph). Other things inside (a search glass)
+            // stay its children.
+            self.fill_with(index, texts.clone());
+            for other in inside.into_iter().filter(|other| !texts.contains(other)) {
+                self.nodes[other].parent = Some(index);
+            }
         } else {
             for other in inside {
                 self.nodes[other].parent = Some(index);
             }
         }
+    }
+
+    /// Whether recognized texts read like a field's contents: one run of
+    /// text per line. Separate texts side by side are columns or labels (a
+    /// table header taken for a field), not something typed.
+    fn field_text(&self, texts: &[usize]) -> bool {
+        !texts.is_empty()
+            && lines(texts.to_vec(), |&text| self.nodes[text].bounds)
+                .iter()
+                .all(|line| line.len() == 1)
+    }
+
+    /// Absorbs recognized text elements into the field `target` as its
+    /// value, line by line.
+    fn fill_with(&mut self, target: usize, texts: Vec<usize>) {
+        let lines = lines(texts, |&text| self.nodes[text].bounds);
+        let mut rows = Vec::new();
+        let mut confidence: Option<Score> = None;
+        let mut contributions = Vec::new();
+        for line in &lines {
+            let mut words = Vec::new();
+            for &text in line {
+                let node = &mut self.nodes[text];
+                node.absorbed = true;
+                words.extend(node.name.clone());
+                let score = node.confidence.name.unwrap_or(node.confidence.element);
+                confidence = Some(confidence.map_or(score, |current| min(current, score)));
+                contributions.extend(
+                    std::mem::take(&mut node.evidence.contributions)
+                        .into_iter()
+                        .map(|contribution| Contribution { link: Link::Text, ..contribution }),
+                );
+            }
+            rows.push(words.join(" "));
+        }
+        let node = &mut self.nodes[target];
+        node.value = Some(rows.join("\n"));
+        // Pixels cannot tell typed text from a placeholder.
+        node.confidence.value =
+            confidence.map(|score| min(score, Score::new(FIELD_TEXT).expect("in range")));
+        if !node.sources.contains(&Source::Ocr) {
+            node.sources.push(Source::Ocr);
+        }
+        node.evidence.contributions.extend(contributions);
     }
 
     /// Absorbs recognized text elements into `target` as its name.
@@ -1038,6 +1093,40 @@ mod tests {
         assert_eq!(fusion.elements[0].name, None);
         assert_eq!(fusion.elements[1].parent, Some(0));
         assert_eq!(fusion.elements[2].parent, Some(0));
+    }
+
+    #[test]
+    fn text_in_a_detected_field_is_its_value() {
+        let candidates = [
+            vision(0, Role::TextBox, b(0.0, 0.0, 300.0, 60.0)),
+            vision(1, Role::Icon, b(270.0, 5.0, 20.0, 20.0)),
+            ocr(0, "Ship by Friday.", b(10.0, 5.0, 120.0, 14.0)),
+            ocr(1, "Review the results.", b(10.0, 30.0, 130.0, 14.0)),
+        ];
+        let fusion = fuse(&candidates);
+        let field = &fusion.elements[0];
+        assert_eq!(field.role, Role::TextBox);
+        assert_eq!(field.value.as_deref(), Some("Ship by Friday.\nReview the results."));
+        assert_eq!(field.name, None, "a field is named by its label, not its contents");
+        assert!(field.confidence.value.unwrap().get() <= 0.7, "may be a placeholder");
+        assert!(field.sources.contains(&Source::Ocr));
+        // The text is absorbed; the icon stays a child.
+        assert_eq!(fusion.elements.len(), 2, "{:#?}", fusion.elements);
+        assert_eq!(fusion.elements[1].role, Role::Icon);
+        assert_eq!(fusion.elements[1].parent, Some(0));
+    }
+
+    #[test]
+    fn texts_side_by_side_are_not_a_fields_contents() {
+        // A table header taken for a field: its column titles stay.
+        let candidates = [
+            vision(0, Role::TextBox, b(0.0, 0.0, 300.0, 24.0)),
+            ocr(0, "Volume", b(10.0, 5.0, 40.0, 12.0)),
+            ocr(1, "Folder", b(150.0, 5.0, 40.0, 12.0)),
+        ];
+        let fusion = fuse(&candidates);
+        assert_eq!(fusion.elements[0].value, None);
+        assert_eq!(fusion.elements.len(), 3);
     }
 
     #[test]

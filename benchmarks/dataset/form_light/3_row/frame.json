@@ -1,0 +1,13 @@
+{
+  "bounds": {
+    "x": 120.0,
+    "y": 120.0,
+    "width": 640.0,
+    "height": 472.0
+  },
+  "scale_factor": 2.0,
+  "application": {
+    "name": "form"
+  },
+  "title": "Argus Benchmark Form"
+}

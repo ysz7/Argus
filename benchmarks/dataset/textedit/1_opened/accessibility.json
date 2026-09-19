@@ -1,0 +1,607 @@
+{
+  "application": {
+    "name": "TextEdit",
+    "bundle_id": "com.apple.TextEdit",
+    "pid": 14653
+  },
+  "window": {
+    "role": "AXWindow",
+    "subrole": "AXStandardWindow",
+    "title": "Benchmark Notes.rtf",
+    "identifier": "_NS:31",
+    "frame": {
+      "x": 146.0,
+      "y": 71.0,
+      "width": 610.0,
+      "height": 860.0
+    },
+    "focused": false,
+    "label": 47,
+    "children": [
+      {
+        "role": "AXScrollArea",
+        "identifier": "_NS:8",
+        "frame": {
+          "x": 146.0,
+          "y": 139.0,
+          "width": 610.0,
+          "height": 792.0
+        },
+        "focused": false,
+        "children": [
+          {
+            "role": "AXTextArea",
+            "identifier": "First Text View",
+            "value": "Quarterly plan\nShip the observation service by Friday.\nReview the benchmark results with the team.\nBudget: 12 400 EUR, approved on 3 March.\nOpen questions: licensing, Windows support.\n",
+            "frame": {
+              "x": 146.0,
+              "y": 171.0,
+              "width": 610.0,
+              "height": 754.0
+            },
+            "focused": true
+          },
+          {
+            "role": "AXScrollBar",
+            "identifier": "_NS:24",
+            "value": 0.18518517911434174,
+            "frame": {
+              "x": 152.5,
+              "y": 913.0,
+              "width": 597.0,
+              "height": 19.0
+            },
+            "enabled": false,
+            "focused": false
+          },
+          {
+            "role": "AXScrollBar",
+            "identifier": "_NS:27",
+            "value": 0.615384578704834,
+            "frame": {
+              "x": 738.0,
+              "y": 170.0,
+              "width": 19.0,
+              "height": 754.5
+            },
+            "enabled": false,
+            "focused": false
+          },
+          {
+            "role": "AXRuler",
+            "frame": {
+              "x": 146.0,
+              "y": 139.0,
+              "width": 610.0,
+              "height": 32.0
+            },
+            "focused": false,
+            "children": [
+              {
+                "role": "AXRulerMarker",
+                "value": 0.0,
+                "frame": {
+                  "x": 147.0,
+                  "y": 148.0,
+                  "width": 9.0,
+                  "height": 6.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 21.164021164021165,
+                "frame": {
+                  "x": 747.0,
+                  "y": 148.0,
+                  "width": 9.0,
+                  "height": 6.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 0.0,
+                "frame": {
+                  "x": 147.0,
+                  "y": 144.0,
+                  "width": 9.0,
+                  "height": 10.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 1.2698412698412698,
+                "frame": {
+                  "x": 187.0,
+                  "y": 145.0,
+                  "width": 6.0,
+                  "height": 9.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 2.5396825396825395,
+                "frame": {
+                  "x": 223.0,
+                  "y": 145.0,
+                  "width": 6.0,
+                  "height": 9.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 3.8095238095238093,
+                "frame": {
+                  "x": 259.0,
+                  "y": 145.0,
+                  "width": 6.0,
+                  "height": 9.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 5.079365079365079,
+                "frame": {
+                  "x": 295.0,
+                  "y": 145.0,
+                  "width": 6.0,
+                  "height": 9.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 6.349206349206349,
+                "frame": {
+                  "x": 331.0,
+                  "y": 145.0,
+                  "width": 6.0,
+                  "height": 9.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 7.619047619047619,
+                "frame": {
+                  "x": 367.0,
+                  "y": 145.0,
+                  "width": 6.0,
+                  "height": 9.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 8.88888888888889,
+                "frame": {
+                  "x": 403.0,
+                  "y": 145.0,
+                  "width": 6.0,
+                  "height": 9.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 10.158730158730158,
+                "frame": {
+                  "x": 439.0,
+                  "y": 145.0,
+                  "width": 6.0,
+                  "height": 9.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 11.428571428571429,
+                "frame": {
+                  "x": 475.0,
+                  "y": 145.0,
+                  "width": 6.0,
+                  "height": 9.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 12.698412698412698,
+                "frame": {
+                  "x": 511.0,
+                  "y": 145.0,
+                  "width": 6.0,
+                  "height": 9.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 13.968253968253968,
+                "frame": {
+                  "x": 547.0,
+                  "y": 145.0,
+                  "width": 6.0,
+                  "height": 9.0
+                }
+              },
+              {
+                "role": "AXRulerMarker",
+                "value": 15.238095238095237,
+                "frame": {
+                  "x": 583.0,
+                  "y": 145.0,
+                  "width": 6.0,
+                  "height": 9.0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "role": "AXGroup",
+        "description": "Formatting",
+        "frame": {
+          "x": 146.0,
+          "y": 103.0,
+          "width": 610.0,
+          "height": 36.0
+        },
+        "focused": false,
+        "children": [
+          {
+            "role": "AXGroup",
+            "frame": {
+              "x": 153.0,
+              "y": 110.0,
+              "width": 87.5,
+              "height": 22.0
+            },
+            "enabled": true,
+            "focused": false,
+            "children": [
+              {
+                "role": "AXCheckBox",
+                "subrole": "AXSegment",
+                "description": "bold",
+                "help": "Bold text",
+                "value": 0.0,
+                "frame": {
+                  "x": 154.0,
+                  "y": 112.0,
+                  "width": 21.5,
+                  "height": 20.0
+                },
+                "enabled": true,
+                "focused": false
+              },
+              {
+                "role": "AXCheckBox",
+                "subrole": "AXSegment",
+                "description": "italic",
+                "help": "Italicize text",
+                "value": 0.0,
+                "frame": {
+                  "x": 175.5,
+                  "y": 112.0,
+                  "width": 22.0,
+                  "height": 20.0
+                },
+                "enabled": true,
+                "focused": false
+              },
+              {
+                "role": "AXCheckBox",
+                "subrole": "AXSegment",
+                "description": "underline",
+                "help": "Underline text",
+                "value": 0.0,
+                "frame": {
+                  "x": 197.5,
+                  "y": 112.0,
+                  "width": 21.5,
+                  "height": 20.0
+                },
+                "enabled": true,
+                "focused": false
+              },
+              {
+                "role": "AXCheckBox",
+                "subrole": "AXSegment",
+                "description": "strikethrough",
+                "help": "Strikethrough text",
+                "value": 0.0,
+                "frame": {
+                  "x": 219.0,
+                  "y": 112.0,
+                  "width": 22.5,
+                  "height": 20.0
+                },
+                "enabled": true,
+                "focused": false
+              }
+            ]
+          },
+          {
+            "role": "AXButton",
+            "description": "text color",
+            "help": "Click to choose the text color",
+            "value": "Clear",
+            "frame": {
+              "x": 243.5,
+              "y": 110.0,
+              "width": 22.0,
+              "height": 22.0
+            },
+            "enabled": true,
+            "focused": false
+          },
+          {
+            "role": "AXButton",
+            "description": "text background color",
+            "help": "Click to choose the text background color",
+            "value": "Clear",
+            "frame": {
+              "x": 268.5,
+              "y": 110.0,
+              "width": 22.0,
+              "height": 22.0
+            },
+            "enabled": true,
+            "focused": false
+          },
+          {
+            "role": "AXPopUpButton",
+            "description": "typeface",
+            "help": "Choose the typeface",
+            "value": "Helvetica",
+            "frame": {
+              "x": 293.5,
+              "y": 110.0,
+              "width": 82.0,
+              "height": 22.0
+            },
+            "enabled": true,
+            "focused": false
+          },
+          {
+            "role": "AXPopUpButton",
+            "description": "style",
+            "help": "Choose the style",
+            "value": "Regular",
+            "frame": {
+              "x": 378.5,
+              "y": 110.0,
+              "width": 82.0,
+              "height": 22.0
+            },
+            "enabled": true,
+            "focused": false
+          },
+          {
+            "role": "AXComboBox",
+            "description": "font size",
+            "help": "Set the font size",
+            "value": "14",
+            "frame": {
+              "x": 463.5,
+              "y": 110.0,
+              "width": 52.0,
+              "height": 22.0
+            },
+            "enabled": true,
+            "focused": false,
+            "expanded": false,
+            "children": [
+              {
+                "role": "AXButton",
+                "title": "",
+                "description": "font size",
+                "frame": {
+                  "x": 492.0,
+                  "y": 114.0,
+                  "width": 19.5,
+                  "height": 13.5
+                },
+                "enabled": true,
+                "focused": false
+              }
+            ]
+          },
+          {
+            "role": "AXGroup",
+            "frame": {
+              "x": 518.5,
+              "y": 110.0,
+              "width": 98.0,
+              "height": 22.0
+            },
+            "enabled": true,
+            "focused": false,
+            "children": [
+              {
+                "role": "AXCheckBox",
+                "subrole": "AXSegment",
+                "description": "align left",
+                "help": "Align text to left",
+                "value": 0.0,
+                "frame": {
+                  "x": 519.5,
+                  "y": 112.0,
+                  "width": 24.5,
+                  "height": 20.0
+                },
+                "enabled": true,
+                "focused": false
+              },
+              {
+                "role": "AXCheckBox",
+                "subrole": "AXSegment",
+                "description": "align center",
+                "help": "Center text",
+                "value": 0.0,
+                "frame": {
+                  "x": 544.0,
+                  "y": 112.0,
+                  "width": 24.5,
+                  "height": 20.0
+                },
+                "enabled": true,
+                "focused": false
+              },
+              {
+                "role": "AXCheckBox",
+                "subrole": "AXSegment",
+                "description": "align right",
+                "help": "Align text to right",
+                "value": 0.0,
+                "frame": {
+                  "x": 568.5,
+                  "y": 112.0,
+                  "width": 24.5,
+                  "height": 20.0
+                },
+                "enabled": true,
+                "focused": false
+              },
+              {
+                "role": "AXCheckBox",
+                "subrole": "AXSegment",
+                "description": "fully justify",
+                "help": "Justify text",
+                "value": 0.0,
+                "frame": {
+                  "x": 593.0,
+                  "y": 112.0,
+                  "width": 24.5,
+                  "height": 20.0
+                },
+                "enabled": true,
+                "focused": false
+              }
+            ]
+          },
+          {
+            "role": "AXMenuButton",
+            "description": "list style",
+            "help": "List bullets and numbering",
+            "frame": {
+              "x": 619.5,
+              "y": 110.0,
+              "width": 48.0,
+              "height": 22.0
+            },
+            "enabled": true,
+            "focused": false
+          },
+          {
+            "role": "AXPopUpButton",
+            "description": "line spacing",
+            "help": "Line and paragraph spacing",
+            "value": "1,0",
+            "frame": {
+              "x": 670.5,
+              "y": 110.0,
+              "width": 53.0,
+              "height": 22.0
+            },
+            "enabled": true,
+            "focused": false
+          }
+        ]
+      },
+      {
+        "role": "AXButton",
+        "subrole": "AXCloseButton",
+        "frame": {
+          "x": 154.0,
+          "y": 79.0,
+          "width": 16.0,
+          "height": 16.0
+        },
+        "enabled": true,
+        "focused": false
+      },
+      {
+        "role": "AXButton",
+        "subrole": "AXFullScreenButton",
+        "help": "this button also has an action to zoom the window",
+        "frame": {
+          "x": 200.0,
+          "y": 79.0,
+          "width": 16.0,
+          "height": 16.0
+        },
+        "enabled": true,
+        "focused": false,
+        "children": [
+          {
+            "role": "AXGroup",
+            "frame": {
+              "x": 201.0,
+              "y": 80.0,
+              "width": 14.0,
+              "height": 14.0
+            },
+            "focused": false,
+            "children": [
+              {
+                "role": "AXGroup",
+                "frame": {
+                  "x": 201.0,
+                  "y": 80.0,
+                  "width": 14.0,
+                  "height": 14.0
+                },
+                "focused": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "role": "AXButton",
+        "subrole": "AXMinimizeButton",
+        "frame": {
+          "x": 177.0,
+          "y": 79.0,
+          "width": 16.0,
+          "height": 16.0
+        },
+        "enabled": true,
+        "focused": false
+      },
+      {
+        "role": "AXMenuButton",
+        "title": "",
+        "description": "document actions",
+        "frame": {
+          "x": 385.0,
+          "y": 78.0,
+          "width": 12.0,
+          "height": 18.0
+        },
+        "enabled": false,
+        "focused": false
+      },
+      {
+        "role": "AXImage",
+        "title": "Benchmark Notes.rtf",
+        "frame": {
+          "x": 227.0,
+          "y": 77.0,
+          "width": 18.0,
+          "height": 18.0
+        },
+        "enabled": true,
+        "focused": false
+      },
+      {
+        "role": "AXStaticText",
+        "value": "Benchmark Notes.rtf",
+        "frame": {
+          "x": 246.0,
+          "y": 79.0,
+          "width": 140.0,
+          "height": 16.0
+        },
+        "enabled": true,
+        "focused": false
+      }
+    ]
+  },
+  "truncated": false
+}

@@ -66,6 +66,7 @@ never interpreted as instructions to Argus.
 | `argus-tracking`      | Element identity and changes over time.                 |
 | `argus-core`          | Orchestration pipeline; aggregated error type.          |
 | `argus-server`        | Local service / API.                                    |
+| `argus-benchmark`     | Benchmark dataset, replay and metrics.                  |
 | `argus-cli`           | The `argus` binary: user and developer commands.        |
 
 ### Pipeline
@@ -97,9 +98,9 @@ Allowed internal dependencies (enforced by
 [`tests/integration/tests/architecture.rs`](tests/integration/tests/architecture.rs)):
 
 ```text
-argus-cli ──→ argus-server ──→ argus-core ──→ capture, accessibility,
-    │                              │          perception, fusion, tracking
-    └──────────────────────────────┴─────────────────→ argus-protocol
+argus-cli ──→ argus-server ────→ argus-core ──→ capture, accessibility,
+    │     └──→ argus-benchmark ──↗     │          perception, fusion, tracking
+    └──────────────────────────────────┴─────────────────→ argus-protocol
 ```
 
 - `argus-protocol` depends on no other Argus crate and contains no platform
@@ -107,7 +108,8 @@ argus-cli ──→ argus-server ──→ argus-core ──→ capture, accessi
 - Source and processing crates (`capture`, `accessibility`, `perception`,
   `fusion`, `tracking`) depend only on `argus-protocol` and never on each
   other; `argus-core` wires them together.
-- Nothing depends on `argus-server` or `argus-cli` except the CLI itself.
+- Nothing depends on `argus-server`, `argus-benchmark` or `argus-cli` except
+  the CLI itself.
 
 Other directories (some appear in later phases): `spec/` (protocol specification), `tests/` (fixtures,
 golden files, integration tests), `benchmarks/`, `examples/`, `models/`,
@@ -279,6 +281,22 @@ python3 examples/python/watch.py --app Calculator --count 10
 macOS lets only one running process of a program capture the screen: while
 `argus serve` runs, the pixel sources of other `argus` commands time out. Ask
 the service instead, or stop it.
+
+### Benchmark
+
+```bash
+argus benchmark run                     # accuracy on benchmarks/dataset, by mode
+argus benchmark run --mode pixels --explain
+argus benchmark latency --app Calculator   # live latency and memory
+```
+
+Recorded windows (frame, accessibility tree, reviewed ground truth) are
+replayed through the real pipeline with the accessibility tree alone, visual
+detection alone, pixels alone (OCR + detection) and everything fused, and
+scored for recall, precision, role, text, grounding, states, relations,
+identity across steps and confidence calibration. See
+[benchmarks/README.md](benchmarks/README.md) for the method, the dataset and
+the baseline.
 
 ### Capture (developer tool)
 

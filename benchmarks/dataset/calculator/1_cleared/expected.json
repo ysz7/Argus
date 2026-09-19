@@ -1,0 +1,618 @@
+{
+  "elements": [
+    {
+      "id": "window",
+      "role": "window",
+      "name": "Calculator",
+      "bounds": {
+        "x": 964.0,
+        "y": 120.0,
+        "width": 230.0,
+        "height": 408.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "significant": false
+    },
+    {
+      "id": "window/group:#1",
+      "role": "group",
+      "bounds": {
+        "x": 964.0,
+        "y": 120.0,
+        "width": 230.0,
+        "height": 408.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": false
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView",
+      "role": "group",
+      "bounds": {
+        "x": 964.0,
+        "y": 120.0,
+        "width": 230.0,
+        "height": 408.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:#1",
+      "significant": false
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/unknown:#1",
+      "role": "unknown",
+      "bounds": {
+        "x": 963.0,
+        "y": 172.0,
+        "width": 0.5,
+        "height": 356.0
+      },
+      "state": {
+        "enabled": false,
+        "visible": false,
+        "focused": false,
+        "selected": false,
+        "expanded": false
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView",
+      "significant": false
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1",
+      "role": "group",
+      "bounds": {
+        "x": 964.0,
+        "y": 120.0,
+        "width": 230.0,
+        "height": 408.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView",
+      "significant": false
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "role": "group",
+      "bounds": {
+        "x": 964.0,
+        "y": 173.0,
+        "width": 230.0,
+        "height": 354.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1",
+      "significant": false
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/group:StandardInputView",
+      "role": "group",
+      "bounds": {
+        "x": 974.0,
+        "y": 206.0,
+        "width": 210.0,
+        "height": 42.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": false
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/group:StandardInputView/text:#1",
+      "role": "text",
+      "name": "0",
+      "bounds": {
+        "x": 1165.0,
+        "y": 209.0,
+        "width": 19.0,
+        "height": 36.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "editable": false
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/group:StandardInputView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:Delete",
+      "role": "button",
+      "name": "Delete",
+      "bounds": {
+        "x": 974.0,
+        "y": 253.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:All Clear",
+      "role": "button",
+      "name": "All Clear",
+      "bounds": {
+        "x": 1028.0,
+        "y": 253.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:Percent",
+      "role": "button",
+      "name": "Percent",
+      "bounds": {
+        "x": 1082.0,
+        "y": 253.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:Divide",
+      "role": "button",
+      "name": "Divide",
+      "bounds": {
+        "x": 1136.0,
+        "y": 253.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:7",
+      "role": "button",
+      "name": "7",
+      "bounds": {
+        "x": 974.0,
+        "y": 307.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:8",
+      "role": "button",
+      "name": "8",
+      "bounds": {
+        "x": 1028.0,
+        "y": 307.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:9",
+      "role": "button",
+      "name": "9",
+      "bounds": {
+        "x": 1082.0,
+        "y": 307.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:Multiply",
+      "role": "button",
+      "name": "Multiply",
+      "bounds": {
+        "x": 1136.0,
+        "y": 307.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:4",
+      "role": "button",
+      "name": "4",
+      "bounds": {
+        "x": 974.0,
+        "y": 361.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:5",
+      "role": "button",
+      "name": "5",
+      "bounds": {
+        "x": 1028.0,
+        "y": 361.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:6",
+      "role": "button",
+      "name": "6",
+      "bounds": {
+        "x": 1082.0,
+        "y": 361.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:Subtract",
+      "role": "button",
+      "name": "Subtract",
+      "bounds": {
+        "x": 1136.0,
+        "y": 361.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:1",
+      "role": "button",
+      "name": "1",
+      "bounds": {
+        "x": 974.0,
+        "y": 415.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:2",
+      "role": "button",
+      "name": "2",
+      "bounds": {
+        "x": 1028.0,
+        "y": 415.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:3",
+      "role": "button",
+      "name": "3",
+      "bounds": {
+        "x": 1082.0,
+        "y": 415.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:Add",
+      "role": "button",
+      "name": "Add",
+      "bounds": {
+        "x": 1136.0,
+        "y": 415.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:Change Sign",
+      "role": "button",
+      "name": "Change Sign",
+      "bounds": {
+        "x": 974.0,
+        "y": 469.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:0",
+      "role": "button",
+      "name": "0",
+      "bounds": {
+        "x": 1028.0,
+        "y": 469.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:Point",
+      "role": "button",
+      "name": "Point",
+      "bounds": {
+        "x": 1082.0,
+        "y": 469.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView/button:Equals",
+      "role": "button",
+      "name": "Equals",
+      "bounds": {
+        "x": 1136.0,
+        "y": 469.0,
+        "width": 48.0,
+        "height": 48.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "window/group:#1/group:main, SidebarNavigationSplitView/group:#1/group:CalculatorKeypadView",
+      "significant": true
+    },
+    {
+      "id": "window/group:#2",
+      "role": "group",
+      "bounds": {
+        "x": 964.0,
+        "y": 120.0,
+        "width": 230.0,
+        "height": 52.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/button:Show Sidebar",
+      "role": "button",
+      "name": "Show Sidebar",
+      "bounds": {
+        "x": 1056.0,
+        "y": 120.0,
+        "width": 44.0,
+        "height": 52.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "selected": false
+      },
+      "parent": "window/group:#2",
+      "significant": true
+    },
+    {
+      "id": "window/group:#2/button:Mode",
+      "role": "button",
+      "name": "Mode",
+      "bounds": {
+        "x": 1150.0,
+        "y": 120.0,
+        "width": 40.0,
+        "height": 52.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "selected": false
+      },
+      "parent": "window/group:#2",
+      "significant": true
+    },
+    {
+      "id": "window/button:Close",
+      "role": "button",
+      "name": "Close",
+      "bounds": {
+        "x": 982.0,
+        "y": 138.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/button:Zoom",
+      "role": "button",
+      "name": "Zoom",
+      "bounds": {
+        "x": 1028.0,
+        "y": 138.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": false,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/button:Zoom/group:#1",
+      "role": "group",
+      "bounds": {
+        "x": 1029.0,
+        "y": 139.0,
+        "width": 14.0,
+        "height": 14.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/button:Zoom",
+      "significant": false
+    },
+    {
+      "id": "window/button:Zoom/group:#1/group:#1",
+      "role": "group",
+      "bounds": {
+        "x": 1029.0,
+        "y": 139.0,
+        "width": 14.0,
+        "height": 14.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/button:Zoom/group:#1",
+      "significant": false
+    },
+    {
+      "id": "window/button:Minimize",
+      "role": "button",
+      "name": "Minimize",
+      "bounds": {
+        "x": 1005.0,
+        "y": 138.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    }
+  ]
+}

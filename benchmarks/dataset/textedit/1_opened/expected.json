@@ -1,0 +1,832 @@
+{
+  "elements": [
+    {
+      "id": "window",
+      "role": "window",
+      "name": "Benchmark Notes.rtf",
+      "bounds": {
+        "x": 146.0,
+        "y": 71.0,
+        "width": 610.0,
+        "height": 860.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8",
+      "role": "group",
+      "bounds": {
+        "x": 146.0,
+        "y": 139.0,
+        "width": 610.0,
+        "height": 792.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/text_box:First Text View",
+      "role": "text_box",
+      "value": "Quarterly plan\nShip the observation service by Friday.\nReview the benchmark results with the team.\nBudget: 12 400 EUR, approved on 3 March.\nOpen questions: licensing, Windows support.\n",
+      "bounds": {
+        "x": 146.0,
+        "y": 171.0,
+        "width": 610.0,
+        "height": 754.0
+      },
+      "state": {
+        "visible": true,
+        "focused": true,
+        "editable": true
+      },
+      "parent": "window/group:_NS:8",
+      "significant": true
+    },
+    {
+      "id": "window/group:_NS:8/unknown:_NS:24",
+      "role": "unknown",
+      "bounds": {
+        "x": 152.5,
+        "y": 913.0,
+        "width": 597.0,
+        "height": 18.0
+      },
+      "state": {
+        "enabled": false,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:_NS:8",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:_NS:27",
+      "role": "unknown",
+      "bounds": {
+        "x": 738.0,
+        "y": 170.0,
+        "width": 18.0,
+        "height": 754.5
+      },
+      "state": {
+        "enabled": false,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:_NS:8",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3",
+      "role": "unknown",
+      "bounds": {
+        "x": 146.0,
+        "y": 139.0,
+        "width": 610.0,
+        "height": 32.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:_NS:8",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#1",
+      "role": "unknown",
+      "bounds": {
+        "x": 147.0,
+        "y": 148.0,
+        "width": 9.0,
+        "height": 6.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#2",
+      "role": "unknown",
+      "bounds": {
+        "x": 747.0,
+        "y": 148.0,
+        "width": 9.0,
+        "height": 6.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#3",
+      "role": "unknown",
+      "bounds": {
+        "x": 147.0,
+        "y": 144.0,
+        "width": 9.0,
+        "height": 10.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#4",
+      "role": "unknown",
+      "bounds": {
+        "x": 187.0,
+        "y": 145.0,
+        "width": 6.0,
+        "height": 9.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#5",
+      "role": "unknown",
+      "bounds": {
+        "x": 223.0,
+        "y": 145.0,
+        "width": 6.0,
+        "height": 9.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#6",
+      "role": "unknown",
+      "bounds": {
+        "x": 259.0,
+        "y": 145.0,
+        "width": 6.0,
+        "height": 9.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#7",
+      "role": "unknown",
+      "bounds": {
+        "x": 295.0,
+        "y": 145.0,
+        "width": 6.0,
+        "height": 9.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#8",
+      "role": "unknown",
+      "bounds": {
+        "x": 331.0,
+        "y": 145.0,
+        "width": 6.0,
+        "height": 9.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#9",
+      "role": "unknown",
+      "bounds": {
+        "x": 367.0,
+        "y": 145.0,
+        "width": 6.0,
+        "height": 9.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#10",
+      "role": "unknown",
+      "bounds": {
+        "x": 403.0,
+        "y": 145.0,
+        "width": 6.0,
+        "height": 9.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#11",
+      "role": "unknown",
+      "bounds": {
+        "x": 439.0,
+        "y": 145.0,
+        "width": 6.0,
+        "height": 9.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#12",
+      "role": "unknown",
+      "bounds": {
+        "x": 475.0,
+        "y": 145.0,
+        "width": 6.0,
+        "height": 9.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#13",
+      "role": "unknown",
+      "bounds": {
+        "x": 511.0,
+        "y": 145.0,
+        "width": 6.0,
+        "height": 9.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#14",
+      "role": "unknown",
+      "bounds": {
+        "x": 547.0,
+        "y": 145.0,
+        "width": 6.0,
+        "height": 9.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:_NS:8/unknown:#3/unknown:#15",
+      "role": "unknown",
+      "bounds": {
+        "x": 583.0,
+        "y": 145.0,
+        "width": 6.0,
+        "height": 9.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window/group:_NS:8/unknown:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:Formatting",
+      "role": "group",
+      "name": "Formatting",
+      "bounds": {
+        "x": 146.0,
+        "y": 103.0,
+        "width": 610.0,
+        "height": 36.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": false
+    },
+    {
+      "id": "window/group:Formatting/group:#1",
+      "role": "group",
+      "bounds": {
+        "x": 153.0,
+        "y": 110.0,
+        "width": 87.5,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:Formatting",
+      "significant": false
+    },
+    {
+      "id": "window/group:Formatting/group:#1/checkbox:bold",
+      "role": "checkbox",
+      "name": "bold",
+      "bounds": {
+        "x": 154.0,
+        "y": 112.0,
+        "width": 21.5,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window/group:Formatting/group:#1",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/group:#1/checkbox:italic",
+      "role": "checkbox",
+      "name": "italic",
+      "bounds": {
+        "x": 175.5,
+        "y": 112.0,
+        "width": 22.0,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window/group:Formatting/group:#1",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/group:#1/checkbox:underline",
+      "role": "checkbox",
+      "name": "underline",
+      "bounds": {
+        "x": 197.5,
+        "y": 112.0,
+        "width": 21.5,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window/group:Formatting/group:#1",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/group:#1/checkbox:strikethrough",
+      "role": "checkbox",
+      "name": "strikethrough",
+      "bounds": {
+        "x": 219.0,
+        "y": 112.0,
+        "width": 22.5,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window/group:Formatting/group:#1",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/button:text color",
+      "role": "button",
+      "name": "text color",
+      "value": "Clear",
+      "bounds": {
+        "x": 243.5,
+        "y": 110.0,
+        "width": 22.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:Formatting",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/button:text background color",
+      "role": "button",
+      "name": "text background color",
+      "value": "Clear",
+      "bounds": {
+        "x": 268.5,
+        "y": 110.0,
+        "width": 22.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:Formatting",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/button:typeface",
+      "role": "button",
+      "name": "typeface",
+      "value": "Helvetica",
+      "bounds": {
+        "x": 293.5,
+        "y": 110.0,
+        "width": 82.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:Formatting",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/button:style",
+      "role": "button",
+      "name": "style",
+      "value": "Regular",
+      "bounds": {
+        "x": 378.5,
+        "y": 110.0,
+        "width": 82.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:Formatting",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/text_box:font size",
+      "role": "text_box",
+      "name": "font size",
+      "value": "14",
+      "bounds": {
+        "x": 463.5,
+        "y": 110.0,
+        "width": 52.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "expanded": false,
+        "editable": true
+      },
+      "parent": "window/group:Formatting",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/text_box:font size/button:font size",
+      "role": "button",
+      "name": "font size",
+      "bounds": {
+        "x": 492.0,
+        "y": 114.0,
+        "width": 19.5,
+        "height": 13.5
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:Formatting/text_box:font size",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/group:#2",
+      "role": "group",
+      "bounds": {
+        "x": 518.5,
+        "y": 110.0,
+        "width": 98.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:Formatting",
+      "significant": false
+    },
+    {
+      "id": "window/group:Formatting/group:#2/checkbox:align left",
+      "role": "checkbox",
+      "name": "align left",
+      "bounds": {
+        "x": 519.5,
+        "y": 112.0,
+        "width": 24.5,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window/group:Formatting/group:#2",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/group:#2/checkbox:align center",
+      "role": "checkbox",
+      "name": "align center",
+      "bounds": {
+        "x": 544.0,
+        "y": 112.0,
+        "width": 24.5,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window/group:Formatting/group:#2",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/group:#2/checkbox:align right",
+      "role": "checkbox",
+      "name": "align right",
+      "bounds": {
+        "x": 568.5,
+        "y": 112.0,
+        "width": 24.5,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window/group:Formatting/group:#2",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/group:#2/checkbox:fully justify",
+      "role": "checkbox",
+      "name": "fully justify",
+      "bounds": {
+        "x": 593.0,
+        "y": 112.0,
+        "width": 24.5,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window/group:Formatting/group:#2",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/button:list style",
+      "role": "button",
+      "name": "list style",
+      "bounds": {
+        "x": 619.5,
+        "y": 110.0,
+        "width": 48.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:Formatting",
+      "significant": true
+    },
+    {
+      "id": "window/group:Formatting/button:line spacing",
+      "role": "button",
+      "name": "line spacing",
+      "value": "1,0",
+      "bounds": {
+        "x": 670.5,
+        "y": 110.0,
+        "width": 53.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:Formatting",
+      "significant": true
+    },
+    {
+      "id": "window/button:Close",
+      "role": "button",
+      "name": "Close",
+      "bounds": {
+        "x": 154.0,
+        "y": 79.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/button:Full Screen",
+      "role": "button",
+      "name": "Full Screen",
+      "bounds": {
+        "x": 200.0,
+        "y": 79.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/button:Full Screen/group:#1",
+      "role": "group",
+      "bounds": {
+        "x": 201.0,
+        "y": 80.0,
+        "width": 14.0,
+        "height": 14.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/button:Full Screen",
+      "significant": false
+    },
+    {
+      "id": "window/button:Full Screen/group:#1/group:#1",
+      "role": "group",
+      "bounds": {
+        "x": 201.0,
+        "y": 80.0,
+        "width": 14.0,
+        "height": 14.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/button:Full Screen/group:#1",
+      "significant": false
+    },
+    {
+      "id": "window/button:Minimize",
+      "role": "button",
+      "name": "Minimize",
+      "bounds": {
+        "x": 177.0,
+        "y": 79.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/button:document actions",
+      "role": "button",
+      "name": "document actions",
+      "bounds": {
+        "x": 385.0,
+        "y": 78.0,
+        "width": 12.0,
+        "height": 18.0
+      },
+      "state": {
+        "enabled": false,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/image:Benchmark Notes.rtf",
+      "role": "image",
+      "name": "Benchmark Notes.rtf",
+      "bounds": {
+        "x": 227.0,
+        "y": 77.0,
+        "width": 18.0,
+        "height": 18.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/text:#1",
+      "role": "text",
+      "name": "Benchmark Notes.rtf",
+      "bounds": {
+        "x": 246.0,
+        "y": 79.0,
+        "width": 140.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window",
+      "significant": true
+    }
+  ],
+  "relations": [
+    {
+      "kind": "label_for",
+      "from": "window/text:#1",
+      "to": "window"
+    }
+  ]
+}

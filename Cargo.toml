@@ -21,6 +21,7 @@ argus-fusion = { path = "crates/argus-fusion" }
 argus-tracking = { path = "crates/argus-tracking" }
 argus-core = { path = "crates/argus-core" }
 argus-server = { path = "crates/argus-server" }
+argus-benchmark = { path = "crates/argus-benchmark" }
 
 # External crates
 anyhow = "1"

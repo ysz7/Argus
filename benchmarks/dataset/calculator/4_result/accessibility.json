@@ -1,0 +1,504 @@
+{
+  "application": {
+    "name": "Calculator",
+    "bundle_id": "com.apple.calculator",
+    "pid": 13764
+  },
+  "window": {
+    "role": "AXWindow",
+    "subrole": "AXStandardWindow",
+    "title": "Calculator",
+    "identifier": "main",
+    "frame": {
+      "x": 964.0,
+      "y": 120.0,
+      "width": 230.0,
+      "height": 408.0
+    },
+    "focused": false,
+    "children": [
+      {
+        "role": "AXGroup",
+        "subrole": "AXHostingView",
+        "frame": {
+          "x": 964.0,
+          "y": 120.0,
+          "width": 230.0,
+          "height": 408.0
+        },
+        "focused": false,
+        "children": [
+          {
+            "role": "AXSplitGroup",
+            "identifier": "main, SidebarNavigationSplitView",
+            "frame": {
+              "x": 964.0,
+              "y": 120.0,
+              "width": 230.0,
+              "height": 408.0
+            },
+            "focused": false,
+            "children": [
+              {
+                "role": "AXSplitter",
+                "value": -1.0,
+                "frame": {
+                  "x": 963.0,
+                  "y": 172.0,
+                  "width": 0.5,
+                  "height": 356.0
+                },
+                "enabled": false,
+                "focused": false,
+                "selected": false,
+                "expanded": false
+              },
+              {
+                "role": "AXGroup",
+                "subrole": "AXHostingView",
+                "frame": {
+                  "x": 964.0,
+                  "y": 120.0,
+                  "width": 230.0,
+                  "height": 408.0
+                },
+                "focused": false,
+                "children": [
+                  {
+                    "role": "AXGroup",
+                    "identifier": "CalculatorKeypadView",
+                    "frame": {
+                      "x": 964.0,
+                      "y": 173.0,
+                      "width": 230.0,
+                      "height": 354.0
+                    },
+                    "enabled": true,
+                    "focused": true,
+                    "children": [
+                      {
+                        "role": "AXScrollArea",
+                        "subrole": "AXScrollAreaAutoFocus",
+                        "identifier": "StandardResultView",
+                        "frame": {
+                          "x": 974.0,
+                          "y": 177.5,
+                          "width": 210.0,
+                          "height": 29.5
+                        },
+                        "focused": false,
+                        "children": [
+                          {
+                            "role": "AXStaticText",
+                            "description": "Last Expression",
+                            "value": "12 + 3",
+                            "frame": {
+                              "x": 1136.5,
+                              "y": 179.0,
+                              "width": 47.5,
+                              "height": 26.0
+                            },
+                            "enabled": true
+                          }
+                        ]
+                      },
+                      {
+                        "role": "AXScrollArea",
+                        "subrole": "AXScrollAreaAutoFocus",
+                        "identifier": "StandardInputView;value:15",
+                        "frame": {
+                          "x": 974.0,
+                          "y": 206.0,
+                          "width": 210.0,
+                          "height": 42.0
+                        },
+                        "focused": false,
+                        "children": [
+                          {
+                            "role": "AXStaticText",
+                            "description": "Edit field",
+                            "value": "15",
+                            "frame": {
+                              "x": 1151.5,
+                              "y": 209.0,
+                              "width": 32.5,
+                              "height": 36.0
+                            },
+                            "enabled": true
+                          }
+                        ]
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "Delete",
+                        "help": "Delete the last digit or operation entered (long press to delete all)",
+                        "identifier": "Delete",
+                        "frame": {
+                          "x": 974.0,
+                          "y": 253.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "All Clear",
+                        "help": "",
+                        "identifier": "AllClear",
+                        "frame": {
+                          "x": 1028.0,
+                          "y": 253.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "Percent",
+                        "help": "",
+                        "identifier": "Percent",
+                        "frame": {
+                          "x": 1082.0,
+                          "y": 253.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "Divide",
+                        "help": "",
+                        "identifier": "Divide",
+                        "frame": {
+                          "x": 1136.0,
+                          "y": 253.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "7",
+                        "help": "",
+                        "identifier": "Seven",
+                        "frame": {
+                          "x": 974.0,
+                          "y": 307.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "8",
+                        "help": "",
+                        "identifier": "Eight",
+                        "frame": {
+                          "x": 1028.0,
+                          "y": 307.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "9",
+                        "help": "",
+                        "identifier": "Nine",
+                        "frame": {
+                          "x": 1082.0,
+                          "y": 307.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "Multiply",
+                        "help": "",
+                        "identifier": "Multiply",
+                        "frame": {
+                          "x": 1136.0,
+                          "y": 307.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "4",
+                        "help": "",
+                        "identifier": "Four",
+                        "frame": {
+                          "x": 974.0,
+                          "y": 361.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "5",
+                        "help": "",
+                        "identifier": "Five",
+                        "frame": {
+                          "x": 1028.0,
+                          "y": 361.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "6",
+                        "help": "",
+                        "identifier": "Six",
+                        "frame": {
+                          "x": 1082.0,
+                          "y": 361.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "Subtract",
+                        "help": "",
+                        "identifier": "Subtract",
+                        "frame": {
+                          "x": 1136.0,
+                          "y": 361.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "1",
+                        "help": "",
+                        "identifier": "One",
+                        "frame": {
+                          "x": 974.0,
+                          "y": 415.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "2",
+                        "help": "",
+                        "identifier": "Two",
+                        "frame": {
+                          "x": 1028.0,
+                          "y": 415.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "3",
+                        "help": "",
+                        "identifier": "Three",
+                        "frame": {
+                          "x": 1082.0,
+                          "y": 415.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "Add",
+                        "help": "",
+                        "identifier": "Add",
+                        "frame": {
+                          "x": 1136.0,
+                          "y": 415.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "Change Sign",
+                        "help": "Change sign of a value",
+                        "identifier": "Negate",
+                        "frame": {
+                          "x": 974.0,
+                          "y": 469.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "0",
+                        "help": "",
+                        "identifier": "Zero",
+                        "frame": {
+                          "x": 1028.0,
+                          "y": 469.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "Point",
+                        "help": "",
+                        "identifier": "Decimal",
+                        "frame": {
+                          "x": 1082.0,
+                          "y": 469.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      },
+                      {
+                        "role": "AXButton",
+                        "description": "Equals",
+                        "help": "",
+                        "identifier": "Equals",
+                        "frame": {
+                          "x": 1136.0,
+                          "y": 469.0,
+                          "width": 48.0,
+                          "height": 48.0
+                        },
+                        "enabled": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "role": "AXToolbar",
+        "frame": {
+          "x": 964.0,
+          "y": 120.0,
+          "width": 230.0,
+          "height": 52.0
+        },
+        "focused": false,
+        "children": [
+          {
+            "role": "AXButton",
+            "description": "Show Sidebar",
+            "help": "Show Sidebar",
+            "identifier": "",
+            "frame": {
+              "x": 1056.0,
+              "y": 120.0,
+              "width": 44.0,
+              "height": 52.0
+            },
+            "enabled": true,
+            "focused": false,
+            "selected": false
+          },
+          {
+            "role": "AXButton",
+            "description": "Mode",
+            "help": "Change Calculator mode",
+            "identifier": "Mode: basic; unitConversion: false",
+            "frame": {
+              "x": 1150.0,
+              "y": 120.0,
+              "width": 40.0,
+              "height": 52.0
+            },
+            "enabled": true,
+            "focused": false,
+            "selected": false
+          }
+        ]
+      },
+      {
+        "role": "AXButton",
+        "subrole": "AXCloseButton",
+        "frame": {
+          "x": 982.0,
+          "y": 138.0,
+          "width": 16.0,
+          "height": 16.0
+        },
+        "enabled": true,
+        "focused": false
+      },
+      {
+        "role": "AXButton",
+        "subrole": "AXZoomButton",
+        "frame": {
+          "x": 1028.0,
+          "y": 138.0,
+          "width": 16.0,
+          "height": 16.0
+        },
+        "enabled": false,
+        "focused": false,
+        "children": [
+          {
+            "role": "AXGroup",
+            "frame": {
+              "x": 1029.0,
+              "y": 139.0,
+              "width": 14.0,
+              "height": 14.0
+            },
+            "focused": false,
+            "children": [
+              {
+                "role": "AXGroup",
+                "frame": {
+                  "x": 1029.0,
+                  "y": 139.0,
+                  "width": 14.0,
+                  "height": 14.0
+                },
+                "focused": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "role": "AXButton",
+        "subrole": "AXMinimizeButton",
+        "frame": {
+          "x": 1005.0,
+          "y": 138.0,
+          "width": 16.0,
+          "height": 16.0
+        },
+        "enabled": true,
+        "focused": false
+      }
+    ]
+  },
+  "truncated": false
+}

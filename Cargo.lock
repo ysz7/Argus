@@ -91,6 +91,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "argus-benchmark"
+version = "0.0.1"
+dependencies = [
+ "argus-core",
+ "argus-protocol",
+ "png",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tracing",
+]
+
+[[package]]
 name = "argus-capture"
 version = "0.0.1"
 dependencies = [
@@ -112,6 +125,7 @@ name = "argus-cli"
 version = "0.0.1"
 dependencies = [
  "anyhow",
+ "argus-benchmark",
  "argus-core",
  "argus-protocol",
  "argus-server",

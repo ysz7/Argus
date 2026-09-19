@@ -1,0 +1,1197 @@
+{
+  "elements": [
+    {
+      "id": "window",
+      "role": "window",
+      "name": "Argus Benchmark Form",
+      "bounds": {
+        "x": 120.0,
+        "y": 120.0,
+        "width": 640.0,
+        "height": 472.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "significant": false
+    },
+    {
+      "id": "window/text:#1",
+      "role": "text",
+      "name": "Name:",
+      "bounds": {
+        "x": 141.0,
+        "y": 173.0,
+        "width": 58.0,
+        "height": 19.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/text_box:Name:",
+      "role": "text_box",
+      "name": "Name:",
+      "value": "Ada Lovelace",
+      "bounds": {
+        "x": 209.0,
+        "y": 171.0,
+        "width": 202.0,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true,
+        "editable": true
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/text:#2",
+      "role": "text",
+      "name": "Email:",
+      "bounds": {
+        "x": 141.0,
+        "y": 205.0,
+        "width": 58.0,
+        "height": 19.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/text_box:Email:",
+      "role": "text_box",
+      "name": "Email:",
+      "value": "ada@example.com",
+      "bounds": {
+        "x": 209.0,
+        "y": 203.0,
+        "width": 202.0,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": true
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/checkbox:Subscribe",
+      "role": "checkbox",
+      "name": "Subscribe",
+      "bounds": {
+        "x": 439.0,
+        "y": 171.0,
+        "width": 142.0,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "checked"
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/checkbox:Remember me",
+      "role": "checkbox",
+      "name": "Remember me",
+      "bounds": {
+        "x": 439.0,
+        "y": 195.0,
+        "width": 142.0,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "checked"
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/checkbox:Locked option",
+      "role": "checkbox",
+      "name": "Locked option",
+      "bounds": {
+        "x": 439.0,
+        "y": 219.0,
+        "width": 142.0,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": false,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/radio_button:Small",
+      "role": "radio_button",
+      "name": "Small",
+      "bounds": {
+        "x": 599.0,
+        "y": 171.0,
+        "width": 122.0,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/radio_button:Medium",
+      "role": "radio_button",
+      "name": "Medium",
+      "bounds": {
+        "x": 599.0,
+        "y": 195.0,
+        "width": 122.0,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "checked"
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/radio_button:Large",
+      "role": "radio_button",
+      "name": "Large",
+      "bounds": {
+        "x": 599.0,
+        "y": 219.0,
+        "width": 122.0,
+        "height": 20.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/text:#3",
+      "role": "text",
+      "name": "Period:",
+      "bounds": {
+        "x": 141.0,
+        "y": 251.0,
+        "width": 58.0,
+        "height": 19.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/button:#1",
+      "role": "button",
+      "value": "Monthly",
+      "bounds": {
+        "x": 207.0,
+        "y": 247.0,
+        "width": 142.0,
+        "height": 27.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1",
+      "role": "group",
+      "bounds": {
+        "x": 369.0,
+        "y": 247.0,
+        "width": 202.0,
+        "height": 26.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": false
+    },
+    {
+      "id": "window/group:#1/radio_button:Day",
+      "role": "radio_button",
+      "name": "Day",
+      "bounds": {
+        "x": 370.0,
+        "y": 249.0,
+        "width": 58.5,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window/group:#1",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/radio_button:Week",
+      "role": "radio_button",
+      "name": "Week",
+      "bounds": {
+        "x": 428.5,
+        "y": 249.0,
+        "width": 69.5,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "checked"
+      },
+      "parent": "window/group:#1",
+      "significant": true
+    },
+    {
+      "id": "window/group:#1/radio_button:Month",
+      "role": "radio_button",
+      "name": "Month",
+      "bounds": {
+        "x": 498.0,
+        "y": 249.0,
+        "width": 74.0,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "checked": "unchecked"
+      },
+      "parent": "window/group:#1",
+      "significant": true
+    },
+    {
+      "id": "window/slider:#1",
+      "role": "slider",
+      "value": "30",
+      "bounds": {
+        "x": 599.0,
+        "y": 249.0,
+        "width": 142.0,
+        "height": 26.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/slider:#1/unknown:#1",
+      "role": "unknown",
+      "bounds": {
+        "x": 636.0,
+        "y": 254.0,
+        "width": 20.0,
+        "height": 16.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/slider:#1",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2",
+      "role": "group",
+      "bounds": {
+        "x": 140.0,
+        "y": 292.0,
+        "width": 290.0,
+        "height": 150.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1",
+      "role": "table",
+      "bounds": {
+        "x": 140.0,
+        "y": 320.0,
+        "width": 290.0,
+        "height": 122.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:#2",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#1",
+      "role": "row",
+      "bounds": {
+        "x": 141.0,
+        "y": 321.0,
+        "width": 288.0,
+        "height": 22.0
+      },
+      "state": {
+        "visible": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#1/cell:#1",
+      "role": "cell",
+      "bounds": {
+        "x": 147.0,
+        "y": 321.0,
+        "width": 180.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1/row:#1",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#1/cell:#1/text:#1",
+      "role": "text",
+      "name": "notes.txt",
+      "bounds": {
+        "x": 148.0,
+        "y": 320.0,
+        "width": 178.0,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window/group:#2/table:#1/row:#1/cell:#1",
+      "significant": true
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#1/cell:#2",
+      "role": "cell",
+      "bounds": {
+        "x": 344.0,
+        "y": 321.0,
+        "width": 79.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1/row:#1",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#1/cell:#2/text:#1",
+      "role": "text",
+      "name": "4 KB",
+      "bounds": {
+        "x": 345.0,
+        "y": 320.0,
+        "width": 77.0,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window/group:#2/table:#1/row:#1/cell:#2",
+      "significant": true
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#2",
+      "role": "row",
+      "bounds": {
+        "x": 141.0,
+        "y": 343.0,
+        "width": 288.0,
+        "height": 22.0
+      },
+      "state": {
+        "visible": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#2/cell:#1",
+      "role": "cell",
+      "bounds": {
+        "x": 147.0,
+        "y": 343.0,
+        "width": 180.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1/row:#2",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#2/cell:#1/text:#1",
+      "role": "text",
+      "name": "photo.png",
+      "bounds": {
+        "x": 148.0,
+        "y": 342.0,
+        "width": 178.0,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window/group:#2/table:#1/row:#2/cell:#1",
+      "significant": true
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#2/cell:#2",
+      "role": "cell",
+      "bounds": {
+        "x": 344.0,
+        "y": 343.0,
+        "width": 79.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1/row:#2",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#2/cell:#2/text:#1",
+      "role": "text",
+      "name": "2 MB",
+      "bounds": {
+        "x": 345.0,
+        "y": 342.0,
+        "width": 77.0,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window/group:#2/table:#1/row:#2/cell:#2",
+      "significant": true
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#3",
+      "role": "row",
+      "bounds": {
+        "x": 141.0,
+        "y": 365.0,
+        "width": 288.0,
+        "height": 22.0
+      },
+      "state": {
+        "visible": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#3/cell:#1",
+      "role": "cell",
+      "bounds": {
+        "x": 147.0,
+        "y": 365.0,
+        "width": 180.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1/row:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#3/cell:#1/text:#1",
+      "role": "text",
+      "name": "song.mp3",
+      "bounds": {
+        "x": 148.0,
+        "y": 364.0,
+        "width": 178.0,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window/group:#2/table:#1/row:#3/cell:#1",
+      "significant": true
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#3/cell:#2",
+      "role": "cell",
+      "bounds": {
+        "x": 344.0,
+        "y": 365.0,
+        "width": 79.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1/row:#3",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#3/cell:#2/text:#1",
+      "role": "text",
+      "name": "5 MB",
+      "bounds": {
+        "x": 345.0,
+        "y": 364.0,
+        "width": 77.0,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window/group:#2/table:#1/row:#3/cell:#2",
+      "significant": true
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#4",
+      "role": "row",
+      "bounds": {
+        "x": 141.0,
+        "y": 387.0,
+        "width": 288.0,
+        "height": 22.0
+      },
+      "state": {
+        "visible": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#4/cell:#1",
+      "role": "cell",
+      "bounds": {
+        "x": 147.0,
+        "y": 387.0,
+        "width": 180.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1/row:#4",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#4/cell:#1/text:#1",
+      "role": "text",
+      "name": "draft.md",
+      "bounds": {
+        "x": 148.0,
+        "y": 386.0,
+        "width": 178.0,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window/group:#2/table:#1/row:#4/cell:#1",
+      "significant": true
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#4/cell:#2",
+      "role": "cell",
+      "bounds": {
+        "x": 344.0,
+        "y": 387.0,
+        "width": 79.0,
+        "height": 22.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1/row:#4",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/row:#4/cell:#2/text:#1",
+      "role": "text",
+      "name": "1 KB",
+      "bounds": {
+        "x": 345.0,
+        "y": 386.0,
+        "width": 77.0,
+        "height": 24.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window/group:#2/table:#1/row:#4/cell:#2",
+      "significant": true
+    },
+    {
+      "id": "window/group:#2/table:#1/unknown:name",
+      "role": "unknown",
+      "bounds": {
+        "x": 141.0,
+        "y": 321.0,
+        "width": 195.0,
+        "height": 120.0
+      },
+      "state": {
+        "visible": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/unknown:size",
+      "role": "unknown",
+      "bounds": {
+        "x": 336.0,
+        "y": 321.0,
+        "width": 93.0,
+        "height": 120.0
+      },
+      "state": {
+        "visible": true,
+        "selected": false
+      },
+      "parent": "window/group:#2/table:#1",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/group:#1",
+      "role": "group",
+      "bounds": {
+        "x": 141.0,
+        "y": 293.0,
+        "width": 288.0,
+        "height": 28.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:#2/table:#1",
+      "significant": false
+    },
+    {
+      "id": "window/group:#2/table:#1/group:#1/button:Name",
+      "role": "button",
+      "name": "Name",
+      "bounds": {
+        "x": 141.0,
+        "y": 293.0,
+        "width": 195.0,
+        "height": 28.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:#2/table:#1/group:#1",
+      "significant": true
+    },
+    {
+      "id": "window/group:#2/table:#1/group:#1/button:Size",
+      "role": "button",
+      "name": "Size",
+      "bounds": {
+        "x": 336.0,
+        "y": 293.0,
+        "width": 93.0,
+        "height": 28.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:#2/table:#1/group:#1",
+      "significant": true
+    },
+    {
+      "id": "window/group:#2/unknown:#1",
+      "role": "unknown",
+      "bounds": {
+        "x": 411.0,
+        "y": 320.0,
+        "width": 19.0,
+        "height": 122.0
+      },
+      "state": {
+        "enabled": false,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/group:#2",
+      "significant": false
+    },
+    {
+      "id": "window/button:Delete",
+      "role": "button",
+      "name": "Delete",
+      "bounds": {
+        "x": 139.0,
+        "y": 541.0,
+        "width": 92.0,
+        "height": 34.0
+      },
+      "state": {
+        "enabled": false,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/button:Cancel",
+      "role": "button",
+      "name": "Cancel",
+      "bounds": {
+        "x": 539.0,
+        "y": 541.0,
+        "width": 92.0,
+        "height": 34.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/button:Save",
+      "role": "button",
+      "name": "Save",
+      "bounds": {
+        "x": 639.0,
+        "y": 541.0,
+        "width": 102.0,
+        "height": 34.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/text:#4",
+      "role": "text",
+      "name": "4 files, 7 MB",
+      "bounds": {
+        "x": 141.0,
+        "y": 461.0,
+        "width": 198.0,
+        "height": 19.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/button:Close",
+      "role": "button",
+      "name": "Close",
+      "bounds": {
+        "x": 128.0,
+        "y": 128.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/button:Zoom",
+      "role": "button",
+      "name": "Zoom",
+      "bounds": {
+        "x": 174.0,
+        "y": 128.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": false,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/button:Zoom/group:#1",
+      "role": "group",
+      "bounds": {
+        "x": 175.0,
+        "y": 129.0,
+        "width": 14.0,
+        "height": 14.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/button:Zoom",
+      "significant": false
+    },
+    {
+      "id": "window/button:Zoom/group:#1/group:#1",
+      "role": "group",
+      "bounds": {
+        "x": 175.0,
+        "y": 129.0,
+        "width": 14.0,
+        "height": 14.0
+      },
+      "state": {
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window/button:Zoom/group:#1",
+      "significant": false
+    },
+    {
+      "id": "window/button:Minimize",
+      "role": "button",
+      "name": "Minimize",
+      "bounds": {
+        "x": 151.0,
+        "y": 128.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "window/text:#5",
+      "role": "text",
+      "name": "Argus Benchmark Form",
+      "bounds": {
+        "x": 202.0,
+        "y": 128.0,
+        "width": 156.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "editable": false
+      },
+      "parent": "window",
+      "significant": true
+    },
+    {
+      "id": "canvas",
+      "role": "group",
+      "bounds": {
+        "x": 450.0,
+        "y": 292.0,
+        "width": 290.0,
+        "height": 150.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "window",
+      "significant": false,
+      "note": "drawn without accessibility"
+    },
+    {
+      "id": "canvas/button:Draw",
+      "role": "button",
+      "name": "Draw",
+      "bounds": {
+        "x": 462.0,
+        "y": 304.0,
+        "width": 62.0,
+        "height": 26.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "canvas",
+      "significant": true,
+      "note": "drawn without accessibility"
+    },
+    {
+      "id": "canvas/button:Erase",
+      "role": "button",
+      "name": "Erase",
+      "bounds": {
+        "x": 530.0,
+        "y": 304.0,
+        "width": 62.0,
+        "height": 26.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "canvas",
+      "significant": true,
+      "note": "drawn without accessibility"
+    },
+    {
+      "id": "canvas/button:Fill",
+      "role": "button",
+      "name": "Fill",
+      "bounds": {
+        "x": 598.0,
+        "y": 304.0,
+        "width": 62.0,
+        "height": 26.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "canvas",
+      "significant": true,
+      "note": "drawn without accessibility"
+    },
+    {
+      "id": "canvas/button:Export",
+      "role": "button",
+      "name": "Export",
+      "bounds": {
+        "x": 666.0,
+        "y": 304.0,
+        "width": 62.0,
+        "height": 26.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true
+      },
+      "parent": "canvas",
+      "significant": true,
+      "note": "drawn without accessibility"
+    },
+    {
+      "id": "canvas/checkbox:Snap to grid",
+      "role": "checkbox",
+      "name": "Snap to grid",
+      "bounds": {
+        "x": 462.0,
+        "y": 344.0,
+        "width": 16.0,
+        "height": 16.0
+      },
+      "state": {
+        "enabled": true,
+        "visible": true,
+        "checked": "checked"
+      },
+      "parent": "canvas",
+      "significant": true,
+      "note": "drawn without accessibility"
+    },
+    {
+      "id": "canvas/text:Snap to grid",
+      "role": "text",
+      "name": "Snap to grid",
+      "bounds": {
+        "x": 484.0,
+        "y": 343.0,
+        "width": 86.0,
+        "height": 18.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "canvas",
+      "significant": true,
+      "note": "drawn without accessibility"
+    },
+    {
+      "id": "canvas/text:Layers: 3",
+      "role": "text",
+      "name": "Layers: 3",
+      "bounds": {
+        "x": 462.0,
+        "y": 376.0,
+        "width": 70.0,
+        "height": 18.0
+      },
+      "state": {
+        "visible": true
+      },
+      "parent": "canvas",
+      "significant": true,
+      "note": "drawn without accessibility"
+    }
+  ],
+  "relations": [
+    {
+      "kind": "label_for",
+      "from": "window/text:#5",
+      "to": "window"
+    },
+    {
+      "kind": "label_for",
+      "from": "window/text:#1",
+      "to": "window/text_box:Name:"
+    },
+    {
+      "kind": "label_for",
+      "from": "window/text:#2",
+      "to": "window/text_box:Email:"
+    },
+    {
+      "kind": "label_for",
+      "from": "window/text:#3",
+      "to": "window/button:#1"
+    },
+    {
+      "kind": "label_for",
+      "from": "canvas/text:Snap to grid",
+      "to": "canvas/checkbox:Snap to grid"
+    }
+  ]
+}

@@ -48,9 +48,15 @@ impl VisualPerceptionBackend for HeuristicDetector {
             .iter()
             .filter_map(|component| classify(&map, &edges, component))
             .collect();
+        let outlined = detections.clone();
         for rect in line_rectangles(&edges, raster.width, raster.height) {
             let duplicate = detections.iter().any(|known| overlap(&known.bounds, &rect) > 0.6);
-            if !duplicate {
+            // Controls do not lie across the border of another control: a
+            // rectangle assembled from runs of different shapes (the top of
+            // a text selection and a line inside the field below) does.
+            let straddles =
+                outlined.iter().any(|known| known.leaf && straddles(&rect, &known.bounds));
+            if !duplicate && !straddles {
                 detections.push(classify_bar(&map, &edges, rect, ComponentMap::NONE));
             }
         }
@@ -615,6 +621,21 @@ fn split_groups(edges: &[bool], width: usize, detections: &mut Vec<Detection>) {
         detection.leaf = false;
     }
     detections.extend(parts);
+}
+
+/// Whether `a` crosses the border of `b`: they share a substantial area,
+/// yet neither lies inside the other (with a point of tolerance).
+fn straddles(a: &BoxPx, b: &BoxPx) -> bool {
+    let w = a.x1.min(b.x1).saturating_sub(a.x0.max(b.x0));
+    let h = a.y1.min(b.y1).saturating_sub(a.y0.max(b.y0));
+    let smaller = (a.width() * a.height()).min(b.width() * b.height()).max(1);
+    let grown = |r: &BoxPx| BoxPx {
+        x0: r.x0.saturating_sub(1),
+        y0: r.y0.saturating_sub(1),
+        x1: r.x1 + 1,
+        y1: r.y1 + 1,
+    };
+    w * h * 5 >= smaller && !grown(a).contains(b) && !grown(b).contains(a)
 }
 
 /// Intersection over union of two boxes.

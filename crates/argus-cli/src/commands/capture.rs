@@ -140,7 +140,7 @@ fn describe(target: CaptureTarget) -> serde_json::Value {
     }
 }
 
-fn write_png(width: u32, height: u32, rgba: &[u8], path: &Path) -> anyhow::Result<()> {
+pub(crate) fn write_png(width: u32, height: u32, rgba: &[u8], path: &Path) -> anyhow::Result<()> {
     let file = File::create(path).with_context(|| format!("cannot create {}", path.display()))?;
     let mut encoder = png::Encoder::new(BufWriter::new(file), width, height);
     encoder.set_color(png::ColorType::Rgba);
