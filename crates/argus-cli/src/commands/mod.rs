@@ -2,6 +2,7 @@
 
 pub(crate) mod accessibility;
 pub(crate) mod capture;
+pub(crate) mod doctor;
 pub(crate) mod inspect;
 pub(crate) mod observe;
 pub(crate) mod serve;

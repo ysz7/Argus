@@ -142,6 +142,35 @@ Security, then restart it:
 
 The first attempt triggers the system prompt.
 
+### Doctor
+
+```bash
+argus doctor            # permissions, backends, local service
+argus doctor --json
+```
+
+```text
+Argus Doctor (argus 0.0.1)
+
+macOS                OK       27.0
+Screen recording     OK       granted to Visual Studio Code
+Accessibility        OK       granted to Visual Studio Code
+Capture backend      OK       main display 1470×956 pt @2x in 115 ms (not saved)
+Accessibility tree   OK       Finder: 212 nodes in 30 ms
+OCR backend          OK       2/2 sample lines recognized in 113 ms
+Vision backend       OK       4 buttons, 2 checkboxes in the sample in 1 ms
+Local server         INFO     not running on port 7412
+                     → start it with `argus serve`
+
+Everything is ready.
+```
+
+Every check runs the real path: the main display is captured (and
+discarded), OCR and visual detection run on built-in sample images, and the
+accessibility tree of the frontmost application is read (only its size is
+reported). Failed checks say what to do, e.g. which application to allow in
+which System Settings pane. The exit status is non-zero if a check failed.
+
 ### Observe
 
 ```bash

@@ -173,3 +173,27 @@ fn serve_reports_a_taken_port() {
 fn serve_rejects_an_empty_history() {
     argus().args(["serve", "--history", "0"]).assert().failure().stderr(contains("--history"));
 }
+
+#[test]
+#[ignore = "runs OCR: the first recognition of a new binary takes ~25 s"]
+fn doctor_reports_every_check_as_json() {
+    // Permissions differ between machines: only the report's shape is fixed.
+    let output = argus().args(["doctor", "--json", "--port", "1"]).output().unwrap();
+    let report: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
+    let names: Vec<&str> =
+        report["checks"].as_array().unwrap().iter().map(|c| c["name"].as_str().unwrap()).collect();
+    assert_eq!(
+        names,
+        [
+            "macOS",
+            "Screen recording",
+            "Accessibility",
+            "Capture backend",
+            "Accessibility tree",
+            "OCR backend",
+            "Vision backend",
+            "Local server",
+        ]
+    );
+    assert_eq!(output.status.success(), report["ok"] == true);
+}

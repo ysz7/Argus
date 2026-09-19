@@ -30,6 +30,9 @@ mod pixels;
 pub use argus_accessibility as accessibility;
 /// Frame acquisition (re-exported so front ends depend only on the core).
 pub use argus_capture as capture;
+/// OCR and visual detection backends (re-exported so front ends depend only
+/// on the core).
+pub use argus_perception as perception;
 pub use assemble::assemble;
 pub use delta::delta;
 pub use error::{Error, Permission, Result};
