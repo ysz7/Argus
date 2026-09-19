@@ -24,6 +24,7 @@ pub mod error;
 mod fuse;
 mod normalize;
 mod observe;
+mod pixels;
 
 /// Native accessibility trees (re-exported so front ends depend only on the core).
 pub use argus_accessibility as accessibility;
@@ -34,7 +35,8 @@ pub use delta::delta;
 pub use error::{Error, Permission, Result};
 pub use fuse::{Fused, fuse};
 pub use normalize::{Normalized, normalize};
-pub use observe::{Inspection, Observer};
+pub use observe::{Inspection, Observer, Timings};
+pub use pixels::{PerceptionMode, PerceptionReport, Verification};
 
 /// Element identity across observations (re-exported so front ends depend
 /// only on the core).

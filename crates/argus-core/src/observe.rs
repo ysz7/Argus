@@ -2,17 +2,19 @@
 
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Mutex, OnceLock};
+use std::time::Instant;
 
 use argus_accessibility::{AccessibilityBackend, AppTarget};
 use argus_capture::{CaptureBackend, CaptureTarget, WindowInfo, main_window};
 use argus_fusion::ElementEvidence;
 use argus_perception::{OcrBackend, VisualPerceptionBackend};
 use argus_protocol::{Bounds, Element, Observation, ObservationId, Source, Timestamp, Window};
-use argus_tracking::Tracker;
+use argus_tracking::{Tracker, TrackingReport};
 
 use crate::assemble::assemble;
 use crate::fuse::fuse;
 use crate::normalize::normalize;
+use crate::pixels::{PerceptionReport, PixelMemory, Settings, perceive};
 use crate::{Error, Result};
 
 /// Source of process-unique observation numbers.
@@ -33,6 +35,8 @@ pub struct Observer {
     ocr: Option<Box<dyn OcrBackend>>,
     vision: Option<Box<dyn VisualPerceptionBackend>>,
     tracker: Mutex<Tracker>,
+    pixels: Mutex<PixelMemory>,
+    settings: Settings,
 }
 
 impl std::fmt::Debug for Observer {
@@ -80,10 +84,27 @@ impl Observer {
         self
     }
 
+    /// Whether pixels are perceived incrementally: only the regions that
+    /// changed since the previous frame of the window (default: yes).
+    pub fn with_incremental(mut self, incremental: bool) -> Self {
+        self.settings.incremental = incremental;
+        self
+    }
+
+    /// Whether every incremental perception is checked against a full
+    /// perception of the same frame, reported in
+    /// [`Inspection::perception`] (slow; for development).
+    pub fn with_verification(mut self, verify: bool) -> Self {
+        self.settings.verify = verify;
+        self
+    }
+
     /// Ends the tracking session: the next observation gets fresh element
-    /// IDs and no [`Observation::previous`].
+    /// IDs and no [`Observation::previous`], and its pixels are perceived in
+    /// full.
     pub fn reset_tracking(&self) {
         self.tracker.lock().unwrap_or_else(|poisoned| poisoned.into_inner()).reset();
+        self.pixels.lock().unwrap_or_else(|poisoned| poisoned.into_inner()).clear();
     }
 
     /// Observes `target` using the given evidence sources and fuses their
@@ -108,8 +129,9 @@ impl Observer {
             }
         }
         let wants = |source: Source| sources.contains(&source);
-        let started = Timestamp::now();
-        let mut timestamp = started;
+        let started_at = Instant::now();
+        let mut timings = Timings::default();
+        let mut timestamp = Timestamp::now();
         let mut evidence = Vec::new();
         let mut application = None;
         let mut window = None;
@@ -120,7 +142,10 @@ impl Observer {
                 .accessibility
                 .as_deref()
                 .ok_or(Error::Unsupported { feature: "accessibility" })?;
-            match accessibility.snapshot(target) {
+            let read_at = Instant::now();
+            let snapshot = accessibility.snapshot(target);
+            timings.accessibility_ms = elapsed(read_at);
+            match snapshot {
                 Ok(snapshot) => Some(snapshot),
                 // Applications that expose no accessible window (custom
                 // toolkits, games) are exactly where pixels are needed.
@@ -183,37 +208,50 @@ impl Observer {
             None
         };
 
+        let mut perception = None;
         if let Some((capture, captured)) = capture {
+            let captured_at = Instant::now();
             let frame = capture.capture(CaptureTarget::Window(captured.id))?;
+            timings.capture_ms = elapsed(captured_at);
             timestamp = frame.timestamp();
-            if wants(Source::Ocr) {
-                let ocr = self.ocr.as_deref().ok_or(Error::Unsupported { feature: "OCR" })?;
-                let regions = ocr.detect(&frame)?;
-                evidence.push(normalize(argus_perception::ocr_candidates(&frame, &regions)));
-            }
-            if wants(Source::Vision) {
-                let vision = self
-                    .vision
-                    .as_deref()
-                    .ok_or(Error::Unsupported { feature: "visual detection" })?;
-                let detections = vision.detect(&frame)?;
-                evidence.push(normalize(argus_perception::vision_candidates(&frame, &detections)));
-            }
+            let ocr = match wants(Source::Ocr) {
+                true => Some(self.ocr.as_deref().ok_or(Error::Unsupported { feature: "OCR" })?),
+                false => None,
+            };
+            let vision = match wants(Source::Vision) {
+                true => Some(
+                    self.vision
+                        .as_deref()
+                        .ok_or(Error::Unsupported { feature: "visual detection" })?,
+                ),
+                false => None,
+            };
+            let mut memory = self.pixels.lock().unwrap_or_else(|poisoned| poisoned.into_inner());
+            let perceived = perceive(&mut memory, self.settings, captured.id, frame, ocr, vision)?;
+            drop(memory);
+            (timings.ocr_ms, timings.vision_ms) = (perceived.ocr_ms, perceived.vision_ms);
+            evidence.extend(perceived.ocr.map(normalize));
+            evidence.extend(perceived.vision.map(normalize));
+            perception = perceived.report;
             if snapshot.is_none() {
                 application = Some(captured.application);
                 window = Some(Window { title: captured.title, bounds: Some(captured.bounds) });
             }
         }
 
+        let fusion_started = Instant::now();
         let fused = fuse(&evidence);
         let mut observation =
             assemble(next_observation_id(), timestamp, application, window, &fused);
-        let tracking_started = std::time::Instant::now();
+        timings.fusion_ms = elapsed(fusion_started);
+        let tracking_started = Instant::now();
         let report = self
             .tracker
             .lock()
             .unwrap_or_else(|poisoned| poisoned.into_inner())
             .track(&mut observation, &fused.native_ids());
+        timings.tracking_ms = elapsed(tracking_started);
+        timings.total_ms = elapsed(started_at);
         tracing::debug!(
             elements = observation.elements.len(),
             continued = report.continued,
@@ -222,11 +260,36 @@ impl Observer {
             new = report.new,
             lost = report.lost,
             uncertain = report.uncertain,
-            tracking_ms = tracking_started.elapsed().as_millis() as u64,
-            elapsed_ms = Timestamp::now().0.saturating_sub(started.0),
+            tracking_ms = timings.tracking_ms,
+            elapsed_ms = timings.total_ms,
             "assembled observation"
         );
-        Ok(Inspection { observation, evidence: fused.into_evidence() })
+        if let Some(perception) = &perception {
+            tracing::debug!(
+                mode = ?perception.mode,
+                changed_ratio = perception.changed_ratio,
+                dirty_regions = perception.dirty_regions,
+                reused = perception.reused,
+                perceived = perception.perceived,
+                perceived_share = perception.perceived_share,
+                ocr_ms = timings.ocr_ms,
+                vision_ms = timings.vision_ms,
+                "perceived pixels"
+            );
+            if let Some(verification) = perception.verification.filter(|v| !v.agrees()) {
+                tracing::warn!(
+                    ?verification,
+                    "incremental perception differs from full perception"
+                );
+            }
+        }
+        Ok(Inspection {
+            observation,
+            evidence: fused.into_evidence(),
+            perception,
+            tracking: report,
+            timings,
+        })
     }
 }
 
@@ -238,6 +301,35 @@ pub struct Inspection {
     /// Evidence for each element: `evidence[i]` belongs to
     /// `observation.elements[i]`.
     pub evidence: Vec<ElementEvidence>,
+    /// How the pixels were perceived; `None` without pixel sources.
+    pub perception: Option<PerceptionReport>,
+    /// What tracking did.
+    pub tracking: TrackingReport,
+    /// Where the time went.
+    pub timings: Timings,
+}
+
+/// Milliseconds spent in each stage of an observation.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct Timings {
+    /// Reading the accessibility tree.
+    pub accessibility_ms: u64,
+    /// Capturing the window.
+    pub capture_ms: u64,
+    /// Text recognition (including reuse).
+    pub ocr_ms: u64,
+    /// Visual detection (including reuse).
+    pub vision_ms: u64,
+    /// Normalization is part of the sources; fusion and assembly.
+    pub fusion_ms: u64,
+    /// Tracking.
+    pub tracking_ms: u64,
+    /// The whole observation.
+    pub total_ms: u64,
+}
+
+fn elapsed(since: Instant) -> u64 {
+    u64::try_from(since.elapsed().as_millis()).unwrap_or(u64::MAX)
 }
 
 impl Inspection {

@@ -26,6 +26,32 @@ pub(crate) struct ObserveArgs {
     /// Time between the starts of successive observations, in milliseconds.
     #[arg(long, value_name = "MS", default_value_t = 1000)]
     pub(crate) interval_ms: u64,
+
+    #[command(flatten)]
+    pub(crate) perception: PerceptionArgs,
+}
+
+/// How successive frames are perceived.
+#[derive(Debug, clap::Args)]
+pub(crate) struct PerceptionArgs {
+    /// Perceive every frame in full instead of only the regions that changed
+    /// since the previous one.
+    #[arg(long)]
+    pub(crate) no_incremental: bool,
+
+    /// Check every incremental perception against a full perception of the
+    /// same frame and warn about differences (slow; for development).
+    #[arg(long, conflicts_with = "no_incremental")]
+    pub(crate) verify_incremental: bool,
+}
+
+impl PerceptionArgs {
+    /// A default observer configured accordingly.
+    pub(crate) fn observer(&self) -> anyhow::Result<Observer> {
+        Ok(Observer::new()?
+            .with_incremental(!self.no_incremental)
+            .with_verification(self.verify_incremental))
+    }
 }
 
 /// Selection of evidence sources.
@@ -79,7 +105,7 @@ pub(crate) fn ensure_valid(observation: &Observation) -> anyhow::Result<()> {
 }
 
 pub(crate) fn run(args: &ObserveArgs) -> anyhow::Result<()> {
-    let observer = Observer::new()?;
+    let observer = args.perception.observer()?;
     let (target, sources) = (args.target.target(), args.sources.sources());
     if args.count == 1 {
         let observation = observer.observe(&target, &sources)?;

@@ -3,12 +3,12 @@
 use std::fmt::Write as _;
 use std::time::{Duration, Instant};
 
-use argus_core::Observer;
 use argus_core::tracking::UNCERTAIN;
+use argus_core::{Inspection, PerceptionMode};
 use argus_protocol::{Element, ElementChange, Observation, ObservationDelta, Relation, Window};
 use serde_json::Value;
 
-use crate::commands::observe::{SourceArgs, ensure_valid};
+use crate::commands::observe::{PerceptionArgs, SourceArgs, ensure_valid};
 use crate::commands::target::AppTargetArgs;
 use crate::output::{print_json_line, print_text};
 
@@ -38,17 +38,29 @@ pub(crate) struct WatchArgs {
     /// deltas.
     #[arg(long)]
     verbose: bool,
+
+    /// Print how each observation was perceived and where the time went, to
+    /// stderr.
+    #[arg(long)]
+    stats: bool,
+
+    #[command(flatten)]
+    perception: PerceptionArgs,
 }
 
 pub(crate) fn run(args: &WatchArgs) -> anyhow::Result<()> {
-    let observer = Observer::new()?;
+    let observer = args.perception.observer()?;
     let (target, sources) = (args.target.target(), args.sources.sources());
     let interval = Duration::from_millis(args.interval_ms);
     let mut previous: Option<Observation> = None;
     let mut number = 0;
     loop {
         let started = Instant::now();
-        let observation = observer.observe(&target, &sources)?;
+        let inspection = observer.inspect(&target, &sources)?;
+        if args.stats {
+            print_stats(&render_stats(&inspection));
+        }
+        let observation = inspection.observation;
         ensure_valid(&observation)?;
         let delta =
             previous.as_ref().and_then(|previous| argus_core::delta(previous, &observation));
@@ -69,6 +81,55 @@ pub(crate) fn run(args: &WatchArgs) -> anyhow::Result<()> {
         }
         std::thread::sleep(interval.saturating_sub(started.elapsed()));
     }
+}
+
+/// One line about how an observation was made.
+fn render_stats(inspection: &Inspection) -> String {
+    let t = &inspection.timings;
+    let mut line = format!("{} ", inspection.observation.id.as_str());
+    match &inspection.perception {
+        Some(p) => {
+            let mode = match p.mode {
+                PerceptionMode::Full => "full",
+                PerceptionMode::Unchanged => "unchanged",
+                PerceptionMode::Partial => "partial",
+            };
+            let _ = write!(line, "{mode}");
+            if let Some(ratio) = p.changed_ratio {
+                let _ = write!(
+                    line,
+                    ", {:.2}% changed in {} regions, {:.1}% perceived",
+                    ratio * 100.0,
+                    p.dirty_regions,
+                    p.perceived_share * 100.0
+                );
+            }
+            let _ = write!(line, ", reused {} perceived {}", p.reused, p.perceived);
+            if let Some(verification) = p.verification {
+                let verdict = if verification.agrees() { "same as full" } else { "DIFFERS" };
+                let _ = write!(line, ", {verdict}");
+            }
+        }
+        None => line.push_str("no pixels"),
+    }
+    let _ = write!(
+        line,
+        " | ax {} capture {} ocr {} vision {} fusion {} tracking {} total {} ms",
+        t.accessibility_ms,
+        t.capture_ms,
+        t.ocr_ms,
+        t.vision_ms,
+        t.fusion_ms,
+        t.tracking_ms,
+        t.total_ms
+    );
+    line + "\n"
+}
+
+/// Writes developer statistics to stderr.
+fn print_stats(text: &str) {
+    use std::io::Write as _;
+    let _ = std::io::stderr().lock().write_all(text.as_bytes());
 }
 
 /// The first observation of a session: a header and every element.

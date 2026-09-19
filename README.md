@@ -179,6 +179,18 @@ obs_mu7z4911_000004  +1 -0 ~1
 With `--json` it prints the first observation of a session and then one
 [ObservationDelta](spec/ARGUS_PROTOCOL.md) per observation; applying the
 deltas in order reproduces every observation.
+
+Successive observations of a window are perceived **incrementally**: the new
+frame is compared with the previous one, and OCR and visual detection run
+again only on the regions that changed (grown to the text lines and controls
+they touch); everything else is reused. Unchanged frames, including a moved
+window, reuse all results; large changes are perceived in full.
+
+```bash
+argus watch --stats                    # per observation: mode, changed pixels, time per stage
+argus watch --no-incremental           # perceive every frame in full
+argus watch --verify-incremental       # compare each incremental result with a full one
+```
 `argus accessibility` prints the raw native tree (`AXButton`, ...) for
 debugging the platform adapter.
 

@@ -6,13 +6,17 @@
 //! - recognized text is evidence of text only, never of a control's role;
 //! - inference runs locally; no frame is ever sent to a remote service.
 
+mod change;
 mod error;
+mod incremental;
 #[cfg(target_os = "macos")]
 mod macos;
 mod ocr;
 mod vision;
 
+pub use change::{FrameChange, frame_changes};
 pub use error::{Error, Result};
+pub use incremental::{Update, update_detections, update_ocr};
 #[cfg(target_os = "macos")]
 pub use macos::VisionOcr;
 pub use ocr::{OcrBackend, OcrRegion, ocr_candidates};

@@ -12,6 +12,10 @@ pub enum Error {
     /// The platform framework failed.
     #[error("{0}")]
     Platform(String),
+
+    /// A frame could not be prepared for perception (e.g. an invalid crop).
+    #[error("invalid frame: {0}")]
+    InvalidFrame(#[from] argus_protocol::Error),
 }
 
 impl Error {
@@ -20,6 +24,7 @@ impl Error {
         match self {
             Error::Unsupported => "unsupported",
             Error::Platform(_) => "platform_error",
+            Error::InvalidFrame(_) => "invalid_frame",
         }
     }
 }

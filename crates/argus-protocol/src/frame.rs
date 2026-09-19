@@ -109,6 +109,38 @@ impl Frame {
         self.geometry.pixel_to_point(x, y)
     }
 
+    /// The part of the frame inside the pixel rectangle `(x, y, width,
+    /// height)`, as a frame of its own: same ID, time and scale, covering the
+    /// corresponding points. Fails if the rectangle is empty or not inside
+    /// the frame.
+    pub fn crop(&self, x: u32, y: u32, width: u32, height: u32) -> crate::Result<Frame> {
+        let inside = x.checked_add(width).is_some_and(|right| right <= self.width())
+            && y.checked_add(height).is_some_and(|bottom| bottom <= self.height());
+        if width == 0 || height == 0 || !inside {
+            return Err(Error::InvalidFrame(format!(
+                "crop {x},{y} {width}x{height} is empty or outside the {}x{} frame",
+                self.width(),
+                self.height()
+            )));
+        }
+        let row = PixelBuffer::BYTES_PER_PIXEL * self.width() as usize;
+        let start = PixelBuffer::BYTES_PER_PIXEL * x as usize;
+        let length = PixelBuffer::BYTES_PER_PIXEL * width as usize;
+        let mut data = Vec::with_capacity(length * height as usize);
+        for line in y as usize..(y + height) as usize {
+            let offset = line * row + start;
+            data.extend_from_slice(&self.pixels.as_bytes()[offset..offset + length]);
+        }
+        let bounds = self.pixel_rect_to_bounds(x as f32, y as f32, width as f32, height as f32)?;
+        Frame::new(
+            self.id,
+            self.timestamp,
+            bounds,
+            self.scale_factor(),
+            PixelBuffer::new(width, height, data)?,
+        )
+    }
+
     /// Converts a rectangle in frame pixels to global screen [`Bounds`].
     pub fn pixel_rect_to_bounds(
         &self,
@@ -257,6 +289,28 @@ mod tests {
     fn retina_frame() -> Frame {
         let bounds = Bounds::new(-1200.0, 100.0, 400.0, 300.0).unwrap();
         Frame::new(FrameId(1), Timestamp(0), bounds, 2.0, buffer(800, 600)).unwrap()
+    }
+
+    #[test]
+    fn crops_keep_pixels_and_grounding() {
+        let data: Vec<u8> = (0..4 * 3 * 4).map(|byte| byte as u8).collect();
+        let bounds = Bounds::new(10.0, 20.0, 2.0, 1.5).unwrap();
+        let frame = Frame::new(
+            FrameId(3),
+            Timestamp(9),
+            bounds,
+            2.0,
+            PixelBuffer::new(4, 3, data).unwrap(),
+        )
+        .unwrap();
+        let crop = frame.crop(2, 1, 2, 2).unwrap();
+        assert_eq!((crop.width(), crop.height(), crop.id()), (2, 2, FrameId(3)));
+        assert_eq!(crop.pixels().pixel(0, 0), frame.pixels().pixel(2, 1));
+        assert_eq!(crop.pixels().pixel(1, 1), frame.pixels().pixel(3, 2));
+        assert_eq!(crop.bounds(), Bounds::new(11.0, 20.5, 1.0, 1.0).unwrap());
+
+        assert!(frame.crop(3, 0, 2, 1).is_err(), "outside");
+        assert!(frame.crop(0, 0, 0, 1).is_err(), "empty");
     }
 
     #[test]
