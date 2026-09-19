@@ -100,3 +100,8 @@ fn inspect_is_documented() {
 fn observe_rejects_zero_observations() {
     argus().args(["observe", "--count", "0"]).assert().failure().stderr(contains("--count"));
 }
+
+#[test]
+fn watch_rejects_zero_observations() {
+    argus().args(["watch", "--count", "0"]).assert().failure().stderr(contains("--count"));
+}

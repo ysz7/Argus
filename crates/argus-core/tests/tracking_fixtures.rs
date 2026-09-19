@@ -141,3 +141,57 @@ fn calculator_keys_keep_their_ids() {
     assert_eq!(report.new, 0, "{report:?}");
     assert!(moved.elements.iter().all(|e| e.confidence.identity.is_some()));
 }
+
+/// Sorts what a delta does not order, for comparison.
+fn canonical(mut observation: Observation) -> Observation {
+    observation.elements.sort_by(|a, b| a.id.cmp(&b.id));
+    let key = |relation: &argus_protocol::Relation| serde_json::to_string(relation).unwrap();
+    observation.relations.sort_by_key(key);
+    observation
+}
+
+/// Every delta of the recorded sequence reproduces the next observation, and
+/// says what happened to the calculator.
+#[test]
+fn calculator_deltas_reproduce_the_sequence() {
+    let steps = track_sequence("calculator");
+    let deltas: Vec<_> = steps
+        .windows(2)
+        .map(|pair| {
+            let (from, to) = (&pair[0].1, &pair[1].1);
+            let delta = argus_core::delta(from, to).expect("the session continues");
+            assert_eq!(canonical(delta.apply(from).unwrap()), canonical(to.clone()));
+            let json = serde_json::to_string(&delta).unwrap();
+            assert_eq!(
+                serde_json::from_str::<argus_protocol::ObservationDelta>(&json).unwrap(),
+                delta
+            );
+            delta
+        })
+        .collect();
+
+    let change = |delta: &argus_protocol::ObservationDelta, property: &str, to: &str| {
+        delta.changed.iter().any(|c| c.property == property && c.to == serde_json::json!(to))
+    };
+    // Typing "7 + 57": the display and the Clear key change, nothing moves.
+    assert!(change(&deltas[0], "name", "7 + 57"), "{:#?}", deltas[0].changed);
+    assert!(change(&deltas[0], "name", "Clear"));
+    assert!(deltas[0].window.is_none());
+    // Delete: the display again.
+    assert!(change(&deltas[1], "name", "7 + 5"));
+    // Moving the window: only positions change (and a pixel-derived row one
+    // source missed for a moment comes back with its old ID).
+    let moved = &deltas[3];
+    assert!(moved.window.is_some());
+    assert!(moved.added.iter().all(|e| e.confidence.identity.is_some()), "nothing new");
+    let other: Vec<_> = moved
+        .changed
+        .iter()
+        .filter(|c| {
+            !(c.property.contains("bounds")
+                || c.property == "sources"
+                || c.property.starts_with("confidence."))
+        })
+        .collect();
+    assert!(other.is_empty(), "{other:#?}");
+}

@@ -316,15 +316,22 @@ Both endpoints of every relation MUST exist in `elements`.
 
 ## 10. ObservationDelta
 
-A delta describes the structural difference between two observations.
+A delta describes the difference between two observations of one tracking
+session (§3.1): `to` continues `from` (`to.previous` is `from`), so equal
+element IDs denote the same element. After a full observation, a producer MAY
+send deltas instead of full observations.
 
-| Field     | Type                   | Description                                      |
-| --------- | ---------------------- | ------------------------------------------------ |
-| `from`    | ObservationId          | Base observation.                                |
-| `to`      | ObservationId          | Resulting observation.                           |
-| `added`   | array of Element       | Elements present in `to` but not in `from`.      |
-| `removed` | array of ElementId     | Elements present in `from` but not in `to`.      |
-| `changed` | array of ElementChange | Property changes of elements present in both.    |
+| Field               | Type                   | Required | Description                                                  |
+| ------------------- | ---------------------- | -------- | ------------------------------------------------------------ |
+| `from`              | ObservationId          | yes      | Base observation.                                            |
+| `to`                | ObservationId          | yes      | Resulting observation.                                       |
+| `timestamp`         | integer                | no       | Capture time of `to` (§2).                                   |
+| `window`            | Window                 | no       | The window of `to`, present only when it differs from `from`'s. |
+| `added`             | array of Element       | yes      | Elements present in `to` but not in `from`.                  |
+| `removed`           | array of ElementId     | yes      | Elements present in `from` but not in `to`.                  |
+| `changed`           | array of ElementChange | yes      | Property changes of elements present in both.                |
+| `added_relations`   | array of Relation      | no       | Relations present in `to` but not in `from`.                 |
+| `removed_relations` | array of Relation      | no       | Relations present in `from` but not in `to`.                 |
 
 `ElementChange`:
 
@@ -335,8 +342,24 @@ A delta describes the structural difference between two observations.
 | `from`     | any JSON  | Previous value; `null` if the property was absent.                     |
 | `to`       | any JSON  | New value; `null` if the property is now absent.                       |
 
+Property paths:
+
+- members of `state` and `confidence` change one by one (`state.enabled`,
+  `confidence.identity`);
+- every other property changes as a whole: `role`, `name`, `value`,
+  `description`, `bounds`, `visible_bounds`, `parent`, `children`, `sources`.
+
+A delta is **complete**: applying it to `from` — remove `removed`, set every
+`changed` property (removing it on `null`), append `added`, remove
+`removed_relations`, append `added_relations`, take `timestamp` and `window` —
+yields `to`, up to the order of elements and relations. Bounds are screen
+coordinates, so moving the window changes the bounds of every element. The
+application does not change within a session.
+
 Element identity across observations is a tracking hypothesis; a delta is only
-as reliable as the tracking that produced it.
+as reliable as the tracking that produced it. `confidence.identity` of an
+element in `to` says how sure the producer is that its changes are changes of
+one element rather than one element replaced by another.
 
 ## 11. Validation
 

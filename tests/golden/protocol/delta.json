@@ -1,6 +1,7 @@
 {
   "from": "obs_000001",
   "to": "obs_000002",
+  "timestamp": 1789000000500,
   "added": [
     {
       "id": "e_9",
@@ -50,6 +51,14 @@
       "property": "name",
       "from": null,
       "to": "Close"
+    }
+  ],
+  "added_relations": [
+    {
+      "kind": "label_for",
+      "from": "e_3",
+      "to": "e_8",
+      "confidence": 0.5
     }
   ]
 }

@@ -5,7 +5,7 @@
 //!
 //! ```text
 //! sources ─SourceCandidate→ normalize ─Normalized→ fuse (+ scene graph)
-//!     ─Fused→ assemble → Observation → track (stable IDs)
+//!     ─Fused→ assemble → Observation → track (stable IDs) → delta
 //! ```
 //!
 //! [`assemble`] accepts only [`Fused`] elements, which only [`fuse`] can
@@ -19,6 +19,7 @@
 #![forbid(unsafe_code)]
 
 mod assemble;
+mod delta;
 pub mod error;
 mod fuse;
 mod normalize;
@@ -29,6 +30,7 @@ pub use argus_accessibility as accessibility;
 /// Frame acquisition (re-exported so front ends depend only on the core).
 pub use argus_capture as capture;
 pub use assemble::assemble;
+pub use delta::delta;
 pub use error::{Error, Permission, Result};
 pub use fuse::{Fused, fuse};
 pub use normalize::{Normalized, normalize};

@@ -1,7 +1,7 @@
 //! The observation pipeline.
 
-use std::sync::Mutex;
 use std::sync::atomic::{AtomicU64, Ordering};
+use std::sync::{Mutex, OnceLock};
 
 use argus_accessibility::{AccessibilityBackend, AppTarget};
 use argus_capture::{CaptureBackend, CaptureTarget, WindowInfo, main_window};
@@ -293,9 +293,27 @@ fn window_like(
         .ok_or(Error::WindowMismatch)
 }
 
+/// A new observation ID, unique across runs: the time the process made its
+/// first observation (milliseconds, base 36) and a counter.
 fn next_observation_id() -> ObservationId {
+    static RUN: OnceLock<String> = OnceLock::new();
+    let run = RUN.get_or_init(|| base36(Timestamp::now().0));
     let number = NEXT_OBSERVATION.fetch_add(1, Ordering::Relaxed);
-    ObservationId::new(format!("obs_{number:06}")).expect("generated ids are non-empty")
+    ObservationId::new(format!("obs_{run}_{number:06}")).expect("generated ids are non-empty")
+}
+
+fn base36(mut value: u64) -> String {
+    const DIGITS: &[u8; 36] = b"0123456789abcdefghijklmnopqrstuvwxyz";
+    let mut digits = Vec::new();
+    loop {
+        digits.push(DIGITS[(value % 36) as usize]);
+        value /= 36;
+        if value == 0 {
+            break;
+        }
+    }
+    digits.reverse();
+    String::from_utf8(digits).expect("ASCII digits")
 }
 
 #[cfg(test)]
@@ -349,6 +367,10 @@ mod tests {
 
         let second = observer.observe(&AppTarget::Frontmost, &[Source::Accessibility]).unwrap();
         assert_ne!(first.id, second.id);
+        let run = |id: &ObservationId| id.as_str().rsplit_once('_').unwrap().0.to_owned();
+        assert_eq!(run(&first.id), run(&second.id), "one run");
+        assert_eq!(base36(0), "0");
+        assert_eq!(base36(1_789_797_328_309), "mu7z4911");
         // The same window again: the same elements, tracked.
         assert_eq!(second.previous.as_ref(), Some(&first.id));
         for (a, b) in first.elements.iter().zip(&second.elements) {

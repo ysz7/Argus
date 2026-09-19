@@ -50,8 +50,9 @@
 //! Boundaries:
 //! - identity is a scored hypothesis, not an absolute truth; ambiguous matches
 //!   are reported as such;
-//! - produces stable element IDs (and, later, observation deltas), nothing
-//!   else.
+//! - produces stable element IDs, nothing else. Deltas between tracked
+//!   observations are computed from the IDs by
+//!   [`ObservationDelta::between`](argus_protocol::ObservationDelta::between).
 
 #![forbid(unsafe_code)]
 

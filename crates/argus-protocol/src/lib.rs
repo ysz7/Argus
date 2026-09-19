@@ -41,7 +41,7 @@ pub use candidate::{
     SourceMeta,
 };
 pub use confidence::{Confidence, Score};
-pub use delta::{ElementChange, ObservationDelta};
+pub use delta::{DeltaError, ElementChange, ObservationDelta};
 pub use element::{CheckState, Element, ElementState, Role};
 pub use error::{Error, Result};
 pub use frame::{Frame, FrameGeometry, FrameId, PixelBuffer};

@@ -32,6 +32,8 @@ struct Cli {
 enum Command {
     /// Observe the focused window of an application.
     Observe(commands::observe::ObserveArgs),
+    /// Observe repeatedly and show what changed between observations.
+    Watch(commands::watch::WatchArgs),
     /// Show the evidence and conflicts behind observed elements.
     Inspect(commands::inspect::InspectArgs),
     /// Dump the raw native accessibility tree (developer tool).
@@ -45,13 +47,31 @@ fn main() -> anyhow::Result<()> {
     logging::init(&cli.log_level, cli.log_format)?;
     tracing::debug!(version = env!("CARGO_PKG_VERSION"), "argus started");
 
-    match cli.command {
+    let result = match cli.command {
         Some(Command::Observe(args)) => commands::observe::run(&args),
+        Some(Command::Watch(args)) => commands::watch::run(&args),
         Some(Command::Inspect(args)) => commands::inspect::run(&args),
         Some(Command::Accessibility(args)) => commands::accessibility::run(&args),
         Some(Command::Capture(args)) => commands::capture::run(&args),
         None => Ok(()),
+    };
+    match result {
+        // The reader went away (`argus watch | head`): nothing left to do.
+        Err(error) if is_broken_pipe(&error) => Ok(()),
+        result => result,
     }
+}
+
+fn is_broken_pipe(error: &anyhow::Error) -> bool {
+    error.chain().any(|cause| {
+        cause
+            .downcast_ref::<std::io::Error>()
+            .is_some_and(|io| io.kind() == std::io::ErrorKind::BrokenPipe)
+            || cause
+                .downcast_ref::<serde_json::Error>()
+                .and_then(|json| json.io_error_kind())
+                .is_some_and(|kind| kind == std::io::ErrorKind::BrokenPipe)
+    })
 }
 
 #[cfg(test)]

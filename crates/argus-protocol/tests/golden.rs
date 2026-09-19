@@ -190,6 +190,8 @@ fn delta_matches_golden() {
     let delta = ObservationDelta {
         from: ObservationId::new("obs_000001").unwrap(),
         to: ObservationId::new("obs_000002").unwrap(),
+        timestamp: Some(Timestamp(1_789_000_000_500)),
+        window: None,
         added: vec![saved],
         removed: vec![id("e_2")],
         changed: vec![
@@ -212,6 +214,13 @@ fn delta_matches_golden() {
                 to: json!("Close"),
             },
         ],
+        added_relations: vec![Relation {
+            kind: RelationKind::LabelFor,
+            from: id("e_3"),
+            to: id("e_8"),
+            confidence: Some(score(0.5)),
+        }],
+        removed_relations: Vec::new(),
     };
     check_golden("delta.json", &delta);
 }

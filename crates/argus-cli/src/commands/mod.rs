@@ -5,3 +5,4 @@ pub(crate) mod capture;
 pub(crate) mod inspect;
 pub(crate) mod observe;
 mod target;
+pub(crate) mod watch;
