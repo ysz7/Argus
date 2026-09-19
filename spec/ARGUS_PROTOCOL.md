@@ -1,6 +1,6 @@
 # Argus Observation Protocol
 
-**Version:** 0.1 (draft)
+**Version:** 0.2 (draft)
 **Reference implementation:** [`crates/argus-protocol`](../crates/argus-protocol)
 **Canonical examples:** [`tests/golden/protocol`](../tests/golden/protocol)
 
@@ -35,7 +35,7 @@ An observation describes the interface at one moment.
 
 | Field              | Type                  | Required | Description                                                       |
 | ------------------ | --------------------- | -------- | ----------------------------------------------------------------- |
-| `protocol_version` | string                | yes      | Protocol version, `"0.1"` for this document.                      |
+| `protocol_version` | string                | yes      | Protocol version, `"0.2"` for this document.                      |
 | `id`               | ObservationId         | yes      | Identifier of the observation.                                    |
 | `timestamp`        | integer               | yes      | Capture time, milliseconds since the Unix epoch (UTC).            |
 | `previous`         | ObservationId         | no       | Earlier observation whose element IDs this one continues (§3.1).  |
@@ -43,6 +43,11 @@ An observation describes the interface at one moment.
 | `window`           | Window                | no       | The observed window.                                              |
 | `elements`         | array of Element      | yes      | All observed elements. Parents SHOULD precede their children.     |
 | `relations`        | array of Relation     | no       | Non-hierarchical relations between elements.                      |
+
+An observation covers one window of the application and what floats above
+it: open menus, pop-ups and panels of the same application appear as
+additional root elements (e.g. role `menu`), outside the window's bounds if
+they extend beyond it.
 
 ### 2.1 Application
 
@@ -67,6 +72,7 @@ An observation describes the interface at one moment.
 | `role`           | Role                  | yes      | Semantic role (§5). `unknown` is a valid, honest value.                        |
 | `name`           | string                | no       | Accessible name or visible label.                                              |
 | `value`          | string                | no       | Current value (text field contents, slider position, ...). `""` means empty.   |
+| `text`           | TextState             | no       | Selection and styling of `value`, for text controls (§6.1).                    |
 | `description`    | string                | no       | Longer description or help text.                                               |
 | `bounds`         | Bounds                | yes      | Full extent of the element, including clipped parts (§4.4).                    |
 | `visible_bounds` | Bounds                | no       | Visible part of `bounds` when only partially visible (§4.4).                   |
@@ -234,6 +240,33 @@ property means there is no evidence either way.
 `checked` is a string rather than a boolean because checkboxes can be in an
 indeterminate (`mixed`) state.
 
+### 6.1 TextState
+
+Text controls MAY report what is selected and how the text is styled, so
+that a consumer can check the result of an edit ("is only the title bold?").
+Positions count Unicode scalar values (characters) of the element's `value`,
+starting at 0.
+
+| Field       | Type             | Required | Description                                                     |
+| ----------- | ---------------- | -------- | --------------------------------------------------------------- |
+| `selection` | TextRange        | no       | The selected range; a range of length 0 is the insertion point. |
+| `runs`      | array of TextRun | no       | Consecutive ranges of uniform style, in order.                  |
+
+`TextRange`: `start` and `length`, integers.
+
+`TextRun`: `start` and `length`, plus the style properties that are known:
+
+| Field       | Type    | Description                     |
+| ----------- | ------- | ------------------------------- |
+| `font`      | string  | Font name, e.g. `Helvetica-Bold`. |
+| `size`      | number  | Font size in points.            |
+| `bold`      | boolean | Bold weight.                    |
+| `italic`    | boolean | Italic or oblique.              |
+| `underline` | boolean | Underlined.                     |
+
+Adjacent runs of the same style are merged. A producer MAY omit `runs` for
+long texts. In deltas `text` changes as a whole.
+
 ## 7. Confidence
 
 Confidence is reported **per property**, as a number in `0.0..=1.0`.
@@ -347,7 +380,7 @@ Property paths:
 
 - members of `state` and `confidence` change one by one (`state.enabled`,
   `confidence.identity`);
-- every other property changes as a whole: `role`, `name`, `value`,
+- every other property changes as a whole: `role`, `name`, `value`, `text`,
   `description`, `bounds`, `visible_bounds`, `parent`, `children`, `sources`.
 
 A delta is **complete**: applying it to `from` — remove `removed`, set every
@@ -400,6 +433,11 @@ closed enums with strict semantics (`CheckState`) are rejected.
 
 A formal JSON Schema (`spec/schemas/`) will be published together with the
 versioning policy.
+
+Changes:
+
+- **0.2:** `Element.text` (§6.1); open menus and pop-ups of the application
+  as additional root elements (§2). A 0.1 document is a valid 0.2 document.
 
 ## 13. Example (excerpt)
 

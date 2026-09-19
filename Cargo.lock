@@ -127,6 +127,7 @@ dependencies = [
  "anyhow",
  "argus-benchmark",
  "argus-core",
+ "argus-mcp",
  "argus-protocol",
  "argus-server",
  "assert_cmd",
@@ -149,6 +150,8 @@ dependencies = [
  "argus-perception",
  "argus-protocol",
  "argus-tracking",
+ "png",
+ "serde",
  "serde_json",
  "thiserror",
  "tracing",
@@ -166,10 +169,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "argus-input"
+version = "0.0.1"
+dependencies = [
+ "objc2-app-kit",
+ "objc2-application-services",
+ "objc2-core-foundation",
+ "objc2-core-graphics",
+ "thiserror",
+]
+
+[[package]]
 name = "argus-integration-tests"
 version = "0.0.1"
 dependencies = [
  "serde_json",
+]
+
+[[package]]
+name = "argus-mcp"
+version = "0.0.1"
+dependencies = [
+ "argus-core",
+ "argus-input",
+ "argus-protocol",
+ "serde",
+ "serde_json",
+ "tracing",
 ]
 
 [[package]]

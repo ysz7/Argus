@@ -50,6 +50,7 @@ fn observe_app(number: u32, pid: u32, origin: (f32, f32), specs: &[Spec]) -> Obs
                 role: spec.role,
                 name: spec.name.map(str::to_owned),
                 value: None,
+                text: None,
                 description: None,
                 bounds: Bounds::new(origin.0 + x, origin.1 + y, width, height).unwrap(),
                 visible_bounds: None,

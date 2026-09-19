@@ -43,6 +43,7 @@ pub fn vision_candidates(frame: &Frame, detections: &[VisualCandidate]) -> Vec<S
             role: detection.role,
             name: None,
             value: None,
+            text: None,
             description: None,
             region: Region::Frame { geometry, rect: detection.rect },
             clip: None,

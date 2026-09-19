@@ -92,10 +92,11 @@ pub enum DeltaError {
 const NESTED: [&str; 2] = ["state", "confidence"];
 
 /// The order in which the changes of one element are listed.
-const PROPERTY_ORDER: [&str; 23] = [
+const PROPERTY_ORDER: [&str; 24] = [
     "role",
     "name",
     "value",
+    "text",
     "description",
     "bounds",
     "visible_bounds",
@@ -340,6 +341,7 @@ mod tests {
             role,
             name: name.map(str::to_owned),
             value: None,
+            text: None,
             description: None,
             bounds: Bounds::new(0.0, 0.0, 10.0, 10.0).unwrap(),
             visible_bounds: None,

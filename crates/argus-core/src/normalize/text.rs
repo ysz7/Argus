@@ -5,6 +5,7 @@
 //! invisible or can disguise content (control characters, zero-width
 //! characters, bidirectional overrides).
 
+use argus_protocol::{TextRange, TextRun, TextState};
 use unicode_normalization::UnicodeNormalization;
 
 /// Maximum length of names and descriptions, in characters.
@@ -51,6 +52,54 @@ pub(crate) fn clean_value(raw: Option<&str>) -> Option<String> {
     Some(truncate(value, MAX_VALUE_CHARS))
 }
 
+/// Maximum number of style runs kept per element.
+pub(crate) const MAX_RUNS: usize = 200;
+
+/// Converts selection and style runs from UTF-16 positions in the raw value
+/// to character positions in the cleaned value; merges adjacent runs of the
+/// same style and drops empty ones.
+pub(crate) fn clean_text_state(raw: Option<&str>, text: Option<TextState>) -> Option<TextState> {
+    let (raw, text) = (raw?, text?);
+    let position = |utf16: u32| -> u32 {
+        let mut units = 0;
+        let mut end = raw.len();
+        for (index, c) in raw.char_indices() {
+            if units >= utf16 as usize {
+                end = index;
+                break;
+            }
+            units += c.len_utf16();
+        }
+        let prefix = clean_value(Some(&raw[..end])).unwrap_or_default();
+        u32::try_from(prefix.chars().count()).unwrap_or(u32::MAX)
+    };
+    let range = |start: u32, length: u32| {
+        let from = position(start);
+        let to = position(start.saturating_add(length));
+        (from, to.saturating_sub(from))
+    };
+    let selection = text.selection.map(|selection| {
+        let (start, length) = range(selection.start, selection.length);
+        TextRange { start, length }
+    });
+    let mut runs: Vec<TextRun> = Vec::new();
+    for run in text.runs {
+        let (start, length) = range(run.start, run.length);
+        if length == 0 {
+            continue;
+        }
+        match runs.last_mut() {
+            Some(last) if last.same_style(&run) && last.start + last.length == start => {
+                last.length += length;
+            }
+            _ => runs.push(TextRun { start, length, ..run }),
+        }
+    }
+    runs.truncate(MAX_RUNS);
+    let text = TextState { selection, runs };
+    (!text.is_empty()).then_some(text)
+}
+
 /// Invisible or deceptive characters removed from all text.
 fn is_stripped(c: char) -> bool {
     matches!(
@@ -80,6 +129,50 @@ fn truncate(text: String, max_chars: usize) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn text_state_positions_follow_the_cleaned_value() {
+        // "\u{200B}" is stripped; "é" is one UTF-16 unit, "😀" two.
+        let raw = "a\u{200B}é😀bold";
+        let text = TextState {
+            selection: Some(TextRange { start: 5, length: 4 }),
+            runs: vec![
+                TextRun {
+                    start: 0,
+                    length: 3,
+                    font: Some("A".into()),
+                    size: None,
+                    bold: None,
+                    italic: None,
+                    underline: None,
+                },
+                TextRun {
+                    start: 3,
+                    length: 2,
+                    font: Some("A".into()),
+                    size: None,
+                    bold: None,
+                    italic: None,
+                    underline: None,
+                },
+                TextRun {
+                    start: 5,
+                    length: 4,
+                    font: Some("A-Bold".into()),
+                    size: None,
+                    bold: Some(true),
+                    italic: None,
+                    underline: None,
+                },
+            ],
+        };
+        let clean = clean_text_state(Some(raw), Some(text)).unwrap();
+        assert_eq!(clean_value(Some(raw)).unwrap(), "aé😀bold");
+        assert_eq!(clean.selection, Some(TextRange { start: 3, length: 4 }));
+        assert_eq!(clean.runs.len(), 2, "same-style neighbours merge");
+        assert_eq!((clean.runs[0].start, clean.runs[0].length), (0, 3));
+        assert_eq!((clean.runs[1].start, clean.runs[1].length), (3, 4));
+    }
 
     #[test]
     fn labels_collapse_whitespace_and_trim() {

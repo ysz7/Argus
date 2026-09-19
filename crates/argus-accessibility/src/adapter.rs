@@ -10,7 +10,7 @@
 
 use argus_protocol::{
     Bounds, CandidateId, CandidateRelation, CheckState, Confidence, ElementState, Region,
-    RelationKind, Role, Score, Source, SourceCandidate, SourceMeta,
+    RelationKind, Role, Score, Source, SourceCandidate, SourceMeta, TextRange, TextRun, TextState,
 };
 
 use crate::roles::{clips_children, is_text_input, map_role, subrole_name, text_in_value};
@@ -29,6 +29,10 @@ pub fn candidates(snapshot: &AxSnapshot) -> Vec<SourceCandidate> {
     let mut tree = Tree::default();
     let clip = snapshot.window.frame.and_then(to_bounds);
     visit(&snapshot.window, None, clip, &mut tree);
+    // Open menus are separate roots: they float above every window.
+    for menu in &snapshot.menus {
+        visit(menu, None, None, &mut tree);
+    }
 
     let Tree { mut output, ids, labelled } = tree;
     for (target, label, unnamed) in labelled {
@@ -107,6 +111,7 @@ fn candidate(
     let role = map_role(&node.role, node.subrole.as_deref());
     let (name, description) = name_and_description(node);
     let value = value(node, role);
+    let text = value.as_ref().and_then(|_| text_state(node));
 
     let mut state = ElementState {
         enabled: node.enabled,
@@ -146,6 +151,7 @@ fn candidate(
         role,
         name,
         value,
+        text,
         description,
         region: Region::Screen(bounds),
         clip,
@@ -161,6 +167,33 @@ fn candidate(
             native_id: node.identifier.clone().filter(|id| !id.is_empty()),
         },
     }
+}
+
+/// Selection and style runs of a text control, in UTF-16 units of the raw
+/// value. Bold and italic are read from the font name, as the platform
+/// reports no separate traits.
+fn text_state(node: &AxNode) -> Option<TextState> {
+    let selection =
+        node.selection.map(|range| TextRange { start: range.location, length: range.length });
+    let runs = node
+        .runs
+        .iter()
+        .map(|run| {
+            let font = run.font.as_deref().map(str::to_lowercase);
+            let has = |words: &[&str]| font.as_deref().map(|f| words.iter().any(|w| f.contains(w)));
+            TextRun {
+                start: run.range.location,
+                length: run.range.length,
+                font: run.font.clone(),
+                size: run.size.map(|size| size as f32),
+                bold: has(&["bold", "black", "heavy", "semibold"]),
+                italic: has(&["italic", "oblique"]),
+                underline: run.underline,
+            }
+        })
+        .collect();
+    let text = TextState { selection, runs };
+    (!text.is_empty()).then_some(text)
 }
 
 /// Chooses the name and description following macOS labelling conventions.
@@ -259,6 +292,7 @@ mod tests {
                 children,
                 ..node("AXWindow", frame(0.0, 0.0, 400.0, 300.0))
             },
+            menus: Vec::new(),
             truncated: false,
         }
     }

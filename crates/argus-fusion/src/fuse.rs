@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 use argus_protocol::{
     Bounds, CandidateId, Confidence, ElementCandidate, ElementState, RelationKind, Role, Score,
-    Source,
+    Source, TextState,
 };
 
 use crate::evidence::{Claim, Conflict, Contribution, ElementEvidence, Link, Property};
@@ -54,6 +54,8 @@ pub struct FusedElement {
     pub name: Option<String>,
     /// Value.
     pub value: Option<String>,
+    /// Selection and styling of `value` (structured sources only).
+    pub text: Option<TextState>,
     /// Description.
     pub description: Option<String>,
     /// Full extent.
@@ -129,6 +131,7 @@ struct Node {
     role: Role,
     name: Option<String>,
     value: Option<String>,
+    text: Option<TextState>,
     description: Option<String>,
     bounds: Bounds,
     visible_bounds: Option<Bounds>,
@@ -151,6 +154,7 @@ impl Node {
             role: candidate.role,
             name: candidate.name.clone(),
             value: candidate.value.clone(),
+            text: candidate.text.clone(),
             description: candidate.description.clone(),
             bounds: candidate.bounds,
             visible_bounds: candidate.visible_bounds,
@@ -535,6 +539,7 @@ impl Builder {
         }
         let node = &mut self.nodes[target];
         node.value = Some(rows.join("\n"));
+        node.text = None;
         // Pixels cannot tell typed text from a placeholder.
         node.confidence.value =
             confidence.map(|score| min(score, Score::new(FIELD_TEXT).expect("in range")));
@@ -657,6 +662,7 @@ impl Builder {
                     role: node.role,
                     name: node.name.take(),
                     value: node.value.take(),
+                    text: node.text.take(),
                     description: node.description.take(),
                     bounds: node.bounds,
                     visible_bounds: node.visible_bounds,
@@ -757,6 +763,7 @@ mod tests {
             role,
             name: name.map(str::to_owned),
             value: None,
+            text: None,
             description: None,
             bounds,
             visible_bounds: None,

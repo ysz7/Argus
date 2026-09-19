@@ -648,6 +648,7 @@ mod tests {
             role,
             name: Some(name.to_owned()),
             value: None,
+            text: None,
             description: None,
             bounds: b,
             visible_bounds: None,

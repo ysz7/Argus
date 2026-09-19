@@ -8,6 +8,10 @@ pub struct AxSnapshot {
     pub application: Application,
     /// The window node; its descendants form the tree.
     pub window: AxNode,
+    /// Open menus of the application outside the window (context menus,
+    /// menu-bar menus), each with its items.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub menus: Vec<AxNode>,
     /// Whether traversal stopped early because of size or depth limits.
     #[serde(default)]
     pub truncated: bool,
@@ -54,6 +58,13 @@ pub struct AxNode {
     /// `AXExpanded`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub expanded: Option<bool>,
+    /// `AXSelectedTextRange`, in UTF-16 code units of the value.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub selection: Option<AxRange>,
+    /// Style runs of the value (`AXAttributedStringForRange`), for text
+    /// areas and fields.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub runs: Vec<AxRun>,
     /// Pre-order index (within the snapshot, the window being 0) of the node
     /// that labels this one (`AXTitleUIElement`).
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -86,4 +97,29 @@ pub struct AxFrame {
     pub width: f64,
     /// Height.
     pub height: f64,
+}
+
+/// A range of UTF-16 code units, as the platform reports it.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub struct AxRange {
+    /// First unit.
+    pub location: u32,
+    /// Number of units.
+    pub length: u32,
+}
+
+/// A range of text with uniform attributes, with platform vocabulary.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct AxRun {
+    /// The range, in UTF-16 code units.
+    pub range: AxRange,
+    /// `AXFontName`, e.g. `Helvetica-Bold`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub font: Option<String>,
+    /// `AXFontSize` in points.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub size: Option<f64>,
+    /// `AXUnderline` (any underline style).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub underline: Option<bool>,
 }

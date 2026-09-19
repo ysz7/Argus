@@ -18,6 +18,9 @@ pub struct Element {
     /// Longer description or help text.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+    /// Selection and styling of `value`, for text controls.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub text: Option<TextState>,
     /// Full extent of the element, including parts that are clipped.
     pub bounds: Bounds,
     /// The part of `bounds` that is actually visible on screen, after
@@ -107,6 +110,71 @@ impl ElementState {
     /// Whether nothing is known about the state.
     pub fn is_unknown(&self) -> bool {
         *self == Self::default()
+    }
+}
+
+/// Selection and styling of the text in an element's `value`.
+///
+/// Positions count Unicode scalar values (characters) of `value`, from 0.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+pub struct TextState {
+    /// The selected range; an empty range is the insertion point.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub selection: Option<TextRange>,
+    /// Consecutive ranges of uniform style, covering the text in order.
+    /// Empty when the style is unknown.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub runs: Vec<TextRun>,
+}
+
+impl TextState {
+    /// Whether nothing is known.
+    pub fn is_empty(&self) -> bool {
+        self.selection.is_none() && self.runs.is_empty()
+    }
+}
+
+/// A range of characters.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub struct TextRange {
+    /// First character.
+    pub start: u32,
+    /// Number of characters.
+    pub length: u32,
+}
+
+/// A range of text with one style. Unknown style properties are omitted.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct TextRun {
+    /// First character.
+    pub start: u32,
+    /// Number of characters.
+    pub length: u32,
+    /// Font name, e.g. `Helvetica-Bold`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub font: Option<String>,
+    /// Font size in points.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub size: Option<f32>,
+    /// Bold weight.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub bold: Option<bool>,
+    /// Italic or oblique.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub italic: Option<bool>,
+    /// Underlined.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub underline: Option<bool>,
+}
+
+impl TextRun {
+    /// Whether two runs have the same style.
+    pub fn same_style(&self, other: &Self) -> bool {
+        self.font == other.font
+            && self.size == other.size
+            && self.bold == other.bold
+            && self.italic == other.italic
+            && self.underline == other.underline
     }
 }
 

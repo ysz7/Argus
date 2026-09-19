@@ -28,7 +28,9 @@ fn id(value: &str) -> ElementId {
 fn baseline_fixture_is_valid() {
     // Every invalid fixture is a one-field mutation of this document.
     let observation = parse(&read(fixtures().join("single_element.json"))).unwrap();
-    assert_eq!(observation.protocol_version, PROTOCOL_VERSION);
+    // A 0.1 document stays valid: 0.2 only added optional fields.
+    assert_eq!(observation.protocol_version, "0.1");
+    assert_ne!(PROTOCOL_VERSION, "0.1");
     observation.validate().unwrap();
 }
 

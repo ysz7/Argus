@@ -26,7 +26,7 @@ pub use adapter::candidates;
 pub use error::{Error, Result};
 #[cfg(target_os = "macos")]
 pub use macos::MacAccessibilityBackend;
-pub use node::{AxFrame, AxNode, AxSnapshot, AxValue};
+pub use node::{AxFrame, AxNode, AxRange, AxRun, AxSnapshot, AxValue};
 
 /// Which application to read.
 #[derive(Debug, Clone, PartialEq, Eq)]

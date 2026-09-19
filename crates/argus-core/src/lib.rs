@@ -18,7 +18,9 @@
 
 #![forbid(unsafe_code)]
 
+pub mod agent;
 mod assemble;
+pub mod crop;
 mod delta;
 pub mod error;
 mod fuse;

@@ -1,6 +1,6 @@
 # Argus Local Service API
 
-Version: v1 (Argus 0.0.1, protocol 0.1)
+Version: v1 (Argus 0.0.1, protocol 0.2)
 
 `argus serve` makes observations available to any local program over HTTP,
 without linking with Rust. The payloads are those of the
@@ -31,9 +31,11 @@ RFC 2119.
 - Requests with an `Origin` header are refused with `403 forbidden`:
   browsers send it on requests from web pages. No CORS headers are sent.
 - Observations are kept in memory only, in a bounded history
-  (`--history N`, default 32). Nothing is written to disk; frames are never
-  stored beyond the last one per observed window (needed for incremental
-  perception).
+  (`--history N`, default 32). Nothing is written to disk. Frames are kept
+  only as the last one per observed window (for incremental perception) and
+  those of the latest observation of each session (for `/frame`, §5).
+- Pixels leave the service only through `/v1/observation/{id}/frame`, on
+  request.
 - The service observes only when asked. It never accepts actions to execute.
 
 Any local process of the user can read the screen through the service; the
@@ -170,6 +172,57 @@ without it, the latest observation of any session is used.
 
 `evidence.conflicts` is present only when the sources disagreed. The
 `evidence` format is diagnostic and may change between versions.
+
+### `GET /v1/observation/{id}/frame`
+
+The pixels of a region of an observation, as a PNG image (`Content-Type:
+image/png`). Parameters: `x`, `y`, `width`, `height` (the region, in screen
+points; required) and `scale` (image pixels per point, `0.1`–`2`, default
+`1`).
+
+Only the **latest observation of each session** keeps its frames, in memory;
+for older observations, and for observations made without pixel sources, the
+answer is `404 frame_not_available`. The image comes from the frame that best
+covers the region (the window, or a pop-up of the application) and is clipped
+to it.
+
+### Agent view: `GET /v1/agent/observation`, `GET /v1/agent/changes?since={id}`
+
+The same observations as `/v1/observation` and `/v1/changes`, rendered for
+language-model agents: compact text, one element per line (`e_7 button
+"Save" [disabled] (x,y wxh)`), rows of like controls on one line, selection
+and styles of text controls, and deltas without noise. The text format is
+meant for models, not for parsing; it may change between versions.
+
+Parameters: those of `/v1/observation` (resp. `since`), and:
+
+| Parameter        | Meaning                                                                                 |
+| ---------------- | --------------------------------------------------------------------------------------- |
+| `mode`           | `text` (default) or `hybrid`: also list the regions the text describes poorly.         |
+| `min_confidence` | Pixel-only elements below this existence confidence are left out (default `0.5`).     |
+
+```json
+{
+  "observation": "obs_mu8j0000_000002",
+  "text": "Window \"Settings\" (54,129 577x612)\n...",
+  "regions": [
+    {
+      "bounds": { "x": 54, "y": 129, "width": 577, "height": 612 },
+      "reason": "no_accessibility",
+      "image": "/v1/observation/obs_mu8j0000_000002/frame?x=54&y=129&width=577&height=612"
+    }
+  ]
+}
+```
+
+`reason` is one of `no_accessibility` (the window has no accessibility tree),
+`drawn_content` (a large area drawn without structure), `uncertain_elements`
+(controls seen in pixels only, with uncertain roles or no names) and `popup`
+(a menu or pop-up seen in pixels only). A client shows the agent the images of
+these regions and the text for everything else. After an action,
+`/v1/agent/changes` lists only the regions touched by the changes. Its answer
+also carries `from`, and `"new_session": true` with the whole view instead of
+changes when the new observation starts a new tracking session.
 
 ## 6. Platform notes (macOS)
 

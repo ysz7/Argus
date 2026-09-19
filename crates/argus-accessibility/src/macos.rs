@@ -15,7 +15,8 @@ use objc2_application_services::{
     AXUIElement, AXValue, AXValueType, kAXTrustedCheckOptionPrompt,
 };
 use objc2_core_foundation::{
-    CFArray, CFBoolean, CFDictionary, CFNumber, CFRetained, CFString, CFType, CGPoint, CGSize, Type,
+    CFArray, CFAttributedString, CFBoolean, CFDictionary, CFNumber, CFRange, CFRetained, CFString,
+    CFType, CGPoint, CGSize, Type,
 };
 use objc2_core_graphics::{
     CGWindowListCopyWindowInfo, CGWindowListOption, kCGWindowLayer, kCGWindowOwnerName,
@@ -23,7 +24,10 @@ use objc2_core_graphics::{
 };
 use objc2_foundation::NSString;
 
-use crate::{AccessibilityBackend, AppTarget, AxFrame, AxNode, AxSnapshot, AxValue, Error, Result};
+use crate::{
+    AccessibilityBackend, AppTarget, AxFrame, AxNode, AxRange, AxRun, AxSnapshot, AxValue, Error,
+    Result,
+};
 
 /// Maximum number of nodes read from one window.
 const MAX_NODES: usize = 5_000;
@@ -35,7 +39,7 @@ const MAX_DEPTH: usize = 64;
 const MESSAGING_TIMEOUT: f32 = 1.0;
 
 /// Attributes read for every node, in the order of [`Attr`].
-const ATTRIBUTES: [&str; 16] = [
+const ATTRIBUTES: [&str; 17] = [
     "AXRole",
     "AXSubrole",
     "AXTitle",
@@ -52,6 +56,7 @@ const ATTRIBUTES: [&str; 16] = [
     "AXExpanded",
     "AXChildren",
     "AXTitleUIElement",
+    "AXSelectedTextRange",
 ];
 
 /// Indices into [`ATTRIBUTES`].
@@ -73,6 +78,7 @@ enum Attr {
     Expanded,
     Children,
     TitleElement,
+    SelectedTextRange,
 }
 
 /// Accessibility backend for macOS.
@@ -124,6 +130,8 @@ impl AccessibilityBackend for MacAccessibilityBackend {
         };
         let mut window = reader.read(&window, 0).ok_or(Error::NoWindow)?;
         reader.resolve_labels(&mut window);
+        let menus =
+            open_menus(&app_element).iter().filter_map(|menu| reader.read(menu, 1)).collect();
         tracing::debug!(
             nodes = reader.nodes,
             truncated = reader.truncated,
@@ -137,6 +145,7 @@ impl AccessibilityBackend for MacAccessibilityBackend {
                 pid: u32::try_from(pid).ok(),
             },
             window,
+            menus,
             truncated: reader.truncated,
         })
     }
@@ -284,6 +293,48 @@ fn window_of(app: &AXUIElement) -> Result<CFRetained<AXUIElement>> {
     Err(Error::NoWindow)
 }
 
+/// Menus the application has open outside its windows: context menus
+/// (children of the application element) and the menu of the selected
+/// menu-bar item.
+fn open_menus(app: &AXUIElement) -> Vec<CFRetained<AXUIElement>> {
+    let children = |element: &AXUIElement| -> Vec<CFRetained<AXUIElement>> {
+        let Ok(Some(value)) = attribute_value(element, "AXChildren") else { return Vec::new() };
+        let Ok(array) = value.downcast::<CFArray>() else { return Vec::new() };
+        // SAFETY: `AXChildren` is an array of CF objects.
+        let array: &CFArray<CFType> = unsafe { array.cast_unchecked() };
+        array.iter().filter_map(|child| child.downcast::<AXUIElement>().ok()).collect()
+    };
+    let role = |element: &AXUIElement| {
+        attribute_value(element, "AXRole").ok().flatten().as_deref().and_then(cf_string)
+    };
+    let mut menus = Vec::new();
+    for child in children(app) {
+        match role(&child).as_deref() {
+            Some("AXMenu") => menus.push(child),
+            Some("AXMenuBar") => {
+                for item in children(&child) {
+                    let selected = attribute_value(&item, "AXSelected")
+                        .ok()
+                        .flatten()
+                        .as_deref()
+                        .and_then(cf_bool)
+                        .unwrap_or(false);
+                    if selected {
+                        menus.extend(
+                            children(&item)
+                                .into_iter()
+                                .filter(|menu| role(menu).as_deref() == Some("AXMenu")),
+                        );
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+    menus.truncate(4);
+    menus
+}
+
 fn is_window(element: &AXUIElement) -> Result<bool> {
     let role = attribute_value(element, "AXRole")?;
     Ok(role.as_deref().and_then(cf_string).is_some_and(|role| role == "AXWindow"))
@@ -355,9 +406,16 @@ impl TreeReader<'_> {
             focused: boolean(Attr::Focused),
             selected: boolean(Attr::Selected),
             expanded: boolean(Attr::Expanded),
+            selection: get(Attr::SelectedTextRange).and_then(range),
+            runs: Vec::new(),
             label: None,
             children: Vec::new(),
         };
+        if matches!(node.role.as_str(), "AXTextArea" | "AXTextField")
+            && let Some(AxValue::String(text)) = &node.value
+        {
+            node.runs = runs(element, text.encode_utf16().count());
+        }
         if let Some(title) =
             get(Attr::TitleElement).and_then(|value| value.downcast_ref::<AXUIElement>())
         {
@@ -455,6 +513,101 @@ fn ax_value(value: &CFType) -> Option<AxValue> {
         return number.as_f64().map(AxValue::Number);
     }
     cf_string(value).map(AxValue::String)
+}
+
+/// Longest text whose style runs are read, in UTF-16 code units.
+const MAX_STYLED_TEXT: usize = 20_000;
+
+fn range(value: &CFType) -> Option<AxRange> {
+    let value = value.downcast_ref::<AXValue>()?;
+    let mut range = CFRange { location: 0, length: 0 };
+    // SAFETY: the out-pointer matches the requested type; `value` returns
+    // false if the AXValue holds a different type.
+    let ok = unsafe { value.value(AXValueType::CFRange, NonNull::from(&mut range).cast()) };
+    ok.then(|| AxRange {
+        location: u32::try_from(range.location).unwrap_or(0),
+        length: u32::try_from(range.length).unwrap_or(0),
+    })
+}
+
+/// Style runs of the first `length` UTF-16 units of a text control.
+fn runs(element: &AXUIElement, length: usize) -> Vec<AxRun> {
+    if length == 0 || length > MAX_STYLED_TEXT {
+        return Vec::new();
+    }
+    let mut whole = CFRange { location: 0, length: length as isize };
+    // SAFETY: `whole` is a valid CFRange for the duration of the call.
+    let Some(parameter) =
+        (unsafe { AXValue::new(AXValueType::CFRange, NonNull::from(&mut whole).cast()) })
+    else {
+        return Vec::new();
+    };
+    let mut result: *const CFType = ptr::null();
+    // SAFETY: the parameter is a CFRange AXValue, as the attribute expects;
+    // `result` receives a +1 reference on success.
+    let status = unsafe {
+        element.copy_parameterized_attribute_value(
+            &CFString::from_static_str("AXAttributedStringForRange"),
+            &parameter,
+            NonNull::from(&mut result),
+        )
+    };
+    if status != AXError::Success {
+        return Vec::new();
+    }
+    let Some(result) = NonNull::new(result.cast_mut()) else { return Vec::new() };
+    // SAFETY: the copied value is owned by us (+1).
+    let result: CFRetained<CFType> = unsafe { CFRetained::from_raw(result) };
+    let Ok(text) = result.downcast::<CFAttributedString>() else { return Vec::new() };
+    let total = text.length();
+    let (font_key, underline_key, name_key, size_key) = (
+        CFString::from_static_str("AXFont"),
+        CFString::from_static_str("AXUnderline"),
+        CFString::from_static_str("AXFontName"),
+        CFString::from_static_str("AXFontSize"),
+    );
+    let mut runs = Vec::new();
+    let mut location = 0;
+    while location < total && runs.len() < 1_000 {
+        let mut effective = CFRange { location: 0, length: 0 };
+        let whole = CFRange { location: 0, length: total };
+        // SAFETY: `location` is inside the string and `effective` is a valid
+        // out-pointer.
+        let attributes =
+            unsafe { text.attributes_and_longest_effective_range(location, whole, &mut effective) };
+        if effective.length <= 0 {
+            break;
+        }
+        let mut run = AxRun {
+            range: AxRange {
+                location: u32::try_from(effective.location).unwrap_or(0),
+                length: u32::try_from(effective.length).unwrap_or(0),
+            },
+            font: None,
+            size: None,
+            underline: None,
+        };
+        if let Some(attributes) = attributes {
+            // SAFETY: attributed string attributes are keyed by strings.
+            let attributes: &CFDictionary<CFString, CFType> =
+                unsafe { attributes.cast_unchecked() };
+            if let Some(font) = attributes.get(&font_key)
+                && let Ok(font) = font.downcast::<CFDictionary>()
+            {
+                // SAFETY: the font attribute is a dictionary keyed by strings.
+                let font: &CFDictionary<CFString, CFType> = unsafe { font.cast_unchecked() };
+                run.font = font.get(&name_key).as_deref().and_then(cf_string);
+                run.size = font
+                    .get(&size_key)
+                    .and_then(|size| size.downcast::<CFNumber>().ok())
+                    .and_then(|size| size.as_f64());
+            }
+            run.underline = attributes.get(&underline_key).as_deref().and_then(cf_bool);
+        }
+        runs.push(run);
+        location = effective.location + effective.length;
+    }
+    runs
 }
 
 fn frame(position: Option<&CFType>, size: Option<&CFType>) -> Option<AxFrame> {

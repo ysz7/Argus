@@ -1,6 +1,6 @@
 [package]
-name = "argus-core"
-description = "Argus orchestration pipeline."
+name = "argus-mcp"
+description = "MCP adapter for Argus: observations and guarded actions for AI agents."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -13,17 +13,9 @@ publish.workspace = true
 workspace = true
 
 [dependencies]
+argus-core.workspace = true
+argus-input.workspace = true
 argus-protocol.workspace = true
-argus-capture.workspace = true
-argus-accessibility.workspace = true
-argus-perception.workspace = true
-argus-fusion.workspace = true
-argus-tracking.workspace = true
-png.workspace = true
 serde.workspace = true
 serde_json.workspace = true
-thiserror.workspace = true
 tracing.workspace = true
-unicode-normalization.workspace = true
-
-[dev-dependencies]

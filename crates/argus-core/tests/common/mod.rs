@@ -24,6 +24,7 @@ fn replay(observation: &Observation) -> Vec<SourceCandidate> {
             role: element.role,
             name: element.name.clone(),
             value: element.value.clone(),
+            text: None,
             description: element.description.clone(),
             region: Region::Screen(element.bounds),
             clip: None,

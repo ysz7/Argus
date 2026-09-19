@@ -2,16 +2,17 @@
 
 **Argus** is a local perception layer for computer-use systems. It turns what
 is on the screen into a structured, grounded, confidence-aware observation that
-an external AI agent can consume.
+an external AI agent can consume, and connects to AI clients as an MCP server
+that also executes the agent's actions, with guards.
 
 ```text
 screen / native UI
         ↓
-      Argus
+      Argus  ──── text where it is sure, images where it is not
         ↓
-structured observation
+ external AI agent (Claude Desktop, Claude Code, …)
         ↓
- external AI agent
+ action ("click e_12, expecting "Save"") → Argus checks and executes
 ```
 
 Argus answers one question:
@@ -19,36 +20,87 @@ Argus answers one question:
 > What is in the interface right now, where is it, what state is it in, and
 > how confident is Argus about each claim?
 
-> **Status:** early development. The [Observation Protocol v0.1](spec/ARGUS_PROTOCOL.md)
+> **Status:** early development, macOS only. The [Observation Protocol v0.2](spec/ARGUS_PROTOCOL.md)
 > is defined; macOS screen capture, Accessibility, OCR and visual UI
 > detection work and are fused into one observation; elements keep stable IDs
 > across successive observations, and `argus watch` reports what changed.
+> `argus mcp` connects Argus to AI clients ([MCP](spec/ARGUS_MCP.md)).
+
+Argus is open source under the [MIT license](LICENSE). It runs entirely on
+your Mac: perception needs no model, no API key and no network.
+
+## Highlights
+
+- **Structure first, pixels where needed.** Native accessibility trees,
+  OCR and a visual detector are fused into one observation: roles, names,
+  values, states (including text selection and styles), bounds in screen
+  points and a confidence for every claim.
+- **Stable element IDs and deltas.** The same element keeps its ID across
+  observations; after every action the agent receives only what changed.
+- **Hybrid view for agents.** Compact text where Argus is sure; images of
+  just the regions it cannot describe (windows without accessibility, drawn
+  content, pop-ups).
+- **MCP connector with guarded actions.** `argus mcp` plugs into Claude
+  Desktop and Claude Code. The agent acts by element ID with the name it
+  expects; Argus refuses mismatches, stays inside the observed application
+  and blocks system-wide shortcuts and sensitive applications.
+- **Fast.** An observation takes 80–400 ms; an action with its resulting
+  delta about 0.7 s.
+
+## Results so far
+
+- **Agent evaluation** (Claude Sonnet 5, 18 tasks, 176 runs): on
+  applications with accessibility, an agent using Argus succeeded as often as
+  with screenshots (89% vs 93%) with 37% fewer tokens and 32% less time. On a
+  drawn canvas without accessibility, the fused view solved every task that
+  accessibility alone could not.
+- **Live MCP tests** in Claude Code: Calculator, TextEdit (write, format
+  and save a document) and Chess (a 19-move game, every move by element) all
+  completed without a wrong click or a false "done".
+
+## Quick start
+
+```bash
+cargo install --path crates/argus-cli          # → ~/.cargo/bin/argus
+argus doctor                                   # permissions and backends
+argus observe --app Calculator                 # one observation as JSON
+claude mcp add --scope user argus -- ~/.cargo/bin/argus mcp   # Claude Code
+```
+
+Then ask Claude, e.g. *"With Argus, compute 389 + 456 in Calculator"*. Setup
+for Claude Desktop and all options: [MCP](#mcp-claude-desktop-and-claude-code).
 
 ## Architectural boundaries
 
 Argus is **not** an AI agent and not a single AI model.
 
 ```text
-ARGUS             pixels / native structure → meaning
-AGENT             meaning → intention
-EXECUTION LAYER   intention → physical action
+ARGUS (perception)   pixels / native structure → meaning
+AGENT                meaning → intention
+ARGUS (executor)     intention → checked physical action
 ```
 
 Argus never:
 
 - plans tasks or decides what to click;
-- controls the mouse or keyboard;
-- makes decisions on behalf of an agent or evaluates user permissions;
-- performs irreversible actions;
+- acts on its own: the mouse and keyboard move only on an agent's explicit
+  command through the MCP adapter, in the observed application, after the
+  guards of [`spec/ARGUS_MCP.md`](spec/ARGUS_MCP.md);
+- makes decisions on behalf of an agent;
 - replaces application APIs;
 - becomes an LLM agent.
+
+The perception pipeline (`argus-core`) and the HTTP service only observe;
+the executor (`argus-input`) is used by the MCP adapter alone.
 
 Screen content is untrusted input: text on screen is reported as UI content,
 never interpreted as instructions to Argus.
 
 ### Privacy by default
 
-- all processing is local; frames are never uploaded anywhere;
+- all processing is local; Argus uploads nothing. Over MCP, observations and
+  region images go to the AI client that started the server (and from there
+  to its model), as tool results, and nowhere else;
 - screenshots are not persisted (debug captures only on explicit request);
 - no telemetry containing screen content;
 - the local service listens on localhost only and refuses requests from web
@@ -65,7 +117,9 @@ never interpreted as instructions to Argus.
 | `argus-fusion`        | Merging evidence from different sources; scene graph.   |
 | `argus-tracking`      | Element identity and changes over time.                 |
 | `argus-core`          | Orchestration pipeline; aggregated error type.          |
-| `argus-server`        | Local service / API.                                    |
+| `argus-server`        | Local service / API (observation only).                 |
+| `argus-input`         | Mouse and keyboard execution (MCP adapter only).        |
+| `argus-mcp`           | MCP server: agent view, region images, guarded actions. |
 | `argus-benchmark`     | Benchmark dataset, replay and metrics.                  |
 | `argus-cli`           | The `argus` binary: user and developer commands.        |
 
@@ -98,9 +152,11 @@ Allowed internal dependencies (enforced by
 [`tests/integration/tests/architecture.rs`](tests/integration/tests/architecture.rs)):
 
 ```text
-argus-cli ──→ argus-server ────→ argus-core ──→ capture, accessibility,
-    │     └──→ argus-benchmark ──↗     │          perception, fusion, tracking
-    └──────────────────────────────────┴─────────────────→ argus-protocol
+argus-cli ──→ argus-server ──────┐
+    │     ├──→ argus-mcp ────────┼──→ argus-core ──→ capture, accessibility,
+    │     │        └──→ argus-input                   perception, fusion, tracking
+    │     └──→ argus-benchmark ──┘
+    └──────────────────────────────────────────────→ argus-protocol
 ```
 
 - `argus-protocol` depends on no other Argus crate and contains no platform
@@ -108,8 +164,9 @@ argus-cli ──→ argus-server ────→ argus-core ──→ capture, a
 - Source and processing crates (`capture`, `accessibility`, `perception`,
   `fusion`, `tracking`) depend only on `argus-protocol` and never on each
   other; `argus-core` wires them together.
-- Nothing depends on `argus-server`, `argus-benchmark` or `argus-cli` except
-  the CLI itself.
+- Nothing depends on `argus-server`, `argus-mcp`, `argus-benchmark` or
+  `argus-cli` except the CLI itself; only `argus-mcp` depends on
+  `argus-input`.
 
 Other directories (some appear in later phases): `spec/` (protocol specification), `tests/` (fixtures,
 golden files, integration tests), `benchmarks/`, `examples/`, `models/`,
@@ -249,6 +306,58 @@ captured (off screen, another Space), its tree is reported alone.
 macOS answers accessibility requests unreliably while the screen is locked
 (the application element instead of its window); Argus then reports that the
 application has no accessible window.
+
+### MCP: Claude Desktop and Claude Code
+
+`argus mcp` is an MCP server on stdio: the AI client starts it and the model
+uses its tools (`list_apps`, `observe`, `click`, `type_text`, `press_keys`,
+`scroll`, `drag`, `screenshot`; [spec](spec/ARGUS_MCP.md)). Install the binary
+once:
+
+```bash
+cargo install --path crates/argus-cli      # → ~/.cargo/bin/argus
+```
+
+**Claude Desktop:** Settings → Developer → Edit Config, then add to
+`~/Library/Application Support/Claude/claude_desktop_config.json` (use your
+home directory; restart Claude Desktop afterwards):
+
+```json
+{
+  "mcpServers": {
+    "argus": {
+      "command": "/Users/YOU/.cargo/bin/argus",
+      "args": ["mcp", "--log-file", "/Users/YOU/Library/Logs/argus-mcp.jsonl"]
+    }
+  }
+}
+```
+
+**Claude Code:**
+
+```bash
+claude mcp add --scope user argus -- ~/.cargo/bin/argus mcp --log-file ~/Library/Logs/argus-mcp.jsonl
+```
+
+macOS attributes the permissions to the client: allow **Claude** (or the
+terminal / VS Code running Claude Code) under Accessibility and Screen &
+System Audio Recording, then restart it. Ask, for example, *"With Argus, open
+Calculator and compute 389 + 456"*.
+
+Guards: actions only in the observed application and only on its own
+windows; clicks by id are refused when `expect` does not match the element;
+terminals, password managers, System Settings, chat clients and the editors
+hosting them (VS Code, Cursor) are blocked
+(`--unblock-app NAME` lifts one); system-wide shortcuts (cmd+tab, cmd+space,
+log out, screenshots) are refused; typing stops if you move the mouse.
+Options: `--read-only` (observe only), `--allow-app NAME` (only these
+applications), `--log-file PATH` (one JSON line per call: tool, duration,
+text and image sizes, never screen content).
+
+Several clients and sessions can use Argus at once: each `argus mcp` relays
+to one shared background process (macOS lets only one process of the binary
+capture the screen), which exits a minute after the last client. `argus
+serve` cannot capture meanwhile.
 
 ### Local service
 

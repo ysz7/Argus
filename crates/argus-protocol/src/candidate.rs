@@ -8,7 +8,9 @@
 //!
 //! Candidates are internal to Argus and not part of the JSON protocol.
 
-use crate::{Bounds, Confidence, ElementState, FrameGeometry, RelationKind, Role, Score, Source};
+use crate::{
+    Bounds, Confidence, ElementState, FrameGeometry, RelationKind, Role, Score, Source, TextState,
+};
 
 /// Identifier of a candidate, unique within the output of one source.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -32,6 +34,10 @@ pub struct SourceCandidate {
     pub name: Option<String>,
     /// Value, uncleaned.
     pub value: Option<String>,
+    /// Selection and styling of `value`. Positions count UTF-16 code units
+    /// of the uncleaned value, as platform text APIs do; normalization
+    /// converts them to characters of the cleaned value.
+    pub text: Option<TextState>,
     /// Longer description, uncleaned.
     pub description: Option<String>,
     /// Where the element is, in the source's coordinate space.
@@ -123,6 +129,8 @@ pub struct ElementCandidate {
     pub name: Option<String>,
     /// Current value.
     pub value: Option<String>,
+    /// Selection and styling of `value` (characters of `value`).
+    pub text: Option<TextState>,
     /// Longer description or help text.
     pub description: Option<String>,
     /// Full extent in global screen points.

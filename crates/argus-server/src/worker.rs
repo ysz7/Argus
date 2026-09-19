@@ -15,7 +15,7 @@ use std::sync::{Arc, Mutex, MutexGuard};
 
 use argus_core::accessibility::AppTarget;
 use argus_core::{Inspection, Observer};
-use argus_protocol::{Observation, Source};
+use argus_protocol::{Frame, Observation, Source};
 
 use crate::http::Response;
 
@@ -54,6 +54,9 @@ pub(crate) struct Entry {
     pub(crate) inspection: Inspection,
     /// The request that produced it.
     pub(crate) request: ObserveRequest,
+    /// The frames its pixels were read from, kept only while it is the
+    /// latest observation of its session (for `/frame` crops).
+    pub(crate) frames: Mutex<Vec<Frame>>,
 }
 
 impl Entry {
@@ -77,6 +80,13 @@ impl History {
     fn push(&mut self, entry: Arc<Entry>) {
         if self.entries.len() == self.capacity {
             self.entries.pop_front();
+        }
+        // Only the latest frames of a session are kept.
+        let session = entry.request.session();
+        for older in &self.entries {
+            if older.request.session() == session {
+                lock(&older.frames).clear();
+            }
         }
         self.entries.push_back(entry);
     }
@@ -221,8 +231,9 @@ fn run(
             session.observer.inspect(&request.target, &request.sources)
         }));
         let reply = match result {
-            Ok(Ok(inspection)) => {
-                let entry = Arc::new(Entry { inspection, request });
+            Ok(Ok(mut inspection)) => {
+                let frames = Mutex::new(std::mem::take(&mut inspection.frames));
+                let entry = Arc::new(Entry { inspection, request, frames });
                 lock(history).push(Arc::clone(&entry));
                 Ok(entry)
             }
@@ -254,8 +265,10 @@ mod tests {
                 perception: None,
                 tracking: Default::default(),
                 timings: Default::default(),
+                frames: Vec::new(),
             },
             request: ObserveRequest { target: AppTarget::Frontmost, sources: Vec::new() },
+            frames: Mutex::new(Vec::new()),
         })
     }
 

@@ -20,6 +20,7 @@ workspace = true
 argus-core.workspace = true
 argus-protocol.workspace = true
 argus-server.workspace = true
+argus-mcp.workspace = true
 argus-benchmark.workspace = true
 anyhow.workspace = true
 clap.workspace = true

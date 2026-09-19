@@ -30,6 +30,8 @@ struct Cli {
 
 #[derive(Debug, Subcommand)]
 enum Command {
+    /// Run the MCP server on stdio, for AI clients (Claude Desktop, Claude Code).
+    Mcp(commands::mcp::McpArgs),
     /// Run the local service: observations over HTTP on 127.0.0.1.
     Serve(commands::serve::ServeArgs),
     /// Observe the focused window of an application.
@@ -54,6 +56,7 @@ fn main() -> anyhow::Result<()> {
     tracing::debug!(version = env!("CARGO_PKG_VERSION"), "argus started");
 
     let result = match cli.command {
+        Some(Command::Mcp(args)) => commands::mcp::run(&args),
         Some(Command::Serve(args)) => commands::serve::run(&args),
         Some(Command::Observe(args)) => commands::observe::run(&args),
         Some(Command::Watch(args)) => commands::watch::run(&args),

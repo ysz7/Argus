@@ -333,6 +333,7 @@ mod tests {
             role,
             name: name.map(str::to_owned),
             value: None,
+            text: None,
             description: None,
             bounds: Bounds::new(10.0, 20.0, 80.0, 24.0).unwrap(),
             visible_bounds: None,

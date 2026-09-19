@@ -4,8 +4,9 @@ use std::sync::{Arc, Mutex};
 use std::time::Instant;
 
 use argus_core::accessibility::AppTarget;
+use argus_core::agent::{self, AgentOptions};
 use argus_core::{Error as CoreError, Timings};
-use argus_protocol::{ObservationDelta, PROTOCOL_VERSION, Source};
+use argus_protocol::{Bounds, ObservationDelta, PROTOCOL_VERSION, Source};
 use serde_json::json;
 
 use crate::http::{Request, Response};
@@ -39,6 +40,9 @@ impl Api {
             ["v1", "health"] => self.health(request),
             ["v1", "observation"] => self.observation(request),
             ["v1", "observation", id] => self.stored(request, id),
+            ["v1", "observation", id, "frame"] => self.frame(request, id),
+            ["v1", "agent", "observation"] => self.agent_observation(request),
+            ["v1", "agent", "changes"] => self.agent_changes(request),
             ["v1", "changes"] => self.changes(request),
             ["v1", "elements", id] => self.element(request, id),
             _ => Err(Response::error(404, "not_found", "no such endpoint".to_owned())),
@@ -128,6 +132,102 @@ impl Api {
         })))
     }
 
+    /// `GET /v1/observation/{id}/frame?x=&y=&width=&height=[&scale=]`: the
+    /// pixels of a region of a recent observation, as PNG. Only the latest
+    /// observation of each session keeps its frames.
+    fn frame(&self, request: &Request, id: &str) -> Result<Response, Response> {
+        allow(request, &["x", "y", "width", "height", "scale"])?;
+        let entry = self.entry(id)?;
+        let number = |name: &str, default: Option<f32>| -> Result<f32, Response> {
+            match request.param(name)? {
+                Some(text) => text.parse::<f32>().ok().filter(|v| v.is_finite()).ok_or_else(|| {
+                    Response::error(400, "bad_request", format!("`{name}` is not a number"))
+                }),
+                None => default.ok_or_else(|| {
+                    Response::error(400, "bad_request", format!("`{name}` is required"))
+                }),
+            }
+        };
+        let region = Bounds::new(
+            number("x", None)?,
+            number("y", None)?,
+            number("width", None)?,
+            number("height", None)?,
+        )
+        .map_err(|_| Response::error(400, "bad_request", "invalid region".to_owned()))?;
+        let scale = number("scale", Some(1.0))?.clamp(0.1, 2.0);
+        let frames = lock(&entry.frames);
+        if frames.is_empty() {
+            return Err(Response::error(
+                404,
+                "frame_not_available",
+                "the frames of this observation are no longer kept (or it had no pixel sources)"
+                    .to_owned(),
+            ));
+        }
+        argus_core::crop::crop_png(&frames, region, scale)
+            .map(|png| Response::bytes("image/png", png))
+            .ok_or_else(|| {
+                Response::error(404, "frame_not_available", "no frame covers the region".to_owned())
+            })
+    }
+
+    /// `GET /v1/agent/observation[?app=|pid=][&sources=][&mode=][&min_confidence=]`:
+    /// observes now and answers the agent view: compact text and, in
+    /// `hybrid` mode, the regions to look at as images.
+    fn agent_observation(&self, request: &Request) -> Result<Response, Response> {
+        allow(request, &["app", "pid", "sources", "mode", "min_confidence"])?;
+        let (hybrid, options) = agent_options(request)?;
+        let entry = self
+            .worker
+            .observe(ObserveRequest { target: target(request)?, sources: sources(request)? })?;
+        let observation = entry.observation();
+        let text = agent::render_observation(observation, &options);
+        let regions = if hybrid { regions(&entry, None) } else { Vec::new() };
+        Ok(observed(
+            json!({ "observation": observation.id, "text": text, "regions": regions }),
+            &entry,
+        ))
+    }
+
+    /// `GET /v1/agent/changes?since={id}[&mode=][&min_confidence=]`: what
+    /// changed, as agent text; the whole view when a new session started.
+    fn agent_changes(&self, request: &Request) -> Result<Response, Response> {
+        allow(request, &["since", "mode", "min_confidence"])?;
+        let (hybrid, options) = agent_options(request)?;
+        let since = request.param("since")?.ok_or_else(|| {
+            Response::error(
+                400,
+                "bad_request",
+                "`since` (an observation ID) is required".to_owned(),
+            )
+        })?;
+        let from = self.entry(since)?;
+        let to = self.worker.observe(from.request.clone())?;
+        let observation = to.observation();
+        if !lock(&self.history).continues(since, observation) {
+            let text = agent::render_observation(observation, &options);
+            let regions = if hybrid { regions(&to, None) } else { Vec::new() };
+            return Ok(observed(
+                json!({
+                    "from": since,
+                    "observation": observation.id,
+                    "new_session": true,
+                    "text": text,
+                    "regions": regions,
+                }),
+                &to,
+            ));
+        }
+        let delta = ObservationDelta::between(from.observation(), observation);
+        let text = agent::render_delta(&delta, from.observation(), observation, &options);
+        let regions = if hybrid { regions(&to, Some(&delta)) } else { Vec::new() };
+        Ok(observed(
+            json!({ "from": since, "observation": observation.id, "text": text, "regions": regions }),
+            &to,
+        ))
+    }
+
     fn entry(&self, id: &str) -> Result<Arc<Entry>, Response> {
         lock(&self.history).get(id).ok_or_else(|| {
             Response::error(
@@ -137,6 +237,67 @@ impl Api {
             )
         })
     }
+}
+
+/// `mode` (`text` or `hybrid`) and `min_confidence` of the agent view.
+fn agent_options(request: &Request) -> Result<(bool, AgentOptions), Response> {
+    let hybrid = match request.param("mode")? {
+        None | Some("text") => false,
+        Some("hybrid") => true,
+        Some(other) => {
+            return Err(Response::error(
+                400,
+                "bad_request",
+                format!("unknown mode `{other}` (text, hybrid)"),
+            ));
+        }
+    };
+    let mut options = AgentOptions::default();
+    if let Some(value) = request.param("min_confidence")? {
+        options.min_confidence = value
+            .parse::<f32>()
+            .ok()
+            .filter(|value| (0.0..=1.0).contains(value))
+            .ok_or_else(|| {
+                Response::error(400, "bad_request", "`min_confidence` must be in 0..=1".to_owned())
+            })?;
+    }
+    Ok((hybrid, options))
+}
+
+/// The weak regions of an observation, with the URL of each one's image.
+/// After a delta, only the regions touched by the changes.
+fn regions(entry: &Entry, delta: Option<&ObservationDelta>) -> Vec<serde_json::Value> {
+    if lock(&entry.frames).is_empty() {
+        return Vec::new();
+    }
+    let observation = entry.observation();
+    let touched = |bounds: &Bounds| -> bool {
+        let Some(delta) = delta else { return true };
+        let changed = delta.changed.iter().map(|change| &change.id).chain(delta.removed.iter());
+        let mut areas: Vec<Bounds> = delta.added.iter().map(|element| element.bounds).collect();
+        for id in changed {
+            if let Some(element) = observation.elements.iter().find(|element| &element.id == id) {
+                areas.push(element.bounds);
+            }
+        }
+        areas.iter().any(|area| area.intersection(bounds).is_some())
+    };
+    agent::weak_regions(observation)
+        .into_iter()
+        .filter(|region| touched(&region.bounds))
+        .map(|region| {
+            let b = region.bounds;
+            json!({
+                "bounds": b,
+                "reason": region.reason,
+                "image": format!(
+                    "/v1/observation/{}/frame?x={:.0}&y={:.0}&width={:.0}&height={:.0}",
+                    observation.id, b.x(), b.y(), b.width(), b.height()
+                ),
+            })
+        })
+        .collect()
 }
 
 /// Refuses query parameters other than `allowed`: a misspelled parameter

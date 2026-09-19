@@ -183,11 +183,18 @@ pub(crate) struct Response {
     pub(crate) body: serde_json::Value,
     /// Extra headers.
     pub(crate) headers: Vec<(&'static str, String)>,
+    /// A non-JSON body and its content type, sent instead of `body`.
+    pub(crate) raw: Option<(&'static str, Vec<u8>)>,
 }
 
 impl Response {
     pub(crate) fn ok(body: serde_json::Value) -> Self {
-        Self { status: 200, body, headers: Vec::new() }
+        Self { status: 200, body, headers: Vec::new(), raw: None }
+    }
+
+    /// A successful response with a binary body (e.g. `image/png`).
+    pub(crate) fn bytes(content_type: &'static str, data: Vec<u8>) -> Self {
+        Self { raw: Some((content_type, data)), ..Self::ok(serde_json::Value::Null) }
     }
 
     /// An error response: `{"error": {"code": ..., "message": ...}}`.
@@ -212,9 +219,12 @@ impl Response {
     }
 
     pub(crate) fn write(&self, mut stream: impl Write) -> io::Result<()> {
-        let body = serde_json::to_vec(&self.body).map_err(io::Error::other)?;
+        let (content_type, body) = match &self.raw {
+            Some((content_type, data)) => (*content_type, data.clone()),
+            None => ("application/json", serde_json::to_vec(&self.body).map_err(io::Error::other)?),
+        };
         let mut head = format!(
-            "HTTP/1.1 {} {}\r\nContent-Type: application/json\r\nContent-Length: {}\r\n\
+            "HTTP/1.1 {} {}\r\nContent-Type: {content_type}\r\nContent-Length: {}\r\n\
              Cache-Control: no-store\r\nX-Content-Type-Options: nosniff\r\nConnection: close\r\n",
             self.status,
             reason(self.status),

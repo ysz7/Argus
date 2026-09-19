@@ -51,6 +51,7 @@ impl AccessibilityBackend for Scripted {
                 }],
                 ..AxNode::default()
             },
+            menus: Vec::new(),
             truncated: false,
         })
     }
@@ -224,4 +225,28 @@ fn fails_to_start_without_an_observer() {
         Box::new(|| Err(argus_core::Error::Unsupported { feature: "testing" })),
     );
     assert_eq!(result.unwrap_err().code(), "unsupported");
+}
+
+#[test]
+fn serves_the_agent_view() {
+    let (address, screen) = start();
+
+    let answer = get(address, "/v1/agent/observation?sources=accessibility&mode=hybrid");
+    assert_eq!(answer.status, 200, "{}", answer.body);
+    let text = answer.body["text"].as_str().unwrap();
+    assert!(text.starts_with("Window \"Demo\" (0,0 300x200)"), "{text}");
+    assert!(text.contains(r#"e_2 button "Save" (10,10 80x24)"#), "{text}");
+    // No pixel sources: nothing to show as images.
+    assert_eq!(answer.body["regions"], serde_json::json!([]));
+    let first = answer.body["observation"].as_str().unwrap().to_owned();
+
+    screen.lock().unwrap().button = "Saved".to_owned();
+    let answer = get(address, &format!("/v1/agent/changes?since={first}"));
+    assert_eq!(answer.status, 200, "{}", answer.body);
+    assert_eq!(answer.body["text"], r#"~ e_2 "Saved" name: "Save" → "Saved""#);
+
+    let frame = get(address, &format!("/v1/observation/{first}/frame?x=0&y=0&width=10&height=10"));
+    assert_eq!((frame.status, code(&frame)), (404, "frame_not_available"));
+    let bad = get(address, "/v1/agent/observation?mode=pictures");
+    assert_eq!((bad.status, code(&bad)), (400, "bad_request"));
 }

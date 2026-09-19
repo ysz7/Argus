@@ -8,7 +8,10 @@ use argus_accessibility::{AccessibilityBackend, AppTarget};
 use argus_capture::{CaptureBackend, CaptureTarget, WindowInfo, main_window};
 use argus_fusion::ElementEvidence;
 use argus_perception::{OcrBackend, VisualPerceptionBackend};
-use argus_protocol::{Bounds, Element, Observation, ObservationId, Source, Timestamp, Window};
+use argus_protocol::{
+    Bounds, CandidateId, Confidence, Element, ElementState, Frame, Observation, ObservationId,
+    Region, Role, Score, Source, SourceCandidate, SourceMeta, Timestamp, Window,
+};
 use argus_tracking::{Tracker, TrackingReport};
 
 use crate::assemble::assemble;
@@ -209,11 +212,13 @@ impl Observer {
         };
 
         let mut perception = None;
+        let mut frames = Vec::new();
         if let Some((capture, captured)) = capture {
             let captured_at = Instant::now();
             let frame = capture.capture(CaptureTarget::Window(captured.id))?;
             timings.capture_ms = elapsed(captured_at);
             timestamp = frame.timestamp();
+            frames.push(frame.clone());
             let ocr = match wants(Source::Ocr) {
                 true => Some(self.ocr.as_deref().ok_or(Error::Unsupported { feature: "OCR" })?),
                 false => None,
@@ -233,6 +238,19 @@ impl Observer {
             evidence.extend(perceived.ocr.map(normalize));
             evidence.extend(perceived.vision.map(normalize));
             perception = perceived.report;
+            // Menus and pop-ups the application shows in windows of their
+            // own (e.g. Tk option menus): not in the window's accessibility
+            // tree nor in its frame.
+            for popup in popup_windows(capture, &captured)? {
+                let Ok(frame) = capture.capture(CaptureTarget::Window(popup.id)) else { continue };
+                frames.push(frame.clone());
+                let mut fresh = PixelMemory::default();
+                let perceived =
+                    perceive(&mut fresh, Settings::default(), popup.id, frame, ocr, vision)?;
+                evidence.push(normalize(vec![popup_candidate(&popup)]));
+                evidence.extend(perceived.ocr.map(normalize));
+                evidence.extend(perceived.vision.map(normalize));
+            }
             if snapshot.is_none() {
                 application = Some(captured.application);
                 window = Some(Window { title: captured.title, bounds: Some(captured.bounds) });
@@ -289,6 +307,7 @@ impl Observer {
             perception,
             tracking: report,
             timings,
+            frames,
         })
     }
 }
@@ -307,6 +326,9 @@ pub struct Inspection {
     pub tracking: TrackingReport,
     /// Where the time went.
     pub timings: Timings,
+    /// The frames the pixels were read from: the window first, then its
+    /// pop-ups. Empty without pixel sources.
+    pub frames: Vec<Frame>,
 }
 
 /// Milliseconds spent in each stage of an observation.
@@ -341,6 +363,57 @@ impl Inspection {
     }
 }
 
+/// Highest window layer treated as part of an application: panels, modal
+/// dialogs and pop-up menus (macOS `kCGPopUpMenuWindowLevel`).
+const POPUP_LAYERS: std::ops::RangeInclusive<i64> = 1..=101;
+
+/// On-screen windows of `window`'s application in front of it, above the
+/// normal layer: pop-up menus, panels, dialogs.
+fn popup_windows(capture: &dyn CaptureBackend, window: &WindowInfo) -> Result<Vec<WindowInfo>> {
+    let pid = window.application.pid;
+    Ok(capture
+        .windows()?
+        .into_iter()
+        // Front to back: only what lies in front of the observed window.
+        .take_while(|other| other.id != window.id)
+        .filter(|other| {
+            pid.is_some()
+                && other.application.pid == pid
+                && POPUP_LAYERS.contains(&other.layer)
+                && other.bounds.width() >= 20.0
+                && other.bounds.height() >= 10.0
+        })
+        .take(4)
+        .collect())
+}
+
+/// The pop-up window itself: a menu, as far as its window level tells.
+fn popup_candidate(window: &WindowInfo) -> SourceCandidate {
+    let menu = window.layer >= 100;
+    SourceCandidate {
+        id: CandidateId(0),
+        parent: None,
+        role: if menu { Role::Menu } else { Role::Dialog },
+        name: window.title.clone(),
+        value: None,
+        text: None,
+        description: None,
+        region: Region::Screen(window.bounds),
+        clip: None,
+        state: ElementState { visible: Some(true), ..ElementState::default() },
+        confidence: Confidence {
+            role: Score::new(0.8).ok(),
+            ..Confidence::new(Score::new(0.9).expect("in range"))
+        },
+        relations: Vec::new(),
+        meta: SourceMeta {
+            source: Source::Vision,
+            native_role: Some(format!("window layer {}", window.layer)),
+            native_id: None,
+        },
+    }
+}
+
 /// The main window of the target application.
 fn target_window(capture: &dyn CaptureBackend, target: &AppTarget) -> Result<WindowInfo> {
     let belongs = |window: &WindowInfo| match target {
@@ -353,12 +426,28 @@ fn target_window(capture: &dyn CaptureBackend, target: &AppTarget) -> Result<Win
     };
     let window = match target {
         AppTarget::Frontmost => capture.frontmost_window()?,
-        _ => main_window(capture.windows()?.into_iter().filter(belongs)).ok_or_else(|| {
-            argus_accessibility::Error::ApplicationNotFound(format!("{target:?} with a window"))
-        })?,
+        _ => {
+            let windows: Vec<WindowInfo> = capture.windows()?.into_iter().filter(belongs).collect();
+            // A modal dialog (e.g. a Tk settings window at the modal panel
+            // level) in front of the main window is what the user sees.
+            windows
+                .iter()
+                .find(|window| DIALOG_LAYERS.contains(&window.layer) && window.title.is_some())
+                .cloned()
+                .or_else(|| main_window(windows))
+                .ok_or_else(|| {
+                    argus_accessibility::Error::ApplicationNotFound(format!(
+                        "{target:?} with a window"
+                    ))
+                })?
+        }
     };
     Ok(window)
 }
+
+/// Layers of windows an application's user works in: normal windows (0),
+/// floating panels and modal dialogs (up to the modal panel level, 8).
+const DIALOG_LAYERS: std::ops::RangeInclusive<i64> = 0..=8;
 
 /// The capturable window of process `pid` that best overlaps `bounds` (the
 /// window whose accessibility tree was read).
@@ -446,6 +535,7 @@ mod tests {
                 }],
                 ..AxNode::default()
             },
+            menus: Vec::new(),
             truncated: false,
         };
         let observer =
@@ -575,6 +665,7 @@ mod tests {
                 }],
                 ..AxNode::default()
             },
+            menus: Vec::new(),
             truncated: false,
         }
     }

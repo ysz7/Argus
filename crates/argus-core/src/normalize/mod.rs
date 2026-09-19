@@ -26,7 +26,7 @@ use argus_protocol::{
     SourceCandidate,
 };
 
-use self::text::{clean_label, clean_value};
+use self::text::{clean_label, clean_text_state, clean_value};
 
 /// Candidates that went through normalization.
 ///
@@ -105,6 +105,7 @@ fn normalize_candidate(
         role,
         name,
         value,
+        text,
         description,
         clip,
         state,
@@ -118,6 +119,7 @@ fn normalize_candidate(
     let name = clean_label(name.as_deref());
     let description =
         clean_label(description.as_deref()).filter(|text| Some(text) != name.as_ref());
+    let text = clean_text_state(value.as_deref(), text);
     let value = clean_value(value.as_deref());
 
     let mut state = normalize_state(role, state);
@@ -147,6 +149,7 @@ fn normalize_candidate(
         role,
         name,
         value,
+        text,
         description,
         bounds,
         visible_bounds,
@@ -211,6 +214,7 @@ mod tests {
             role,
             name: None,
             value: None,
+            text: None,
             description: None,
             region: Region::Screen(bounds(0.0, 0.0, 10.0, 10.0)),
             clip: None,

@@ -42,7 +42,7 @@ pub use candidate::{
 };
 pub use confidence::{Confidence, Score};
 pub use delta::{DeltaError, ElementChange, ObservationDelta};
-pub use element::{CheckState, Element, ElementState, Role};
+pub use element::{CheckState, Element, ElementState, Role, TextRange, TextRun, TextState};
 pub use error::{Error, Result};
 pub use frame::{Frame, FrameGeometry, FrameId, PixelBuffer};
 pub use geometry::Bounds;
@@ -53,4 +53,4 @@ pub use source::Source;
 pub use validation::ValidationError;
 
 /// Version of the Argus Observation Protocol implemented by this crate.
-pub const PROTOCOL_VERSION: &str = "0.1";
+pub const PROTOCOL_VERSION: &str = "0.2";

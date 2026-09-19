@@ -129,6 +129,7 @@ impl Truth {
                 role: truth.role,
                 name: truth.name.clone(),
                 value: truth.value.clone(),
+                text: None,
                 description: None,
                 bounds: truth.bounds,
                 visible_bounds: None,

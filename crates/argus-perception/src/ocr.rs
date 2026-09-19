@@ -39,6 +39,7 @@ pub fn ocr_candidates(frame: &Frame, regions: &[OcrRegion]) -> Vec<SourceCandida
             role: Role::Text,
             name: Some(region.text.clone()),
             value: None,
+            text: None,
             description: None,
             region: Region::Frame { geometry, rect: region.rect },
             clip: None,

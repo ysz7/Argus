@@ -87,6 +87,7 @@ mod tests {
             role: Role::Button,
             name: None,
             value: None,
+            text: None,
             description: None,
             bounds: Bounds::new(102.0, 53.0, 4.0, 3.0).unwrap(),
             visible_bounds: None,

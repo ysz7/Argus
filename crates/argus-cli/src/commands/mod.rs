@@ -5,6 +5,7 @@ pub(crate) mod benchmark;
 pub(crate) mod capture;
 pub(crate) mod doctor;
 pub(crate) mod inspect;
+pub(crate) mod mcp;
 pub(crate) mod observe;
 pub(crate) mod serve;
 mod target;

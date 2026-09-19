@@ -250,6 +250,10 @@ fn application_for_pid(pid: u32, fallback_name: Option<String>) -> Application {
         Some(app) => {
             let mut application = application_from(&app);
             application.name = application.name.or(fallback_name);
+            // The window list's owner is authoritative: for some processes
+            // (Tk applications such as IDLE) NSRunningApplication reports
+            // no process identifier.
+            application.pid = Some(pid);
             application
         }
         None => Application { name: fallback_name, bundle_id: None, pid: Some(pid) },
