@@ -30,6 +30,8 @@ struct Cli {
 
 #[derive(Debug, Subcommand)]
 enum Command {
+    /// Run the local service: observations over HTTP on 127.0.0.1.
+    Serve(commands::serve::ServeArgs),
     /// Observe the focused window of an application.
     Observe(commands::observe::ObserveArgs),
     /// Observe repeatedly and show what changed between observations.
@@ -48,6 +50,7 @@ fn main() -> anyhow::Result<()> {
     tracing::debug!(version = env!("CARGO_PKG_VERSION"), "argus started");
 
     let result = match cli.command {
+        Some(Command::Serve(args)) => commands::serve::run(&args),
         Some(Command::Observe(args)) => commands::observe::run(&args),
         Some(Command::Watch(args)) => commands::watch::run(&args),
         Some(Command::Inspect(args)) => commands::inspect::run(&args),
@@ -58,8 +61,22 @@ fn main() -> anyhow::Result<()> {
     match result {
         // The reader went away (`argus watch | head`): nothing left to do.
         Err(error) if is_broken_pipe(&error) => Ok(()),
+        Err(error) if is_capture_timeout(&error) => Err(error.context(
+            "screen capture did not answer. macOS lets only one running process of a program \
+             capture: if another argus process is running (such as `argus serve`), stop it \
+             or ask the service instead",
+        )),
         result => result,
     }
+}
+
+fn is_capture_timeout(error: &anyhow::Error) -> bool {
+    error.chain().any(|cause| {
+        matches!(
+            cause.downcast_ref::<argus_core::Error>(),
+            Some(argus_core::Error::Capture(argus_core::capture::Error::Timeout(_)))
+        )
+    })
 }
 
 fn is_broken_pipe(error: &anyhow::Error) -> bool {

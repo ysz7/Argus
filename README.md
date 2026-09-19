@@ -51,7 +51,8 @@ never interpreted as instructions to Argus.
 - all processing is local; frames are never uploaded anywhere;
 - screenshots are not persisted (debug captures only on explicit request);
 - no telemetry containing screen content;
-- the local service listens on localhost only.
+- the local service listens on localhost only and refuses requests from web
+  pages.
 
 ## Workspace layout
 
@@ -217,6 +218,38 @@ captured (off screen, another Space), its tree is reported alone.
 macOS answers accessibility requests unreliably while the screen is locked
 (the application element instead of its window); Argus then reports that the
 application has no accessible window.
+
+### Local service
+
+```bash
+argus serve                            # http://127.0.0.1:7412
+argus serve --port 0                   # a free port, printed on stdout
+```
+
+Any local program can then observe without linking with Rust
+([API](spec/ARGUS_SERVICE.md)):
+
+```bash
+curl 'http://127.0.0.1:7412/v1/health'
+curl 'http://127.0.0.1:7412/v1/observation?app=Calculator'          # observe now
+curl 'http://127.0.0.1:7412/v1/changes?since=obs_mu81clxa_000002'    # observe again: the delta
+curl 'http://127.0.0.1:7412/v1/elements/e_4'                         # an element and its evidence
+```
+
+Each application (and set of sources) has its own tracking session, shared
+by all clients; observations are kept in memory in a bounded history
+(`--history`, default 32) and nothing is written to disk. Requests from web
+pages (an `Origin` header, or a `Host` other than localhost) are refused.
+[`examples/python/watch.py`](examples/python/watch.py) is a client that uses
+only the Python standard library:
+
+```bash
+python3 examples/python/watch.py --app Calculator --count 10
+```
+
+macOS lets only one running process of a program capture the screen: while
+`argus serve` runs, the pixel sources of other `argus` commands time out. Ask
+the service instead, or stop it.
 
 ### Capture (developer tool)
 

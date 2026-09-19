@@ -211,14 +211,16 @@ fn focused_application_pid() -> Option<i32> {
 
 /// Process id of the owner of the frontmost normal (layer 0) window.
 fn topmost_window_pid() -> Option<i32> {
-    window_owners().find(|owner| owner.layer == 0).map(|owner| owner.pid)
+    window_owners(true).find(|owner| owner.layer == 0).map(|owner| owner.pid)
 }
 
 /// Process id of an application with an on-screen window whose owner name
 /// matches `name` (case-insensitive).
 fn window_owner_pid(name: &str) -> Option<i32> {
     let wanted = name.to_lowercase();
-    window_owners().find(|owner| owner.name.to_lowercase() == wanted).map(|owner| owner.pid)
+    // All windows, not only on-screen ones: an application whose windows are
+    // on another Space is still running and readable.
+    window_owners(false).find(|owner| owner.name.to_lowercase() == wanted).map(|owner| owner.pid)
 }
 
 struct WindowOwner {
@@ -227,10 +229,12 @@ struct WindowOwner {
     layer: i64,
 }
 
-/// Owners of on-screen windows, front to back.
-fn window_owners() -> impl Iterator<Item = WindowOwner> {
-    let options =
-        CGWindowListOption::OptionOnScreenOnly | CGWindowListOption::ExcludeDesktopElements;
+/// Owners of windows (only on-screen ones if `on_screen`), front to back.
+fn window_owners(on_screen: bool) -> impl Iterator<Item = WindowOwner> {
+    let options = match on_screen {
+        true => CGWindowListOption::OptionOnScreenOnly | CGWindowListOption::ExcludeDesktopElements,
+        false => CGWindowListOption::OptionAll | CGWindowListOption::ExcludeDesktopElements,
+    };
     let list = CGWindowListCopyWindowInfo(options, 0);
     // SAFETY: CGWindowListCopyWindowInfo returns an array of dictionaries with
     // string keys.

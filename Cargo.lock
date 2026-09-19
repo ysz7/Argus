@@ -190,6 +190,10 @@ version = "0.0.1"
 dependencies = [
  "argus-core",
  "argus-protocol",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tracing",
 ]
 
 [[package]]

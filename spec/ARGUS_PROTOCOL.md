@@ -317,8 +317,9 @@ Both endpoints of every relation MUST exist in `elements`.
 ## 10. ObservationDelta
 
 A delta describes the difference between two observations of one tracking
-session (§3.1): `to` continues `from` (`to.previous` is `from`), so equal
-element IDs denote the same element. After a full observation, a producer MAY
+session (§3.1): `to` continues `from`, directly (`to.previous` is `from`) or
+through intermediate observations of the session, so equal element IDs denote
+the same element. After a full observation, a producer MAY
 send deltas instead of full observations.
 
 | Field               | Type                   | Required | Description                                                  |
